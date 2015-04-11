@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!-- 全局启用或禁用延迟加载。当禁用时，所有关联对象都会即时加载。默认：true -->
+		<setting name="lazyLoadingEnabled" value="true" />
+		<!-- 当启用时，有延迟加载属性的对象在被调用时将会完全加载任意属性。否则，每种属性将会按需要加载 -->
+		<setting name="aggressiveLazyLoading" value="false" />
+	</settings>
+	
+	<typeAliases><!--设置别名 -->
+		<typeAlias alias="userInfo" type="com.hxx.erp.model.UserInfo" />
+		<typeAlias alias="role" type="com.hxx.erp.model.Role" />
+		<typeAlias alias="userRole" type="com.hxx.erp.model.UserRole" />
+		<typeAlias alias="roleMenu" type="com.hxx.erp.model.RoleMenu" />
+		<typeAlias alias="menu" type="com.hxx.erp.model.Menu" />
+		<typeAlias alias="page" type="com.hxx.erp.common.Page" />
+		<typeAlias alias="customer" type="com.hxx.erp.model.Customer" />
+		<typeAlias alias="goods" type="com.hxx.erp.model.Goods" />
+		<typeAlias alias="provider" type="com.hxx.erp.model.Provider" />
+		<typeAlias alias="orderInfo" type="com.hxx.erp.model.OrderInfo" />
+		<typeAlias alias="orderCustomer" type="com.hxx.erp.model.OrderCustomer" />
+		<typeAlias alias="logisticsInfo" type="com.hxx.erp.model.LogisticsInfo" />
+		<typeAlias alias="orderTime" type="com.hxx.erp.model.OrderTime" />
+		
+	</typeAliases>
+	<!-- <plugins>
+	   <plugin interceptor="com.gxly.book.common.PageInterceptor">
+	       <property name="dataBaseType" value="mysql"/>
+	   </plugin>
+	</plugins> -->
+	
+	<plugins>
+	   <plugin interceptor="com.hxx.erp.common.PagePlugin">
+	   	 <property name="dialect" value="mysql"/>
+	   	 <property name="pageSqlId" value=".*Page$"/>
+	   </plugin>
+	</plugins>
+	<!--说明：如果xxMapper.xml配置文件放在和xxMapper.java统一目录下，mappers也可以省略， 因为org.mybatis.spring.mapper.MapperFactoryBean默认会去查找与xxMapper.java相同目录和名称的xxMapper.xml -->
+	<mappers>
+		<mapper resource="com/hxx/erp/dao/impl/UserInfoDaoMapper.xml" />
+		<mapper resource="com/hxx/erp/dao/impl/RoleDaoMapper.xml"/>
+		<mapper resource="com/hxx/erp/dao/impl/MenuDaoMapper.xml"/>
+		<mapper resource="com/hxx/erp/dao/impl/CustomerDaoMapper.xml"/>
+		<mapper resource="com/hxx/erp/dao/impl/GoodsDaoMapper.xml"/>
+		<mapper resource="com/hxx/erp/dao/impl/ProviderDaoMapper.xml"/>
+		<mapper resource="com/hxx/erp/dao/impl/OrderInfoDaoMapper.xml"/>
+		<mapper resource="com/hxx/erp/dao/impl/OrderCustomerDaoMapper.xml"/>
+		<mapper resource="com/hxx/erp/dao/impl/LogisticsInfoDaoMapper.xml"/>
+		<mapper resource="com/hxx/erp/dao/impl/OrderTimeDaoMapper.xml"/>
+	</mappers>
+</configuration>

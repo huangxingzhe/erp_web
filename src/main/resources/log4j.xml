@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+	<layout class="org.apache.log4j.PatternLayout">
+		<param name="ConversionPattern" value="%c %d{ISO8601}-- %p -- %m%n"/>
+	</layout>
+	<filter class="org.apache.log4j.varia.LevelRangeFilter">
+		<param name="LevelMin" value="DEBUG" />
+		<param name="LevelMax" value="ERROR" />
+	</filter>
+</appender>
+
+<appender name="ALL" class="org.apache.log4j.RollingFileAppender">
+	<param name="File" value="${catalina.base}/logs/bookbus.log"/>
+	<param name="Append" value="true"/>
+	<param name="MaxFileSize" value="5240KB"/>
+	<param name="MaxBackupIndex" value="100"/>
+	<layout class="org.apache.log4j.PatternLayout">
+		<param name="ConversionPattern" value="%c %d{ISO8601}-- %p -- %m%n"/>
+	</layout>
+	<filter class="org.apache.log4j.varia.LevelRangeFilter">
+		<param name="LevelMin" value="DEBUG" />
+		<param name="LevelMax" value="FATAL" />
+	</filter>
+</appender>
+
+<appender name="ERROR" class="org.apache.log4j.RollingFileAppender">
+	<param name="File" value="${catalina.base}/logs/bookbus-error.log"/>
+	<param name="Append" value="true"/>
+	<param name="MaxFileSize" value="10240KB"/>
+	<param name="MaxBackupIndex" value="100"/>
+	<layout class="org.apache.log4j.PatternLayout">
+		<param name="ConversionPattern" value="%c %d{ISO8601}-- %p -- %m%n"/>
+	</layout>
+	<filter class="org.apache.log4j.varia.LevelRangeFilter">
+		<param name="LevelMin" value="ERROR" />
+		<param name="LevelMax" value="ERROR" />
+	</filter>
+</appender>
+
+<logger name="httpclient" additivity="true">   
+    <level value="INFO" />
+    <appender-ref ref="ALL" />
+</logger>
+
+<logger name="org.springframework" additivity="true">   
+    <level value="INFO" />
+    <appender-ref ref="ALL" />
+</logger>
+
+<logger name="org.apache.commons.httpclient" additivity="true">   
+    <level value="INFO" />
+    <appender-ref ref="ALL" />
+</logger>
+
+<root>
+	<appender-ref ref="STDOUT"/>
+	<appender-ref ref="ALL"/>
+	<appender-ref ref="ERROR"/>
+</root>
+
+</log4j:configuration>
