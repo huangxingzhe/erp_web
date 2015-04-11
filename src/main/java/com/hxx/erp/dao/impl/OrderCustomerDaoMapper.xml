@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+        
+    <!DOCTYPE mapper PUBLIC     
+        "-//mybatis.org//DTD Mapper 3.0//EN"    
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+    <mapper namespace="com.hxx.erp.dao.OrderCustomerDao">    	
+    	<resultMap id="orderCustomerDaoMapperResultMap" type="orderCustomer">  
+	        <id property="id" column="id" />  
+	        <result property="cusNo" column="cus_no" />  
+	        <result property="cusName" column="cus_name" /> 
+	        <result property="orderCode" column="order_code" />
+	        <result property="amount" column="amount" />
+	        <result property="sendNum" column="send_num" />
+	        <result property="realNum" column="real_num" />
+	        <result property="orderId" column="order_id" /> 
+    	</resultMap>  
+       
+         <select id="get" parameterType="int" resultMap="orderCustomerDaoMapperResultMap">    
+            select * from t_order_customer where id = #{id}   
+        </select>  
+        
+        <insert id="add" parameterType="orderCustomer" >
+            INSERT INTO t_order_customer (cus_no, cus_name, order_code,amount,send_num,real_num,order_id)
+            VALUES(#{cusNo},#{cusName},#{orderCode},#{amount},#{sendNum},#{realNum}, #{orderId})
+        </insert>
+        
+        <update id="update" parameterType="orderCustomer" >
+        	update t_order_customer set cus_no=#{cusNo} ,cus_name=#{cusName},order_code=#{orderCode},
+        	amount=#{amount},send_num=#{sendNum},real_num=#{realNum},order_id=#{orderId}  where id=#{id}
+        </update>
+        <delete id="delete" parameterType="int">
+        	delete from t_order_customer where order_id = #{id}
+        </delete>
+        
+        <select id="queryList" resultMap="orderCustomerDaoMapperResultMap" parameterType="java.util.Map">
+             select * from t_order_customer 
+             <trim prefix="where" prefixOverrides="and"> 
+                 <if test="orderId!=null and orderId !=''">
+	             	and order_id =#{orderId}
+	             </if>
+	             <if test="cusNo!=null and cusNo !=''">
+	             	and cus_no =#{cusNo}
+	             </if>
+	              <if test="orderCode!=null and orderCode !=''">
+	             	and order_code =#{orderCode}
+	             </if>
+	             <if test="cusName!=null and cusName!=''">
+	             	and cus_name like CONCAT('%','${cusName}','%' ) 
+	             </if>
+             </trim>
+				order by id 
+        </select>
+    </mapper>    

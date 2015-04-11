@@ -1,0 +1,23 @@
+<script type="text/javascript">
+function upload() {
+	var of = $('#uploadFile');
+	if(of.val()=='') {
+		alert("请选择要上传的图片！");
+		return;
+	}
+	$('#fileContent').empty();
+	$('#fileContent').append(of);
+	//$('#ufc').html('');
+	$('#ufc').append(of.clone());
+	of.attr('id','');
+	of.attr('name','file');
+	$("#uploadForm").attr("action","uploadPhoto.do")
+	$('#uploadForm').submit();
+   
+}
+
+</script>
+<form id="uploadForm" action="" method="post" enctype="multipart/form-data" target="hiddenIframe" style="display:none;width:0px;height:0px;">
+<span id="fileContent"></span>
+</form>
+<iframe name="hiddenIframe" frameborder="0" border="0" style="display:none;width:0px;height:0px;"></iframe>
