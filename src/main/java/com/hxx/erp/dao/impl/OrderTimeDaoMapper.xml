@@ -12,10 +12,12 @@
 	        <result property="userId" column="user_id" />
     	</resultMap>  
        
-         <select id="get" parameterType="int" resultMap="orderTimeDaoMapperResultMap">    
+        <select id="get" parameterType="int" resultMap="orderTimeDaoMapperResultMap">    
             select * from t_order_time where id = #{id}   
         </select>  
-        
+        <select id="getByOrderId" parameterType="int" resultMap="orderTimeDaoMapperResultMap">    
+            select * from t_order_time where order_id = #{orderId} order by status 
+        </select> 
         <insert id="add" parameterType="orderTime" >
             INSERT INTO t_order_time (status,finish_time,order_id,user_id)
             VALUES(#{status},#{finishTime},#{orderId},#{userId})

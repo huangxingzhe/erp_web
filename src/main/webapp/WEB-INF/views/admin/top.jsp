@@ -34,7 +34,7 @@ border-right:0px;
 	<div class="sitenav">
 		<div class="welcome">
 			<spring:message code="admin.top.hello"/>：<span class="username">${session_login_admin_account}</span>
-            <a href="<%=basePath%>/customer/user/editPass.do" target="main"><spring:message code="admin.top.updatepass"/></a>
+            <a href="<%=basePath%>/admin/user/editPass.do" target="main"><spring:message code="admin.top.updatepass"/></a>
 			<a href="../login/logout.do" target="_parent"><spring:message code="admin.top.logout"/></a>
 			<select id="selLang" onchange="changeLang(this.value)">
 				<option value="zh">简体中文</option>

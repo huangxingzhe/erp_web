@@ -53,7 +53,10 @@
 							<td class=content>&nbsp;</td>
 							<td class=content>${customer.name}</td>
 							<td class=content>${customer.code}</td>
-							<td class=content>${customer.status}</td>
+							<td class=content>
+								<c:if test="${customer.status==1}"><spring:message code="admin.label.normal"/></c:if>
+				    			<c:if test="${customer.status==2}"><spring:message code="admin.label.unnormal"/></c:if>
+							</td>
 							<td class=content>${customer.phone}</td>
 							<td class=content>${customer.email}</td>
 							<td class=content>${customer.address}</td>

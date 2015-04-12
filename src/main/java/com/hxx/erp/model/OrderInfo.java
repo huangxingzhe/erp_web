@@ -158,7 +158,13 @@ public class OrderInfo {
 		this.statTime = statTime;
 	}
 	public int getDays() {
-		long time = updateTime.getTime()-createTime.getTime();
+		Date date = null;
+		if(status==8){
+			date = updateTime;
+		}else{
+			date = new Date();
+		}
+		long time = date.getTime()-createTime.getTime();
 		long day = 86400000;
 		Long ret = (time%day==0)?time/day:(time/day+1);
 		return ret.intValue();

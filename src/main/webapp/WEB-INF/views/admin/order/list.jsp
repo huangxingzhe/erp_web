@@ -74,7 +74,7 @@
 			<tr>
 				<td align=right colspan=3><input
 					onclick="javascript:location.href='init.do'" type="button" value="<spring:message code="admin.label.add"/>"
-					class="button"> <input onclick="location.href='list.do'"
+					class="button"> <input onclick="location.href='list.do?status=${status}'"
 					type="button" value="<spring:message code="admin.label.refresh"/>" class="button" />
 					<input onclick="exportXLS();"
 					type="button" value="<spring:message code="admin.label.export"/>" class="button" />
@@ -89,7 +89,7 @@
 				<tbody>
 					<tr class=list>
 						<td width="25" height=28 class=biaoti><span
-							class="searchzone"><spring:message code="order.label.seqno"/></span></td>
+							class="searchzone">&nbsp;</span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.payNo"/></span></td>
 						<td width="100" height=28 class=biaoti><span
@@ -125,7 +125,7 @@
 								<spring:message code="order.label.moneyTime"/>
 							</c:if>
 							</span></td>
-						<td width="50" height=28 class=biaoti><span
+						<td width="70" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.days"/></span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.goodsPic"/></span></td>
@@ -133,7 +133,7 @@
 							class="searchzone"><spring:message code="order.label.borderAddr"/></span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.goalAddr"/></span></td>
-						<td width="100" height=28 class=biaoti><span
+						<td width="50" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.num"/></span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.amount"/></span></td>
@@ -152,7 +152,7 @@
 							<td class=content>${order.providerName}</td>
 							<td class=content>${order.goodsName}</td>
 							<td class=content>${fn:substring(order.payTime, 0, 19)}</td>
-							<td class=content><fmt:formatDate value="${order.updateTime}" pattern="yyyy-MM-dd hh:mm:ss"/></td>
+							<td class=content title="<spring:message code="order.label.createTime"/>:<fmt:formatDate value="${order.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"><fmt:formatDate value="${order.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 							<td class=content>${order.days}<spring:message code="order.label.date"/></td>
 							<td class=content><img src="showPhoto.do?path=${order.picUrl}" width="26" height="26" border="0" id="preImg" onmouseover="showImg(this,event);" onmouseout="hideImg();"></td>
 							<td class=content>
@@ -171,7 +171,7 @@
 								<fmt:formatNumber type="number" pattern="￥.00" value="${order.receiveMoney}" />
 							</td>
 							<td class=content>
-								<fmt:formatNumber type="number" pattern="0.00%" value="${order.profit}" />
+								<fmt:formatNumber type="percent" value="${order.profit}" />
 							</td>
 							<td id="opt_${order.id}" class=content>
 							<a href="javascript:detail(${order.id},${order.status})"><spring:message code="admin.label.detail"/></a>
@@ -180,12 +180,14 @@
 										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
 									</c:if>
 									<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
+									<br>
 								<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.sendToBorder"/></a></c:if>
 								<c:if test="${order.status==2}">
 									<c:if test="${sessionScope.session_login_admin_id==1}">
 										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
 										<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
 									</c:if>
+									<br>
 									<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.arrivedBorder"/></a>
 								</c:if>
 								<c:if test="${order.status==3}">
@@ -193,6 +195,7 @@
 										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
 										<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
 									</c:if>
+									<br>
 									<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.hadGet"/></a>
 								</c:if>
 								<c:if test="${order.status==4}">
@@ -200,6 +203,7 @@
 										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
 										<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
 									</c:if>
+									<br>
 									<c:if test="${order.goalAddr==1}">
 										<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.sendToHN"/></a>
 									</c:if>
@@ -212,18 +216,21 @@
 										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
 										<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
 									</c:if>
+									<br>
 								<a href="javascript:update(${order.id},${order.status+1})"><spring:message code="order.label.status.receive"/></a></c:if>
 								<c:if test="${order.status==6}">
 									<c:if test="${sessionScope.session_login_admin_id==1}">
 										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
 										<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
 									</c:if>
+								<br>
 								<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.receive"/></a></c:if>
 								<c:if test="${order.status==7}">
 									<c:if test="${sessionScope.session_login_admin_id==1}">
 										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
 										<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
 									</c:if>
+								<br>
 								<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.getMoney"/></a></c:if>
 							</td>
 						</tr>
@@ -232,12 +239,16 @@
 						<td colspan="10" height=20 class=total style="text-align:left;"><spring:message code="admin.label.pagecount"/>：</td>
 						<td height=20 class=total>${nums}</td>
 						<td height=20 class=total>￥${amounts}</td>
+						<td height=20 class=total>￥${receiveMoney}</td>
+						<td height=20 class=total>&nbsp;</td>
 						<td height=20 class=total>&nbsp;</td>
 					</tr>
 					<tr>
 						<td colspan="10" height=20 class=total style="text-align:left;"><spring:message code="admin.label.totalcount"/>：</td>
 						<td height=20 class=total>${totalNums}</td>
 						<td height=20 class=total>￥${totalAmounts}</td>
+						<td height=20 class=total>￥${totalReceiveMoney}</td>
+						<td height=20 class=total>&nbsp;</td>
 						<td height=20 class=total>&nbsp;</td>
 					</tr>
 				</tbody>
@@ -286,7 +297,9 @@
    						if (result =="success") //成功 
    						{
    							alert($.i18n.prop('opSucc'));
-   							$("#order" + id).remove();
+   							//$("#order" + id).remove();
+   							top.document.getElementById("menu").src = './getMenusById.do?id=8&type=nojump';
+   							location.href="list.do?status="+${status};
    							//设置关闭弹出层
    						} else {
    							alert($.i18n.prop('opFail')+"error:" + result);
@@ -304,7 +317,8 @@
    					if (result > 0) //成功 
    					{
    						alert($.i18n.prop('opSucc'));
-   						$("#order" + idx).remove();
+   						//$("#order" + idx).remove();
+   						location.href="list.do?status="+${status};
    						//设置关闭弹出层
    					} else {
    						alert($.i18n.prop('opFail')+"error:" + result);

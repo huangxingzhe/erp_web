@@ -6,6 +6,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="../images/favicon.ico"/>
+
 <title>ThaiGiang Manager System</title>
 <style type="text/css">
 <!--
@@ -65,6 +67,8 @@ a:hover{
 	background-repeat: no-repeat;
 	background-position: left center;
 	padding-left: 20px;
+	padding-top:20px;
+	padding-right:20px;
 }
 .main .login .inputbox dl{
 	height:40px;
@@ -142,7 +146,7 @@ a:hover{
 	text-align:center;
 	font-size:10px;
 	color:#999999;
-	margin-top: 50px;
+	margin-top: 150px;
 	margin-right: auto;
 	margin-bottom: 10px;
 	margin-left: auto;
@@ -208,12 +212,12 @@ function readCookie(name){
             <div class="inputbox">
 				<dl>
 					<dt>用户名：</dt>
-					<dd><input type="text"  id="account" name="account" size="20" value="admin" maxlength="20" onfocus="this.style.borderColor='#239fe3'" onblur="this.style.borderColor='#dcdcdc'" />
+					<dd><input type="text"  id="account" name="account" size="20" value="" maxlength="20" onfocus="this.style.borderColor='#239fe3'" onblur="this.style.borderColor='#dcdcdc'" />
 					</dd>
 				</dl>
 				<dl>
 					<dt>密码：</dt>
-					<dd><input type="password" id="password" maxlength="20" name="password" value="admin" size="20" onfocus="this.style.borderColor='#239fe3'" onblur="this.style.borderColor='#dcdcdc'" />
+					<dd><input type="password" id="password" maxlength="20" name="password" value="" size="20" onfocus="this.style.borderColor='#239fe3'" onblur="this.style.borderColor='#dcdcdc'" />
 					</dd>
 				</dl>
 				<!-- 

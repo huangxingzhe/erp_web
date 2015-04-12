@@ -91,6 +91,7 @@ public class IndexController {
 	@RequestMapping("/getMenusById")
 	public String getMenusById(@RequestParam int id,HttpServletRequest request,Model model){
 		int userId = (Integer)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_ID);
+		String type = request.getParameter("type");
 		Map<String,Object> params = new HashMap<String,Object>();
 		try {
 			List<Menu> menus = null;
@@ -100,6 +101,7 @@ public class IndexController {
 			Menu menu = menuService.get(id);
 			model.addAttribute("menus", menus);
 			model.addAttribute("menu", menu);
+			model.addAttribute("type", type);
 		} catch (Exception e) {
 			log.error("",e);
 		}

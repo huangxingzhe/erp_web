@@ -53,6 +53,12 @@ public class OrderTimeServiceImpl implements OrderTimeService{
 			throws Exception {
 		return dao.queryList(params);
 	}
+
+	@Override
+	public List<OrderTime> getByOrderId(int id) throws Exception {
+		return dao.getByOrderId(id);
+	}
+	
 	
 	
 

@@ -17,41 +17,47 @@
 <div class=noticediv id=notice></div>
 <table cellspacing=0 cellpadding=2 width="100%" align=center border=0>
   <tbody>
-  <tr>
-    <td align=middle width=200 height=30><spring:message code="order.label.status.sendToBorder"/>：
-    	<span id="s2" style="color:red;text-decoration:underline"> 0 </span>笔
-    </td>
-    <td height=30>总金额：<span id="n2" style="color:red;text-decoration:underline">0</span>元</td>
+   <tr>
+    <td width="200" class="content"><spring:message code="order.label.desktop.peddingsend"/>：</td>
+    <td width=150 class="content"><a id="s1" href="javascript:void(0)" onclick="gotoUrl(1)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
+    <td width="200" class="content">总金额：</td>
+    <td width=150 class="content">￥<a id="n1" href="javascript:void(0)" onclick="gotoUrl(1)" style="color:red;text-decoration:underline">0</a>元</td>
+  </tr>
+  <tr bgcolor="f2f9fd">
+    <td width="200" class="content"><spring:message code="order.label.desktop.sendtoborder"/>：</td>
+    <td width=150 class="content"><a id="s2" href="javascript:void(0)" onclick="gotoUrl(2)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
+    <td width="200" class="content">总金额：</td>
+    <td width=150 class="content">￥<a id="n2" href="javascript:void(0)" onclick="gotoUrl(2)" style="color:red;text-decoration:underline">0</a>元</td>
   </tr>
    <tr>
-    <td align=middle width=200 height=30><spring:message code="order.label.status.arrivedBorder"/>：
-    	<span id="s3" style="color:red;text-decoration:underline"> 0 </span>笔
-    </td>
-    <td height=30>总金额：<span id="n3" style="color:red;text-decoration:underline">0</span>元</td>
+    <td width=200 class="content"><spring:message code="order.label.desktop.arriveborder"/>：</td>
+    <td width=150 class="content"><a id="s3" href="javascript:void(0)" onclick="gotoUrl(3)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
+    <td width=200 class="content">总金额：</td>
+    <td width=150 class="content">￥<a id="n3" href="javascript:void(0)" onclick="gotoUrl(3)" style="color:red;text-decoration:underline">0</a>元</td>
+  </tr>
+   <tr bgcolor="f2f9fd">
+    <td width=200 class="content"><spring:message code="order.label.desktop.hadget"/>：</td>
+    <td width=150 class="content"><a id="s4" href="javascript:void(0)" onclick="gotoUrl(4)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
+    <td width=200 class="content">总金额：</td>
+    <td width=150 class="content">￥<a id="n4" href="javascript:void(0)" onclick="gotoUrl(4)" style="color:red;text-decoration:underline">0</a>元</td>
   </tr>
    <tr>
-    <td align=middle width=200 height=30><spring:message code="order.label.status.hadGet"/>：
-    	<span id="s4" style="color:red;text-decoration:underline"> 0 </span>笔
-    </td>
-    <td height=30>总金额：<span id="n4" style="color:red;text-decoration:underline">0</span>元</td>
+    <td width=200 class="content"><spring:message code="order.label.desktop.sendtohn"/>：</td>
+    <td width=150 class="content"><a id="s5" href="javascript:void(0)" onclick="gotoUrl(5)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
+    <td width=200 class="content">总金额：</td>
+    <td width=150 class="content">￥<a id="n5" href="javascript:void(0)" onclick="gotoUrl(5)" style="color:red;text-decoration:underline">0</a>元</td>
+  </tr>
+   <tr bgcolor="f2f9fd">
+    <td width=200 class="content"><spring:message code="order.label.desktop.sendtohcm"/>：</td>
+     <td width=150 class="content"><a id="s6" href="javascript:void(0)" onclick="gotoUrl(6)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
+    <td width=200 class="content">总金额：</td>
+    <td width=150 class="content">￥<a id="n6" href="javascript:void(0)" onclick="gotoUrl(6)" style="color:red;text-decoration:underline">0</a>元</td>
   </tr>
    <tr>
-    <td align=middle width=200 height=30><spring:message code="order.label.status.sendToHN"/>：
-    	<span id="s5" style="color:red;text-decoration:underline"> 0 </span>笔
-    </td>
-    <td height=30>总金额：<span id="n5" style="color:red;text-decoration:underline">0</span>元</td>
-  </tr>
-   <tr>
-    <td align=middle width=200 height=30><spring:message code="order.label.status.sendToHCM"/>：
-    	<span id="s6" style="color:red;text-decoration:underline"> 0 </span>笔
-    </td>
-    <td height=30>总金额：<span id="n6" style="color:red;text-decoration:underline">0</span>元</td>
-  </tr>
-   <tr>
-    <td align=middle width=200 height=30><spring:message code="order.label.status.getMoney"/>：
-    	<span id="s7" style="color:red;text-decoration:underline"> 0 </span>笔
-    </td>
-    <td height=30>总金额：<span id="n7" style="color:red;text-decoration:underline">0</span>元</td>
+    <td width=200 class="content"><spring:message code="order.label.desktop.peddingreceivemoney"/>：</td>
+    <td width=150 class="content"><a id="s7" href="javascript:void(0)" onclick="gotoUrl(7)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
+    <td width=200 class="content">总金额：</td>
+    <td width=150 class="content">￥<a id="n7" href="javascript:void(0)" onclick="gotoUrl(7)" style="color:red;text-decoration:underline">0</a>元</td>
   </tr>
    </tbody>
 </table>
@@ -88,6 +94,9 @@
 			}
 		}
 	});
+	function gotoUrl(id){
+		 parent.document.getElementById("main").src = "../admin/order/list.do?status="+id;
+	}
 	</script>
 
 </body>

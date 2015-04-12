@@ -48,7 +48,10 @@
 							<td class=content>&nbsp;</td>
 							<td class=content>${provider.name}</td>
 							<td class=content>${provider.code}</td>
-							<td class=content>${provider.status}</td>
+							<td class=content>
+								<c:if test="${provider.status==1}"><spring:message code="admin.label.normal"/></c:if>
+				    			<c:if test="${provider.status==2}"><spring:message code="admin.label.unnormal"/></c:if>
+							</td>
 							<td class=content>${provider.address}</td>
 							<td class=content id="opt_${provider.id}">
 							<a href="javascript:edit(${provider.id})"><spring:message code="admin.label.edit"/></a>

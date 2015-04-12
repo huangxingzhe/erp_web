@@ -13,7 +13,7 @@
 </appender>
 
 <appender name="ALL" class="org.apache.log4j.RollingFileAppender">
-	<param name="File" value="${catalina.base}/logs/bookbus.log"/>
+	<param name="File" value="${catalina.base}/log/erp.log"/>
 	<param name="Append" value="true"/>
 	<param name="MaxFileSize" value="5240KB"/>
 	<param name="MaxBackupIndex" value="100"/>
@@ -27,7 +27,7 @@
 </appender>
 
 <appender name="ERROR" class="org.apache.log4j.RollingFileAppender">
-	<param name="File" value="${catalina.base}/logs/bookbus-error.log"/>
+	<param name="File" value="${catalina.base}/log/erp-error.log"/>
 	<param name="Append" value="true"/>
 	<param name="MaxFileSize" value="10240KB"/>
 	<param name="MaxBackupIndex" value="100"/>

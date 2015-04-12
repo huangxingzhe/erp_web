@@ -47,7 +47,10 @@
 							<td class=content>&nbsp;</td>
 							<td class=content>${goods.name}</td>
 							<td class=content>${goods.code}</td>
-							<td class=content>${goods.status}</td>
+							<td class=content>
+								<c:if test="${goods.status==1}"><spring:message code="admin.label.normal"/></c:if>
+				    			<c:if test="${goods.status==2}"><spring:message code="admin.label.unnormal"/></c:if>
+							</td>
 							<td class=content id="opt_${goods.id}">
 							<a href="javascript:edit(${goods.id})"><spring:message code="admin.label.edit"/></a>
 							&nbsp;&nbsp;<a href="javascript:DelRow(${goods.id})"><spring:message code="admin.label.delete"/></a></td>

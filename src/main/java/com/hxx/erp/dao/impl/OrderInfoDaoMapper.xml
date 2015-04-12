@@ -34,7 +34,7 @@
 	        <result property="mark" column="mark" />   
     	</resultMap>  
        
-         <select id="get" parameterType="int" resultMap="orderInfoDaoMapperResultMap">    
+        <select id="get" parameterType="int" resultMap="orderInfoDaoMapperResultMap">    
             select * from t_order_info where id = #{id}   
         </select>  
         
@@ -73,7 +73,7 @@
 			(SELECT COUNT(*) s7 FROM t_order_info WHERE type=0 and STATUS=7)AS s7,(SELECT COUNT(*) s8 FROM t_order_info WHERE type=0 and STATUS=8)AS s8)
         </select>
          <select id="queryCountAndAmount" resultType="java.util.Map">
-			SELECT * FROM ((SELECT COUNT(*) s2 ,SUM(amount) AS n2 FROM t_order_info WHERE TYPE=0 AND STATUS=2)AS s2,
+			SELECT * FROM ((SELECT COUNT(*) s1 ,SUM(amount) AS n1 FROM t_order_info WHERE TYPE=0 AND STATUS=1)AS s1,(SELECT COUNT(*) s2 ,SUM(amount) AS n2 FROM t_order_info WHERE TYPE=0 AND STATUS=2)AS s2,
 			(SELECT COUNT(*)s3 ,SUM(amount) AS n3 FROM t_order_info WHERE TYPE=0 AND STATUS=3)AS s3,(SELECT COUNT(*)s4,SUM(amount) AS n4 FROM t_order_info WHERE TYPE=0 AND STATUS=4)AS s4,(SELECT COUNT(*) s5
 			,SUM(amount) AS n5 FROM t_order_info WHERE TYPE=0 AND STATUS=5)AS s5,(SELECT COUNT(*) s6,SUM(amount) AS n6 FROM t_order_info WHERE TYPE=0 AND STATUS=6)AS s6,
 			(SELECT COUNT(*) s7,SUM(amount) AS n7 FROM t_order_info WHERE TYPE=0 AND STATUS=7)AS s7)
@@ -135,7 +135,7 @@
 			 order by statTime desc 
         </select>
         <select id="totalStat" resultType="java.util.Map" parameterType="java.util.Map">
-             select sum(amount) as amount,sum(num) as num from t_order_info 
+             select sum(amount) as amount,sum(num) as num,sum(receive_money) as receiveMoney from t_order_info 
 	         where type = 0 
 	             <if test="status!=null">
 	             	and status =#{status}

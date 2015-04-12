@@ -10,8 +10,6 @@
 <title>home</title>
 <link href="../../images/style.css" type=text/css rel=stylesheet>
 <link href="../../js/getdate/skin/WdatePicker.css" rel="stylesheet" type="text/css">
-<LINK href="http://res.gm.17188.com/oss_files/jquery-ui-1.9.1.custom.css" rel="stylesheet" type="text/css">    
-<script language="javascript" type="text/javascript" src="../../js/getdate/WdatePicker.js"></script>
 </head>
 <body>
  <jsp:include page="/WEB-INF/views/admin/order/image_upload.html" />
@@ -22,71 +20,57 @@
 <input type="hidden" name="createTime" value="${order.createTime}" id="createTime">
 </c:if>
 <div class=formzone>
-<div class=namezone><c:if test="${order==null||order.id==0}"><spring:message code="order.label.add"/></c:if>
-<c:if test="${order.id>0}"><spring:message code="order.label.update"/></c:if></div>
+<div class=namezone><spring:message code="admin.label.query"/></div>
 <div class=tablezone>
 <div class=noticediv id=notice></div>
 <table cellspacing=0 cellpadding=2 width="100%" align=center border=0>
   <tbody>
   <tr>
-  	<td class=title_bg  height=30><spring:message code="order.label.payNo"/>：</td>
+  	<td class=title_bg  height=30><spring:message code="order.customer.orderCode"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="payNo" value="${order.payNo}" id="payNo"/>
+    	<input name="orderCode" value="${customer.orderCode}" id="orderCode" readonly="readonly"/>
     </td>
     <td class=title_bg  height=30><spring:message code="order.label.payTime"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="payTime" type="text" id="payTime" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'});" value="${order.payTime}" readonly=true style="width:150px;" />
+    	<input name="payTime" type="text" id="payTime" class="dtime" readonly="readonly"  value="${order.payTime}" style="width:150px;" />
     </td>
   </tr>
   
    <tr>
   	<td class=title_bg  height=30><spring:message code="order.label.amount"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="amount" value="${order.amount}" id="amount" onblur="isPriceNumber(this)" />
+    	<input name="amount" value="${order.amount}" id="amount" readonly="readonly" />
     </td>
     <td class=title_bg  height=30><spring:message code="order.label.num"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="num" value="${order.num}" id="num"/>
+    	<input name="num" value="${order.num}" id="num" readonly="readonly" />
     </td>
   </tr>
   <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.providerName"/>：</td>
-    <td height=30 style="padding-left:12px;">
-    	<select name="providerName" id="providerName" style="width:153px;">
-    		<option value=""><spring:message code="admin.label.select"/></option>
-    		<c:forEach items="${providers}" var="provider">
-    			<option label="${provider.name}" value="${provider.name}" 
-    				<c:if test="${provider.name==order.providerName}">selected</c:if> >
-    			</option>
-    		</c:forEach>
-    	</select>
+    <td height=30 style="padding-left:10px;">
+    	<input name="providerName" value="${order.providerName}" id="providerName" readonly="readonly" />
     </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.goodsName"/>：</td>
-    <td height=30 style="padding-left:12px;">
-    	<select name="goodsName" id="goodsName" style="width:153px;">
-    		<option value=""><spring:message code="admin.label.select"/></option>
-	    	<c:forEach items="${goodss}" var="goods">
-	   			<option label="${goods.name}" value="${goods.name}" 
-	   				<c:if test="${goods.name==order.goodsName}">selected</c:if> >
-	   			</option>
-	   		</c:forEach>
-   		</select>
+    <td height=30 style="padding-left:10px;">
+   		<input name="goodsName" value="${order.goodsName}" id="goodsName" readonly="readonly" />
     </td>
    </tr>
    <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.logisticsName"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="logisticsName" value="${order.logisticsName}" id="logisticsName"/>
+    	<input name="logisticsName" value="${order.logisticsName}" id="logisticsName" readonly="readonly" />
     </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.logisticsOrder"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="logisticsOrder" value="${order.logisticsOrder}" id="logisticsOrder"/>
+    	<input name="logisticsOrder" value="${order.logisticsOrder}" id="logisticsOrder" readonly="readonly" />
     </td>
    </tr>
    <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.borderAddr"/>：</td>
     <td height=30 style="padding-left:12px;">
-    	<select name="borderAddr" id="borderAddr" style="width:153px;">
+    	
+    	<select name="borderAddr" id="borderAddr" style="width:153px;" disabled="disabled" >
     		<option value=""><spring:message code="admin.label.select"/></option>
    			<option value="1" <c:if test="${order.borderAddr==1}">selected</c:if>>
    			<spring:message code="order.label.border.dongxing"/></option>
@@ -96,7 +80,7 @@
     </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.goalAddr"/>：</td>
     <td height=30 style="padding-left:12px;">
-    	<select name="goalAddr" id="goalAddr" style="width:153px;">
+    	<select name="goalAddr" id="goalAddr" style="width:153px;" disabled="disabled">
     		<option value=""><spring:message code="admin.label.select"/></option>
 	    	<option value="1" <c:if test="${order.goalAddr==1}">selected</c:if>>
    			<spring:message code="order.label.goal.hn"/></option>
@@ -108,67 +92,58 @@
    <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.receiveUser"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="receiveUser" value="${order.receiveUser}" id="receiveUser"/>
+    	<input name="receiveUser" value="${order.receiveUser}" id="receiveUser" readonly="readonly" />
     </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.receiveMoney"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="receiveMoney" value="${order.receiveMoney}" id="receiveMoney" onblur="isPriceNumber(this)"  />
+    	<input name="receiveMoney" value="${order.receiveMoney}" id="receiveMoney" readonly="readonly" />
     </td>
    </tr>
    <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.borderLogistics"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="borderLogistics" value="${order.borderLogistics}" id="borderLogistics"/>
+    	<input name="borderLogistics" value="${order.borderLogistics}" id="borderLogistics" readonly="readonly" />
     </td>
      <td class=title_bg  width=100 height=30><spring:message code="order.label.borderPhone"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="borderPhone" value="${order.borderPhone}" id="borderPhone"/>
+    	<input name="borderPhone" value="${order.borderPhone}" id="borderPhone" readonly="readonly" />
     </td>
    </tr>
    <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.cnFare"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="cnFare" value="${order.cnFare}" id="cnFare" onblur="isPriceNumber(this)"   />
+    	<input name="cnFare" value="${order.cnFare}" id="cnFare" readonly="readonly" />
     </td>
-     <td class=title_bg  width=100 height=30><spring:message code="order.label.vnFare" />：</td>
+     <td class=title_bg  width=100 height=30><spring:message code="order.label.vnFare"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="vnFare" value="${order.vnFare}" id="vnFare"  onblur="isPriceNumber(this)" />
+    	<input name="vnFare" value="${order.vnFare}" id="vnFare" readonly="readonly" />
     </td>
    </tr>
    <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.cnReceiverPhone"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="cnReceiverPhone" value="${order.cnReceiverPhone}" id="cnReceiverPhone"/>
+    	<input name="cnReceiverPhone" value="${order.cnReceiverPhone}" id="cnReceiverPhone" readonly="readonly" />
     </td>
      <td class=title_bg  width=100 height=30><spring:message code="order.label.vnReceiverPhone"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="vnReceiverPhone" value="${order.vnReceiverPhone}" id="vnReceiverPhone"/>
+    	<input name="vnReceiverPhone" value="${order.vnReceiverPhone}" id="vnReceiverPhone" readonly="readonly" />
     </td>
    </tr>
     <tr>
      <td class=title_bg  width=100 height=30><spring:message code="order.label.getGoodsUser"/>：</td>
      <td height=30 style="padding-left:10px;" colspan="3">
-    	<input name="getGoodsUser" value="${order.getGoodsUser}" id="getGoodsUser"/>
+    	<input name="getGoodsUser" value="${order.getGoodsUser}" id="getGoodsUser" readonly="readonly" />
     </td>
     
    </tr>
    <tr>
      <td class=title_bg  width=100 height=30><spring:message code="order.label.mark"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<textarea rows="5" cols="40" name="mark">${order.mark}</textarea>
+    	<textarea rows="5" cols="40" name="mark" readonly="readonly" >${order.mark}</textarea>
     </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.goodsPic"/>：</td>
     <td height=120 style="padding-left:10px;">
-    	<div id="ufc1">
-    		<input type="file" name="file" id="uploadFile" />
-    		<input type="hidden" name="picUrl" id="picUrl" value="${order.picUrl}"/>
-    	</div>
-        <div id="errormess">
-        </div>
-    	<input type="button" value="上传" onclick="upload();"  class="button"/>
-    	<div>
-			<img src="showPhoto.do?path=${order.picUrl}" width="100" height="100" border="0" id="preImg">
-    	</div>
+		<img src="showPhoto.do?path=${order.picUrl}" width="100" height="100" border="0" id="preImg">
     </td>
    </tr>
    
@@ -176,8 +151,7 @@
    	<td colspan="6"><hr size=1 style="border-top: 1px #cde6ff solid;"></td>
    </tr>
    <tr>
-   	<td colspan="4">
-   <div style="margin-left:20px;"><input class="button" type="button" value="<spring:message code="order.add.customer"/>" onclick="addCus();"/></div>
+   <td colspan="4">
 	<table cellspacing=0 cellpadding=2 width="60%" align=left border=0 id="order_cus" style="margin-left:20px;">
 	  <tr>
 		<td width="15%" height=28><spring:message code="order.customer.cusName"/></td>
@@ -190,18 +164,13 @@
 	   		<input type="hidden" name="ocIds" value="${customer.id}">
 	   		<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#CDE6FF'" onmouseout="this.bgColor='#FFFFFF'">
 			    <td height=30>
-			    	<select name="cusNos">
-						<option value=""><spring:message code="admin.label.select"/></option>
-						<c:forEach items="${customers}" var="cus" varStatus="status">
-							<option value="${cus.code}#${cus.name}" <c:if test="${customer.cusNo==cus.code}">selected</c:if> >${cus.code}--${cus.name}</option>
-						</c:forEach>
-					</select>
+			    	<input type="hidden" name="cusNos" value="${customer.cusNo}#${customer.cusName}">
+			    	${customer.cusName}
 			    </td>
-			    <td height=30><input type="text" name="orderCodes" value="${customer.orderCode}"></td>
-			    <td height=30><input type="text" name="amounts" value="${customer.amount}" style="width:60px;text-align:center;"  onblur="isPriceNumber(this)"></td>
-			    <td height=30><input type="text" name="sendNums" style="width:40px;text-align:center;" value="${customer.sendNum}" onkeyup="checknum(this)" onblur="checknum(this)"></td>
-			    <td height=30><input type="text" name="realNums" style="width:40px;text-align:center;" value="${customer.realNum}" onkeyup="checknum(this)" onblur="checknum(this)"></td>
-			    <td height=30><input type="button"  class="button" onclick="del(this)" value="<spring:message code="admin.label.delete"/>"></td>
+			    <td height=30><input type="hidden" name="amounts" value="${customer.amount}">${customer.amount}</td>
+			    <td height=30><input type="hidden" name="orderCodes" value="${customer.orderCode}">${customer.orderCode}</td>
+			    <td height=30><input type="hidden" name="sendNums" style="width:40px;text-align:center;" value="${customer.sendNum}">${customer.sendNum}</td>
+			    <td height=30><input type="text" name="realNums" style="width:40px;text-align:center;" value="${customer.realNum}"></td>
 			 </tr>
 	   	</c:forEach>
    	</table>
@@ -211,7 +180,7 @@
    </tbody>
 </table>
 </div>
-<div class=adminsubmit><input class="button" id="submit" type="submit" value="<spring:message code="admin.label.submit"/>" />  
+<div class=adminsubmit><input class="button" type="submit" value="<spring:message code="admin.label.submit"/>" />  
 <input class="button" type="button" value="<spring:message code="admin.label.return"/>" onclick="javascript:location.href='list.do?status=${order.status}'"/> 
 </div>
 </div>
@@ -231,7 +200,6 @@
 	<script type="text/javascript" src="../../js/jquery.form.js"></script>
 	<script type="text/javascript" src="../../js/jquery.i18n.properties-min-1.0.9.js"></script>
 	<script type="text/javascript" src="../../js/language.js"></script>
-	<!-- <script type="text/javascript" src="../../js/jquery-ui.min.js"></script> -->
 
 	<script type="text/javascript">
 	  $(function(){
@@ -246,7 +214,7 @@
 	        				payNo:"required",
 	        				payTime:"required",
 	        				amount:"required",
-	        				num:{required: true,digits:true},
+	        				num:"required",
 	        				providerName:"required",
 	        				goodsName:"required",
 	        				logisticsName:"required",
@@ -258,7 +226,7 @@
 	        				payNo: $.i18n.prop('isNotEmpty'),
 	        				payTime: $.i18n.prop('isNotEmpty'),
 	        				amount: $.i18n.prop('isNotEmpty'),
-	        				num: {required:$.i18n.prop('isNotEmpty'),digits:$.i18n.prop('digits')},
+	        				num: $.i18n.prop('isNotEmpty'),
 	        				providerName: $.i18n.prop('isNotEmpty'),
 	        				goodsName: $.i18n.prop('isNotEmpty'),
 	        				logisticsName: $.i18n.prop('isNotEmpty'),
@@ -267,19 +235,6 @@
 	        				goalAddr: $.i18n.prop('isNotEmpty')
 	        			},
 	        			submitHandler: function(form) {
-	        				$("#submit").attr("disabled", true); 
-	        				var cnFare = $.trim($("#cnFare").val());
-	        				if(cnFare==''){
-	        					$("#cnFare").val(0.00);
-	        				}
-	        				var vnFare = $.trim($("#vnFare").val());
-	        				if(vnFare==''){
-	        					$("#vnFare").val(0.00);
-	        				}
-	        				var receiveMoney = $.trim($("#receiveMoney").val());
-	        				if(receiveMoney==''){
-	        					$("#receiveMoney").val(0.00);
-	        				}
 	        				jQuery(form).ajaxSubmit({  
 	        	                type:"post",  //提交方式  
 	        	                dataType:"json", //数据类型  
@@ -287,14 +242,9 @@
 	        	                success:function(data){ //提交成功的回调函数  
 	        	                    if(data==1){
 	        	                    	alert( $.i18n.prop('opSucc'));
-	        	                    	top.document.getElementById("menu").src = './getMenusById.do?id=8&type=nojump';
 	        	                    	location.href="list.do";
-	        	                    }else if(data==2){
-	        	                    	alert( $.i18n.prop('customerinfo_error'));
-	        	                    	$("#submit").attr("disabled", false); 
 	        	                    }else{
 	        	                    	alert( $.i18n.prop('opFail'));
-	        	                    	$("#submit").attr("disabled", false); 
 	        	                    }
 	        	                }  
 	        	            });
@@ -304,54 +254,9 @@
 	            }
 	        });
 	        
-	      /*   var $psDialog = $("#add");
-	        var dialogOpts = {
-	            title: $.i18n.prop('add_customer'),
-	            autoOpen: false,
-	            width: 400,
-	            height: 250,
-	            modal: true,
-	            overlay: {
-	                backgroundColor: '#000',
-	                opacity: 0.5
-	            },
-	            buttons: {
-	            	OK:function(){
-	                    $(this).dialog('close');
-	                },
-	                Close: function () {
-	                    $(this).dialog('close');
-	                }
-	            }
-	        };
-
-	        $("#add").dialog(dialogOpts);
-	       
-	         $('#addCus').click(function () {
-	            $psDialog.dialog('open');
-	        }); */
 
 	    });  
 		
-	 var index = 0;
-	 function addCus(){
-		 var cus = $("#customer").html();
-		 var html = '<tr>'+
-		    '<td height=30>'+cus+'</td>'+
-		    '<td height=30><input type="text"  name="orderCodes"></td>'+
-		    '<td height=30><input type="text"  name="amounts" style="width:60px;text-align:center;"  onblur="isPriceNumber(this)"></td>'+
-		    '<td height=30><input type="text" name="sendNums" style="width:40px;text-align:center;" onkeyup="checknum(this)" onblur="checknum(this)"></td>'+
-		    '<td height=30><input type="text" name="realNums" style="width:40px;text-align:center;" onkeyup="checknum(this)" onblur="checknum(this)"></td>'+
-		    '<td height=30><input type="button"  class="button" onclick="del(this)" value="<spring:message code="admin.label.delete"/>"></td>'+
-		    '</tr>';
-		 $("#order_cus").append(html);
-		 index ++;
-	 }
-	 
-	 function del(obj){
-		 $(obj).parent().parent().remove();
-		 index --;
-	 }
 	</script>
 
 </body>

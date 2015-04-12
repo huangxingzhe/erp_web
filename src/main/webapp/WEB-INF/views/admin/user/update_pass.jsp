@@ -56,8 +56,7 @@
 		var v = jQuery("#form").validate({
 			rules: {
 				 password: {
-				    required: true,
-				    minlength: 6
+				    required: true
 				 },
 				 newPass: {
 					    required: true,
@@ -71,8 +70,7 @@
 			},
 			messages: {
 				 password: {
-				    required: "请输入旧密码",
-				    minlength: jQuery.format("密码不能小于{0}个字 符")
+				    required: "请输入旧密码"
 				   },
 				 newPass: {
 					    required: "请输入新密码",

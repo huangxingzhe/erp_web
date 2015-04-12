@@ -25,6 +25,7 @@ import jxl.write.WritableWorkbook;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.hxx.erp.model.OrderInfo;
 import com.hxx.erp.util.DateUtil;
 
 public class ExportData {
@@ -247,6 +248,17 @@ public class ExportData {
 		    	//得到类中所有的属性
 		    	for (int i = 0; i < list.size(); i++) {
 		    		Object object=list.get(i);
+		    		if(object instanceof OrderInfo){
+		    			OrderInfo o = (OrderInfo)object;
+		    			if(o.getReceiveMoney()>0){
+							double all = o.getAmount()+o.getCnFare()+o.getVnFare();
+							o.setProfit((o.getReceiveMoney()-all)/o.getReceiveMoney()*100);
+						}else{
+							o.setProfit(0);
+						}
+		    		}
+		    		
+					
 		    		for (int j = 0; j < cols; j++) {
 		    		   String sname = properties[j]; // 获取属性的名字
 		    		   sname = sname.substring(0, 1).toUpperCase() + sname.substring(1); // 将属性的首字符大写，方便构造get，set方法
@@ -277,11 +289,20 @@ public class ExportData {
 		                            "get" + sname);  
 		                    Double val = (Double) m.invoke(object);  
 		                    DecimalFormat df = new DecimalFormat("#.##");
-		                    if (val != null) {  
-		                    	sheet.addCell(new Label(j,i+(top+1),"￥"+df.format(val)+"",format2));
-		                    } else{
-		                    	sheet.addCell(new Label(j,i+(top+1),"￥"+0.00+"",format2));
-		                    }   
+		                    if(sname.equals("Profit")){
+		                    	if (val != null) {  
+			                    	sheet.addCell(new Label(j,i+(top+1),df.format(val)+"%",format2));
+			                    } else{
+			                    	sheet.addCell(new Label(j,i+(top+1),0.00+"%",format2));
+			                    }   
+		                    }else{
+		                    	if (val != null) {  
+			                    	sheet.addCell(new Label(j,i+(top+1),df.format(val)+"",format2));
+			                    } else{
+			                    	sheet.addCell(new Label(j,i+(top+1),0.00+"",format2));
+			                    }   
+		                    }
+		                    
 		                }  
 		                // 如果类型是Boolean 是封装类  
 		                if (types[j].toString().equals("Boolean")) {  

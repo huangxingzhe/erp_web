@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -103,10 +102,12 @@ Log log = LogFactory.getLog(this.getClass());
 			String[] orderCodes = request.getParameterValues("orderCodes");
 			String[] amounts = request.getParameterValues("amounts");
 			if(cusNos==null || sendNums==null ||realNums==null ||orderCodes ==null||amounts==null){
+				ret = 2;
 				return ret;
 			}
 			if(cusNos.length!=sendNums.length ||cusNos.length!=realNums.length 
 					||cusNos.length!=orderCodes.length||cusNos.length!=amounts.length){
+				ret = 2;
 				return ret;
 			}
 			
@@ -120,29 +121,13 @@ Log log = LogFactory.getLog(this.getClass());
 				order.setUserId(account);
 				service.add(order);
 				for(int i=0;i<cusNos.length;i++){
-					OrderCustomer oc = new OrderCustomer();
-					oc.setCusNo(cusNos[i].split("#")[0]);
-					oc.setCusName(cusNos[i].split("#")[1]);
-					oc.setOrderId(order.getId());
-					oc.setOrderCode(orderCodes[i]);
-					oc.setAmount(Double.valueOf(amounts[i]));
-					oc.setSendNum(Integer.valueOf(sendNums[i]));
-					oc.setRealNum(Integer.valueOf(realNums[i]));
-					oCusService.add(oc);
+					addOrderCustomer(order,cusNos[i],orderCodes[i],amounts[i],sendNums[i],realNums[i]);
 				}
 			}else{
 				service.update(order);
 				oCusService.delete(order.getId());
 				for(int i=0;i<cusNos.length;i++){
-					OrderCustomer oc = new OrderCustomer();
-					oc.setCusNo(cusNos[i].split("#")[0]);
-					oc.setCusName(cusNos[i].split("#")[1]);
-					oc.setOrderId(order.getId());
-					oc.setOrderCode(orderCodes[i]);
-					oc.setAmount(Double.valueOf(amounts[i]));
-					oc.setSendNum(Integer.valueOf(sendNums[i]));
-					oc.setRealNum(Integer.valueOf(realNums[i]));
-					oCusService.add(oc);
+					addOrderCustomer(order,cusNos[i],orderCodes[i],amounts[i],sendNums[i],realNums[i]);
 				}
 			}
 			ret = 1;//操作成功
@@ -152,6 +137,27 @@ Log log = LogFactory.getLog(this.getClass());
 		return ret;
 	}
 	
+	private void addOrderCustomer(OrderInfo order,String cusNo,String orderCode,
+			String amount,String sendNum,String realNum) throws Exception{
+		OrderCustomer oc = new OrderCustomer();
+		oc.setCusNo(cusNo.split("#")[0]);
+		oc.setCusName(cusNo.split("#")[1]);
+		oc.setOrderId(order.getId());
+		oc.setOrderCode(orderCode);
+		if(StringUtils.isEmpty(amount)){
+			amount = "0.00";
+		}
+		oc.setAmount(Double.valueOf(amount));
+		if(StringUtils.isEmpty(sendNum)){
+			sendNum = "0";
+		}
+		oc.setSendNum(Integer.valueOf(sendNum));
+		if(StringUtils.isEmpty(realNum)){
+			realNum = "0";
+		}
+		oc.setRealNum(Integer.valueOf(realNum));
+		oCusService.add(oc);
+	}
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request,Model model){
 		try {
@@ -195,11 +201,18 @@ Log log = LogFactory.getLog(this.getClass());
 			
 			int nums = 0;
 			double amounts = 0;
+			double receiveMoney =0;
 			for(OrderInfo o: orderInfos){
 				nums+=o.getNum();
 				amounts+=o.getAmount();
-				double all = o.getAmount()+o.getCnFare()+o.getVnFare();
-				o.setProfit((o.getReceiveMoney()-all)/all*100);
+				receiveMoney+=o.getReceiveMoney();
+				if(o.getReceiveMoney()>0){
+					double all = o.getAmount()+o.getCnFare()+o.getVnFare();
+					o.setProfit((o.getReceiveMoney()-all)/o.getReceiveMoney());
+				}else{
+					o.setProfit(0);
+				}
+				
 			}
 			model.addAttribute("orders", orderInfos);
 			model.addAttribute("page",page);
@@ -218,14 +231,17 @@ Log log = LogFactory.getLog(this.getClass());
 			model.addAttribute("nums", nums);
 			DecimalFormat df = new DecimalFormat("#.00");
 			model.addAttribute("amounts", df.format(amounts));
+			model.addAttribute("receiveMoney", df.format(receiveMoney));
 			//如果大于1页才去查
 			if(orderInfos!=null && orderInfos.size()>=page.getPageCount()){
 				Map<String,Object> statMap = service.totalStat(params);
 				model.addAttribute("totalNums", statMap.get("num"));
 				model.addAttribute("totalAmounts", df.format(statMap.get("amount")));
+				model.addAttribute("totalReceiveMoney", df.format(statMap.get("receiveMoney")));
 			}else{
 				model.addAttribute("totalNums", nums);
 				model.addAttribute("totalAmounts", df.format(amounts));
+				model.addAttribute("totalReceiveMoney", df.format(receiveMoney));
 			}
 			
 			
@@ -234,6 +250,36 @@ Log log = LogFactory.getLog(this.getClass());
 			log.error("",e);
 		}
 		return "/admin/order/list";
+	}
+	
+	//客户或客服查询接口
+	@RequestMapping("/query")
+	public String query(HttpServletRequest request,Model model){
+		String type = request.getParameter("type");
+		if("init".equals(type)){
+			return "/admin/order/query";
+		}
+		String orderCode = request.getParameter("orderCode");//客户订单号
+		String cusNo = request.getParameter("cusNo");
+		String cusName = request.getParameter("cusName");
+		if(StringUtils.isEmpty(orderCode)&&StringUtils.isEmpty(cusNo)&&StringUtils.isEmpty(cusName)){
+			return "/admin/order/query"; 
+		}
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("orderCode", orderCode);
+		params.put("cusNo", cusNo);
+		params.put("cusName", cusName);
+		try {
+			List<OrderCustomer> ocs = oCusService.queryList(params);
+			for(OrderCustomer o : ocs){
+				o.setOrder(service.get(o.getOrderId()));
+				o.setTimes(orderTimeService.getByOrderId(o.getOrderId()));
+			}
+			model.addAttribute("orderCustomers", ocs);
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		return "/admin/order/query";
 	}
 	
 	@RequestMapping("/export")
@@ -270,18 +316,21 @@ Log log = LogFactory.getLog(this.getClass());
 			page.setPageCount(1000);
 			params.put("page", page);
 			List<OrderInfo> orderInfos = service.queryListByPage(params);
-			String head[] = {"产品名称","汇款单号","付款金额","付款时间","供应商","订单时间","交易时长(天)","件数","边界地点","目的地点"};
-			String properties[] = {"goodsName","payNo","amount","payTime","providerName","updateTime","days","num","borderAddrStr","goalAddrStr"};
-			String types[] = {"String","String","Double","String","String","Date","Integer","Integer","String","String"};
-			int[] width=new int[]{25,20,20,30,30,30,20,20,20,20};
+			String head[] = {"汇款单号","供应商","产品名称","付款时间","订单时间","交易时长(天)","边界地点","目的地点","件数","付款金额",
+					"国内运费","越南运费","已收货款","利润率"};
+			String properties[] = {"payNo","providerName","goodsName","payTime","updateTime","days","borderAddrStr","goalAddrStr",
+					"num","amount","cnFare","vnFare","receiveMoney","profit"};
+			String types[] = {"String","String","String","String","Date","Integer","String","String","Integer","Double","Double",
+					"Double","Double","Double"};
+			int[] width=new int[]{20,20,20,25,25,15,15,15,15,15,15,15,15,15};
 			ExportData.exportByProperties(orderInfos,"货物订单明细表", head,properties,types, width, width.length, response);
 		} catch (Exception e) {
 			log.error("",e);
-			response.setContentType("text/html;charset=utf-8");
+			/*response.setContentType("text/html;charset=utf-8");
 			PrintWriter out=response.getWriter();
 			out.println(false);    
 			out.flush();
-			out.close();
+			out.close();*/
 		}
 		return null;
 	}
