@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+        
+    <!DOCTYPE mapper PUBLIC     
+        "-//mybatis.org//DTD Mapper 3.0//EN"    
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+    <mapper namespace="com.hxx.erp.dao.OperationLogDao">    	
+    	<resultMap id="operationLogDaoMapperResultMap" type="operationLog">  
+	        <id property="id" column="id" />  
+	        <result property="account" column="account" />  
+	        <result property="item" column="item" /> 
+	        <result property="createTime" column="create_time" /> 
+	        <result property="content" column="content" />
+    	</resultMap>  
+       
+         <select id="get" parameterType="int" resultMap="operationLogDaoMapperResultMap">    
+            select * from t_operation_log where id = #{id}   
+         </select>  
+         
+         <select id="query" parameterType="operationLog" resultMap="operationLogDaoMapperResultMap">    
+            select * from t_operation_log where account = #{account}   
+         </select>  
+        
+        <insert id="add" parameterType="operationLog" >
+            INSERT INTO t_operation_log (account, item,create_time,content)
+            VALUES(#{account},#{item},#{createTime},#{content})
+        </insert>
+        
+        <delete id="delete" parameterType="int">
+        	delete from t_operation_log where id = #{id}
+        </delete>
+        
+        <select id="queryListByPage" resultMap="operationLogDaoMapperResultMap" parameterType="java.util.Map">
+             select * from t_operation_log 
+             <trim prefix="where" prefixOverrides="and"> 
+	             <if test="account!=null and account!=''">
+	             	and account =#{account}
+	             </if>
+	             <if test="item!=null and item!=''">
+	             	and item =#{item}
+	             </if>
+	             <if test="startTime !=null and startTime !=''">   
+		          	 <![CDATA[      
+		                AND create_time >= #{startTime}   
+					 ]]>
+				 </if>
+				 <if test="endTime !=null and endTime !=''"> 
+				     <![CDATA[   
+				        	AND create_time <= #{endTime} 
+					 ]]>
+			 	 </if> 
+             </trim>
+				order by create_time desc
+        </select>
+    </mapper>    
