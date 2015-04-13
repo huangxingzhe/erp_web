@@ -446,7 +446,6 @@ Log log = LogFactory.getLog(this.getClass());
 	public String delete(@RequestParam int id){
 		String ret = "0";
 		try {
-//			int result = service.delete(id);
 			int result = service.updateType(id, 1);//1表示逻辑删除 0为正常
 			if(result == 1){
 				ret = "1";
