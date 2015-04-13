@@ -23,13 +23,10 @@
 		<typeAlias alias="orderCustomer" type="com.hxx.erp.model.OrderCustomer" />
 		<typeAlias alias="logisticsInfo" type="com.hxx.erp.model.LogisticsInfo" />
 		<typeAlias alias="orderTime" type="com.hxx.erp.model.OrderTime" />
+		<typeAlias alias="userLoginLog" type="com.hxx.erp.model.UserLoginLog" />
+		<typeAlias alias="operationLog" type="com.hxx.erp.model.OperationLog" />
 		
 	</typeAliases>
-	<!-- <plugins>
-	   <plugin interceptor="com.gxly.book.common.PageInterceptor">
-	       <property name="dataBaseType" value="mysql"/>
-	   </plugin>
-	</plugins> -->
 	
 	<plugins>
 	   <plugin interceptor="com.hxx.erp.common.PagePlugin">
@@ -49,5 +46,7 @@
 		<mapper resource="com/hxx/erp/dao/impl/OrderCustomerDaoMapper.xml"/>
 		<mapper resource="com/hxx/erp/dao/impl/LogisticsInfoDaoMapper.xml"/>
 		<mapper resource="com/hxx/erp/dao/impl/OrderTimeDaoMapper.xml"/>
+		<mapper resource="com/hxx/erp/dao/impl/UserLoginLogDaoMapper.xml"/>
+		<mapper resource="com/hxx/erp/dao/impl/OperationLogDaoMapper.xml"/>
 	</mappers>
 </configuration>

@@ -31,12 +31,14 @@ import com.hxx.erp.common.ExportData;
 import com.hxx.erp.common.Page;
 import com.hxx.erp.model.Customer;
 import com.hxx.erp.model.Goods;
+import com.hxx.erp.model.OperationLog;
 import com.hxx.erp.model.OrderCustomer;
 import com.hxx.erp.model.OrderInfo;
 import com.hxx.erp.model.OrderTime;
 import com.hxx.erp.model.Provider;
 import com.hxx.erp.service.CustomerService;
 import com.hxx.erp.service.GoodsService;
+import com.hxx.erp.service.OperationLogService;
 import com.hxx.erp.service.OrderCustomerService;
 import com.hxx.erp.service.OrderInfoService;
 import com.hxx.erp.service.OrderTimeService;
@@ -59,6 +61,8 @@ Log log = LogFactory.getLog(this.getClass());
 	private OrderCustomerService oCusService;
 	@Autowired
 	private OrderTimeService orderTimeService;
+	@Autowired
+	private OperationLogService opService;
 	
 	@RequestMapping("/init")
 	public String init(HttpServletRequest request,Model model){
@@ -123,12 +127,14 @@ Log log = LogFactory.getLog(this.getClass());
 				for(int i=0;i<cusNos.length;i++){
 					addOrderCustomer(order,cusNos[i],orderCodes[i],amounts[i],sendNums[i],realNums[i]);
 				}
+				addOperationLog(order,account,8);//8新增订单类型
 			}else{
 				service.update(order);
 				oCusService.delete(order.getId());
 				for(int i=0;i<cusNos.length;i++){
 					addOrderCustomer(order,cusNos[i],orderCodes[i],amounts[i],sendNums[i],realNums[i]);
 				}
+				addOperationLog(order,account,9);//9编辑订单类型
 			}
 			ret = 1;//操作成功
 		} catch (Exception e) {
@@ -413,6 +419,7 @@ Log log = LogFactory.getLog(this.getClass());
 		String ret = "fail";
 		String status = request.getParameter("status");
 		String id = request.getParameter("id");
+		int item = 0;//操作日志类型
 		try {
 			
 			OrderInfo order = service.get(Integer.valueOf(id));
@@ -425,13 +432,16 @@ Log log = LogFactory.getLog(this.getClass());
 				ot.setFinishTime(new Date());
 				if(order.getGoalAddr().endsWith(GOAL_ADDR_HN) && Integer.valueOf(status) ==6){//6表示正发往河内或胡志明
 					ot.setStatus(Integer.valueOf(status)-1);
+					item = Integer.valueOf(status)-1;
 				}else{
 					ot.setStatus(Integer.valueOf(status));
+					item = Integer.valueOf(status);
 				}
 				ot.setOrderId(order.getId());
 				ot.setUserId(account);
 				orderTimeService.add(ot);
 				ret = "success";
+				addOperationLog(order,account,item);//操作类型
 			}
 		} catch (Exception e) {
 			log.error("",e);
@@ -522,6 +532,26 @@ Log log = LogFactory.getLog(this.getClass());
         stream.flush();
         stream.close();
     }
+	
+	private void addOperationLog(OrderInfo order,String account,int item){
+		OperationLog opLog = new OperationLog();
+		opLog.setAccount(account);
+		opLog.setCreateTime(new Date());
+		opLog.setItem(item);
+		String content ="订单ID:"+order.getId()+" 付款单号:"+order.getPayNo()+" 金额:"+order.getAmount()+" 供应商:"+order.getProviderName()
+				+" 产品名称:"+order.getGoodsName()+" 件数:"+order.getNum()+
+				" 边界地址:"+order.getBorderAddrStr()+" 目的地址:"+order.getGoalAddrStr()+" 物流名称:"+order.getLogisticsName()
+				+" 物流单号:"+order.getLogisticsOrder()+
+				" 国内运费:"+order.getCnFare()+" 越南运费:"+order.getVnFare()+" 已收货款:"+order.getReceiveMoney();
+		opLog.setContent(content);
+		try {
+			opService.add(opLog);
+		} catch (Exception e) {
+			log.error("add operation log error:",e);
+			
+		}
+		
+	}
 
 	public static final String GOAL_ADDR_HN="1";
 	public static final String GOAL_ADDR_HCM="2";

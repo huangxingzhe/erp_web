@@ -43,7 +43,7 @@
 						</span></td>
 					</tr>
 					<c:forEach items="${goodss}" var="goods" >
-						<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#CDE6FF'" onmouseout="this.bgColor='#FFFFFF'" id="goods${goods.id}">
+						<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#f2f9fd'" onmouseout="this.bgColor='#FFFFFF'" id="goods${goods.id}">
 							<td class=content>&nbsp;</td>
 							<td class=content>${goods.name}</td>
 							<td class=content>${goods.code}</td>

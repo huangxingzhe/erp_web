@@ -60,7 +60,7 @@
 						<td class=biaoti width=100><span class="searchzone">操作</span></td>
 					</tr>
 					<c:forEach items="${users}" var="user" >
-					<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#CDE6FF'" onmouseout="this.bgColor='#FFFFFF'" id="user${user.id}">
+					<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#f2f9fd'" onmouseout="this.bgColor='#FFFFFF'" id="user${user.id}">
 						<td class=content><input type="checkbox"  value="${user.id}" name="ids"></td>
 						<td class=content>${user.account}</td>
 						<td class=content>${user.name}</td>

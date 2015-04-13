@@ -231,7 +231,7 @@ function readCookie(name){
 		        <dl>
 				  <dt>&nbsp;</dt>
 					<dd>
-					  <input name="submit" type="submit" value="" class="input" />
+					  <input name="submit" type="submit" value="" id="submit" class="input" />
 		  	</dd>
 				</dl>
             </div>
@@ -263,6 +263,7 @@ function readCookie(name){
 				password:"&nbsp;&nbsp;请填写登录密码"
 			},
 			submitHandler: function(form) {
+				$("#submit").attr("disabled", true); 
 				jQuery(form).ajaxSubmit({  
 	                type:"post",  //提交方式  
 	                dataType:"json", //数据类型  

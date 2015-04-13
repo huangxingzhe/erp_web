@@ -41,7 +41,7 @@
 						<td class=biaoti width=50><span class="searchzone">操作</span></td>
 					</tr>
 					<c:forEach items="${menus}" var="menu" >
-						<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#CDE6FF'" onmouseout="this.bgColor='#FFFFFF'" id="menu${menu.id}">
+						<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#f2f9fd'" onmouseout="this.bgColor='#FFFFFF'" id="menu${menu.id}">
 							<td class=content2>&nbsp;</td>
 							<input type="hidden" name="menuIds" value="${menu.id}">
 							<td class=content2><strong>${menu.name}</strong></td>

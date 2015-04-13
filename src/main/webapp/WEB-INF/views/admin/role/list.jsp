@@ -35,7 +35,7 @@
 						<td class=biaoti width=50><span class="searchzone">操作</span></td>
 					</tr>
 					<c:forEach items="${roles}" var="role" >
-					<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#CDE6FF'" onmouseout="this.bgColor='#FFFFFF'" id="user${role.id}">
+					<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#f2f9fd'" onmouseout="this.bgColor='#FFFFFF'" id="user${role.id}">
 						<td class=content><input type="checkbox"  value="${user.id}" name="ids"></td>
 						<td class=content>${role.name}</td>
 						<td class=content id="opt_${role.id}"><a href="javascript:edit(${role.id})">修改</a>
