@@ -1,5 +1,5 @@
 <script type="text/javascript">
-function upload() {
+function upload(oldUrl) {
 	var of = $('#uploadFile');
 	if(of.val()=='') {
 		alert("请选择要上传的图片！");
@@ -9,6 +9,7 @@ function upload() {
 	$('#fileContent').append(of);
 	//$('#ufc').html('');
 	$('#ufc').append(of.clone());
+	$('#oldPicUrl').val(oldUrl);
 	of.attr('id','');
 	of.attr('name','file');
 	$("#uploadForm").attr("action","uploadPhoto.do")
@@ -19,5 +20,6 @@ function upload() {
 </script>
 <form id="uploadForm" action="" method="post" enctype="multipart/form-data" target="hiddenIframe" style="display:none;width:0px;height:0px;">
 <span id="fileContent"></span>
+<input type="hidden" name="oldPicUrl" value="" id="oldPicUrl">
 </form>
 <iframe name="hiddenIframe" frameborder="0" border="0" style="display:none;width:0px;height:0px;"></iframe>

@@ -30,7 +30,9 @@
         <delete id="delete" parameterType="int">
         	delete from t_customer where id = #{id}
         </delete>
-        
+        <select id="query" parameterType="customer" resultMap="customerDaoMapperResultMap">    
+            select * from t_customer where code = #{code}   
+        </select>  
         <select id="queryList" resultMap="customerDaoMapperResultMap" parameterType="java.util.Map">
              select * from t_customer 
              <trim prefix="where" prefixOverrides="and"> 
@@ -41,6 +43,6 @@
 	             	and name like CONCAT('%','${name}','%' ) 
 	             </if>
              </trim>
-				order by id
+			 order by id
         </select>
     </mapper>    

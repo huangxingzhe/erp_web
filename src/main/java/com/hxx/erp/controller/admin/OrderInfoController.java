@@ -13,6 +13,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.coobird.thumbnailator.Thumbnails;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +80,7 @@ Log log = LogFactory.getLog(this.getClass());
 			model.addAttribute("goodss", goods);
 			if(!StringUtils.isEmpty(id)){
 				OrderInfo orderInfo = service.get(Integer.valueOf(id));
+				orderInfo.setTimes(orderTimeService.getByOrderId(Integer.valueOf(id)));
 				model.addAttribute("order", orderInfo);
 				Map<String,Object> params = new HashMap<String,Object>();
 				params.put("orderId", id);
@@ -105,7 +108,7 @@ Log log = LogFactory.getLog(this.getClass());
 			String[] realNums = request.getParameterValues("realNums");
 			String[] orderCodes = request.getParameterValues("orderCodes");
 			String[] amounts = request.getParameterValues("amounts");
-			if(cusNos==null || sendNums==null ||realNums==null ||orderCodes ==null||amounts==null){
+			if(StringUtils.isEmpty(cusNos)||cusNos[0].indexOf("#")==-1){
 				ret = 2;
 				return ret;
 			}
@@ -118,23 +121,24 @@ Log log = LogFactory.getLog(this.getClass());
 			String account = (String)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_ACCOUNT);
 			if(account == null)
 				return ret;
-			order.setUpdateTime(new Date());
 			if(order.getId() == 0){
 				order.setStatus(1);//待发货
 				order.setCreateTime(new Date());
+				order.setUpdateTime(new Date());
 				order.setUserId(account);
 				service.add(order);
 				for(int i=0;i<cusNos.length;i++){
-					addOrderCustomer(order,cusNos[i],orderCodes[i],amounts[i],sendNums[i],realNums[i]);
+					addOrderCustomer(order,cusNos[i],orderCodes[i],amounts[i],sendNums[i],realNums[i],new Date());
 				}
-				addOperationLog(order,account,8);//8新增订单类型
+				addOperationLog(order,account,9);//8新增订单类型
 			}else{
+				order.setUpdateTime(new Date());
 				service.update(order);
 				oCusService.delete(order.getId());
 				for(int i=0;i<cusNos.length;i++){
-					addOrderCustomer(order,cusNos[i],orderCodes[i],amounts[i],sendNums[i],realNums[i]);
+					addOrderCustomer(order,cusNos[i],orderCodes[i],amounts[i],sendNums[i],realNums[i],order.getCreateTime());
 				}
-				addOperationLog(order,account,9);//9编辑订单类型
+				addOperationLog(order,account,10);//9编辑订单类型
 			}
 			ret = 1;//操作成功
 		} catch (Exception e) {
@@ -144,7 +148,7 @@ Log log = LogFactory.getLog(this.getClass());
 	}
 	
 	private void addOrderCustomer(OrderInfo order,String cusNo,String orderCode,
-			String amount,String sendNum,String realNum) throws Exception{
+			String amount,String sendNum,String realNum,Date createTime) throws Exception{
 		OrderCustomer oc = new OrderCustomer();
 		oc.setCusNo(cusNo.split("#")[0]);
 		oc.setCusName(cusNo.split("#")[1]);
@@ -162,6 +166,7 @@ Log log = LogFactory.getLog(this.getClass());
 			realNum = "0";
 		}
 		oc.setRealNum(Integer.valueOf(realNum));
+		oc.setCreateTime(createTime);
 		oCusService.add(oc);
 	}
 	@RequestMapping("/list")
@@ -169,7 +174,7 @@ Log log = LogFactory.getLog(this.getClass());
 		try {
 			String status = (String)request.getParameter("status");
 			String cusNo = request.getParameter("cusNo");
-			String cusName = request.getParameter("cusName");
+			String orderCode = request.getParameter("orderCode");//客户订单号
 			String goodsName = request.getParameter("goodsName");
 			String logisticsOrder = request.getParameter("logisticsOrder");
 			String providerName = request.getParameter("providerName");
@@ -191,8 +196,8 @@ Log log = LogFactory.getLog(this.getClass());
 			if(!StringUtils.isEmpty(cusNo)){
 				params.put("cusNo",cusNo);
 			}
-			if(!StringUtils.isEmpty(cusName)){
-				params.put("cusName",cusName);
+			if(!StringUtils.isEmpty(orderCode)){
+				params.put("orderCode",orderCode);
 			}
 			Page<OrderInfo> page = new Page<OrderInfo>();
 			if(!StringUtils.isEmpty(pageCount)){
@@ -228,7 +233,7 @@ Log log = LogFactory.getLog(this.getClass());
 			model.addAttribute("goodss", goods);
 			model.addAttribute("status", status);
 			model.addAttribute("cusNo", cusNo);
-			model.addAttribute("cusName", cusName);
+			model.addAttribute("orderCode", orderCode);
 			model.addAttribute("goodsName", goodsName);
 			model.addAttribute("logisticsOrder", logisticsOrder);
 			model.addAttribute("providerName", providerName);
@@ -275,6 +280,8 @@ Log log = LogFactory.getLog(this.getClass());
 		params.put("orderCode", orderCode);
 		params.put("cusNo", cusNo);
 		params.put("cusName", cusName);
+		String startTime = DateUtil.addDays(-60);//只查最近60天记录
+		params.put("startTime", startTime);
 		try {
 			List<OrderCustomer> ocs = oCusService.queryList(params);
 			for(OrderCustomer o : ocs){
@@ -282,6 +289,9 @@ Log log = LogFactory.getLog(this.getClass());
 				o.setTimes(orderTimeService.getByOrderId(o.getOrderId()));
 			}
 			model.addAttribute("orderCustomers", ocs);
+			model.addAttribute("orderCode", orderCode);
+			model.addAttribute("cusNo", cusNo);
+			model.addAttribute("cusName", cusName);
 		} catch (Exception e) {
 			log.error("",e);
 		}
@@ -430,13 +440,15 @@ Log log = LogFactory.getLog(this.getClass());
 				service.update(order);
 				OrderTime ot = new OrderTime();
 				ot.setFinishTime(new Date());
-				if(order.getGoalAddr().endsWith(GOAL_ADDR_HN) && Integer.valueOf(status) ==6){//6表示正发往河内或胡志明
-					ot.setStatus(Integer.valueOf(status)-1);
-					item = Integer.valueOf(status)-1;
-				}else{
-					ot.setStatus(Integer.valueOf(status));
-					item = Integer.valueOf(status);
-				}
+//				if(order.getGoalAddr().endsWith(GOAL_ADDR_HN) && Integer.valueOf(status) ==6){//6表示正发往河内或胡志明
+//					ot.setStatus(Integer.valueOf(status));
+//					item = Integer.valueOf(status)-1;
+//				}else{
+//					ot.setStatus(Integer.valueOf(status)+1);
+//					item = Integer.valueOf(status);
+//				}
+				ot.setStatus(Integer.valueOf(status)+1);
+				item = Integer.valueOf(status);
 				ot.setOrderId(order.getId());
 				ot.setUserId(account);
 				orderTimeService.add(ot);
@@ -491,11 +503,13 @@ Log log = LogFactory.getLog(this.getClass());
 	@RequestMapping("/uploadPhoto")  
     public String upload(@RequestParam(value = "file", required = false) MultipartFile file, HttpServletRequest request, ModelMap model) {  
 //      String path = request.getSession().getServletContext().getRealPath("upload");  
+		String oldPicUrl = request.getParameter("oldPicUrl");
+		String temp = System.getProperty("catalina.base")+"/upload/temp/";
 		String path = System.getProperty("catalina.base")+"/upload/images/";
         String fileName =file.getOriginalFilename().substring(file.getOriginalFilename().indexOf("."));
         fileName = System.currentTimeMillis()+fileName;
         log.info(path);  
-        File targetFile = new File(path, fileName);  
+        File targetFile = new File(temp, fileName);  
         if(!targetFile.exists()){  
             targetFile.mkdirs();  
         }  
@@ -503,6 +517,15 @@ Log log = LogFactory.getLog(this.getClass());
         //保存  
         try {  
             file.transferTo(targetFile);  
+            Thumbnails.of(temp+fileName).size(200, 200).toFile(path+fileName);//按比例生成缩略图
+            targetFile.delete();//删除临时图片
+            if(!StringUtils.isEmpty(oldPicUrl)){//删除旧的图片
+            	String name = oldPicUrl.substring(oldPicUrl.lastIndexOf("/"));
+            	File old = new File(path+name);
+            	if(old.exists()){
+            		old.delete();
+            	}
+            }
         } catch (Exception e) {  
             e.printStackTrace();  
         }  
@@ -538,10 +561,8 @@ Log log = LogFactory.getLog(this.getClass());
 		opLog.setAccount(account);
 		opLog.setCreateTime(new Date());
 		opLog.setItem(item);
-		String content ="订单ID:"+order.getId()+" 付款单号:"+order.getPayNo()+" 金额:"+order.getAmount()+" 供应商:"+order.getProviderName()
-				+" 产品名称:"+order.getGoodsName()+" 件数:"+order.getNum()+
-				" 边界地址:"+order.getBorderAddrStr()+" 目的地址:"+order.getGoalAddrStr()+" 物流名称:"+order.getLogisticsName()
-				+" 物流单号:"+order.getLogisticsOrder()+
+		String content ="订单ID:"+order.getId()+" 付款单号:"+order.getPayNo()+" 金额:"+order.getAmount()+
+				" 件数:"+order.getNum()+" 物流单号:"+order.getLogisticsOrder()+
 				" 国内运费:"+order.getCnFare()+" 越南运费:"+order.getVnFare()+" 已收货款:"+order.getReceiveMoney();
 		opLog.setContent(content);
 		try {

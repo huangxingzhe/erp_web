@@ -41,6 +41,6 @@
 	             	and status =#{status}
 	             </if>
              </trim>
-				order by orderId desc,finish_time desc
+				order by orderId desc,status
         </select>
     </mapper>    

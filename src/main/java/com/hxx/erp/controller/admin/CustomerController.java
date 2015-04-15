@@ -57,6 +57,11 @@ public class CustomerController {
 	public int add(@ModelAttribute Customer customer){
 		int ret = 0;
 		try {
+			Customer cus = service.query(customer);
+			if(cus !=null && cus.getId()!=customer.getId()){//已存在相同编号
+				ret = 2;
+				return ret;
+			}
 			if(customer.getId() == 0){
 				service.add(customer);
 			}else{

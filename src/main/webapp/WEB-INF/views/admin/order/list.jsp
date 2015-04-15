@@ -24,11 +24,8 @@
 	<tr>
       <td height="30" class="tx-c"><spring:message code="order.customer.cusNo"/></td>
       <td><input name="cusNo" type="text" value="${cusNo}" maxlength="11" id="cusNo" class="dtext" /></td>
-      
-      <td class="tx-c"><spring:message code="order.customer.cusName"/></td>
-      <td>
-      	<input name="cusName" type="text" value="${cusName}" maxlength="11" id="cusName" class="dtext" />
-	  </td>
+	  <td height="30" class="tx-c"><spring:message code="order.customer.cusOrderNo"/></td>
+      <td><input name="orderCode" type="text" value="${orderCode}" maxlength="11" id="orderCode" class="dtext" /></td>
 	  <td class="tx-c"><spring:message code="order.label.goodsName"/></td>
       <td>
       	<select name="goodsName" id="goodsName">
@@ -119,9 +116,12 @@
 								<spring:message code="order.label.getTime"/>
 							</c:if>
 							<c:if test="${status==7}">
-								<spring:message code="order.label.customerTime"/>
+								<spring:message code="order.label.inWareTime"/>
 							</c:if>
 							<c:if test="${status==8}">
+									<spring:message code="order.label.customerTime"/>
+							</c:if>
+							<c:if test="${status==9}">
 								<spring:message code="order.label.moneyTime"/>
 							</c:if>
 							</span></td>
@@ -181,7 +181,8 @@
 									</c:if>
 									<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
 									<br>
-								<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.sendToBorder"/></a></c:if>
+								<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.sendToBorder"/></a>
+								</c:if>
 								<c:if test="${order.status==2}">
 									<c:if test="${sessionScope.session_login_admin_id==1}">
 										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
@@ -217,21 +218,32 @@
 										<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
 									</c:if>
 									<br>
-								<a href="javascript:update(${order.id},${order.status+1})"><spring:message code="order.label.status.receive"/></a></c:if>
+								<a href="javascript:update(${order.id},${order.status+1})"><spring:message code="order.label.status.goodsWare"/></a>
+								</c:if>
 								<c:if test="${order.status==6}">
 									<c:if test="${sessionScope.session_login_admin_id==1}">
 										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
 										<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
 									</c:if>
 								<br>
-								<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.receive"/></a></c:if>
+								<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.goodsWare"/></a>
+								</c:if>
 								<c:if test="${order.status==7}">
 									<c:if test="${sessionScope.session_login_admin_id==1}">
 										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
 										<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
 									</c:if>
 								<br>
-								<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.getMoney"/></a></c:if>
+								<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.receive"/></a>
+								</c:if>
+								<c:if test="${order.status==8}">
+									<c:if test="${sessionScope.session_login_admin_id==1}">
+										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
+										<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
+									</c:if>
+								<br>
+								<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.getMoney"/></a>
+								</c:if>
 							</td>
 						</tr>
 					</c:forEach>
@@ -317,7 +329,7 @@
    					if (result > 0) //成功 
    					{
    						alert($.i18n.prop('opSucc'));
-   						//$("#order" + idx).remove();
+   						top.document.getElementById("menu").src = './getMenusById.do?id=8&type=nojump';
    						location.href="list.do?status="+${status};
    						//设置关闭弹出层
    					} else {

@@ -243,7 +243,13 @@ public class DateUtil {
 		String year = sdf.format(new java.util.Date());
         return year+"-12-31";
 	}
-	
+	public static String addDays(int days){
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(new Date());
+		cal.add(Calendar.DATE,days);
+		return df.format(cal.getTime());
+	}
 	/**
 	 * 给指定时间加上一个数值
 	 * @param time1 要加上一数值的时间，为null即为当前时间，格式为yyyy-MM-dd HH:mm:ss

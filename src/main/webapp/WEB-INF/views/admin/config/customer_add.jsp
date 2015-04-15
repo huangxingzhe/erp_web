@@ -99,8 +99,10 @@
 	        	                url:"add.do",
 	        	                success:function(data){ //提交成功的回调函数  
 	        	                    if(data==1){
-	        	                    	alert( $.i18n.prop('opSucc'));
+	        	                    	alert($.i18n.prop('opSucc'));
 	        	                    	location.href="list.do";
+	        	                    }else if(data==2){
+	        	                    	alert($.i18n.prop('exist_code'));
 	        	                    }else{
 	        	                    	alert( $.i18n.prop('opFail'));
 	        	                    }

@@ -56,8 +56,8 @@
 						<td class=content>${log.account}</td>
 						<td class=content>${log.lastIp}</td>
 						<td class=content>${log.updateIp}</td>
-						<td class=content><fmt:formatDate value="${log.lastTime}" pattern="yyyy-MM-dd hh:mm:ss"/></td>
-						<td class=content><fmt:formatDate value="${log.updateTime}" pattern="yyyy-MM-dd hh:mm:ss"/></td>
+						<td class=content><fmt:formatDate value="${log.lastTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+						<td class=content><fmt:formatDate value="${log.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 						<td class=content>${log.num}</td>
 					</tr>
 					</c:forEach>

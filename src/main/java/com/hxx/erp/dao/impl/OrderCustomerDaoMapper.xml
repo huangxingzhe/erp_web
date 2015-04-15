@@ -13,6 +13,7 @@
 	        <result property="sendNum" column="send_num" />
 	        <result property="realNum" column="real_num" />
 	        <result property="orderId" column="order_id" /> 
+	        <result property="createTime" column="create_time" /> 
     	</resultMap>  
        
          <select id="get" parameterType="int" resultMap="orderCustomerDaoMapperResultMap">    
@@ -20,8 +21,8 @@
         </select>  
         
         <insert id="add" parameterType="orderCustomer" >
-            INSERT INTO t_order_customer (cus_no, cus_name, order_code,amount,send_num,real_num,order_id)
-            VALUES(#{cusNo},#{cusName},#{orderCode},#{amount},#{sendNum},#{realNum}, #{orderId})
+            INSERT INTO t_order_customer (cus_no, cus_name, order_code,amount,send_num,real_num,order_id,create_time)
+            VALUES(#{cusNo},#{cusName},#{orderCode},#{amount},#{sendNum},#{realNum}, #{orderId},#{createTime})
         </insert>
         
         <update id="update" parameterType="orderCustomer" >
@@ -47,6 +48,9 @@
 	             <if test="cusName!=null and cusName!=''">
 	             	and cus_name like CONCAT('%','${cusName}','%' ) 
 	             </if>
+	             <if test="startTime!=null and startTime !=''">
+	             	<![CDATA[and date_format(create_time,'%Y-%m-%d') >=#{startTime}]]>
+	             </if> 
              </trim>
 				order by id 
         </select>

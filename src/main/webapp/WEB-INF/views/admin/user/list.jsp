@@ -66,7 +66,7 @@
 						<td class=content>${user.name}</td>
 						<td class=content><c:if test="${user.status==1}">正常</c:if><c:if test="${user.status==0}">冻结</c:if></td>
 						<td class=content>${user.phone}</td>
-						<td class=content><fmt:formatDate value="${user.createTime}" pattern="yyyy-MM-dd hh:mm:ss"/></td>
+						<td class=content><fmt:formatDate value="${user.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 						<td class=content id="opt_${user.id}"><a href="javascript:edit(${user.id})">修改</a>&nbsp;&nbsp;<a href="javascript:DelRow(${user.id})">删除</a>
 						&nbsp;&nbsp;<a href="javascript:bindRole(${user.id})">分配角色</a>
 						</td>

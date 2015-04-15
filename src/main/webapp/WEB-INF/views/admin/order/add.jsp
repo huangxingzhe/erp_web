@@ -3,6 +3,7 @@
 <%@ page isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib  prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"  %>
 <!doctype html public "-//w3c//dtd xhtml 1.0 transitional//en" "http://www.w3.org/tr/xhtml1/dtd/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -12,6 +13,24 @@
 <link href="../../js/getdate/skin/WdatePicker.css" rel="stylesheet" type="text/css">
 <LINK href="http://res.gm.17188.com/oss_files/jquery-ui-1.9.1.custom.css" rel="stylesheet" type="text/css">    
 <script language="javascript" type="text/javascript" src="../../js/getdate/WdatePicker.js"></script>
+<script type="text/javascript"src="../../js/jquery-1.8.0.min.js" ></script> 
+<script>
+function getStatusName(statusName,process,clss){
+	var pro='<div class="proce '+clss+'">'+
+		'<ul><li class="tx1">&nbsp;</li></ul>'+
+	'</div>';
+	var html='<div class="node wait">'+
+	'<ul>'+
+	'<li class="tx1">&nbsp;</li>'+
+	'<li class="tx2">'+statusName+'</li>'+
+	'<li id="track_time_0" class="tx3">&nbsp;</li>'+
+    '</ul></div>';
+    if(process){
+    	 html=pro+html;
+    }
+    return html;
+}
+</script>
 </head>
 <body>
  <jsp:include page="/WEB-INF/views/admin/order/image_upload.html" />
@@ -165,7 +184,7 @@
     	</div>
         <div id="errormess">
         </div>
-    	<input type="button" value="上传" onclick="upload();"  class="button"/>
+    	<input type="button" value="上传" onclick="upload('${order.picUrl}');"  class="button"/>
     	<div>
 			<img src="showPhoto.do?path=${order.picUrl}" width="100" height="100" border="0" id="preImg">
     	</div>
@@ -207,7 +226,209 @@
    	</table>
    	</td>
    </tr>
-   
+   <c:if test="${order.id>0}">
+   <tr>
+   	<td colspan="6">
+   		<div id="process" class="process" style="width:100%;text-align:left;padding-left:20px;">
+			<script> 
+				var status="";
+			</script>
+			<div class="node ready">
+				<ul>
+					<li class="tx1">&nbsp;</li>
+					<li class="tx2"><spring:message code="order.label.query.peddingsend"/></li>
+					<li id="track_time_0" class="tx3">
+					<fmt:formatDate value="${order.createTime}" pattern="yyyy-MM-dd"/> <br>
+					<fmt:formatDate value="${order.createTime}" pattern="HH:mm:ss"/>
+					</li>
+				</ul>
+			</div>
+			<c:forEach items="${order.times}" var="time" varStatus="st2">
+			<script> 
+				status+="${time.status}"+",";
+			</script>
+				<c:if test="${time.status==2}">
+					<div class="proce ready">
+						<ul><li class="tx1">&nbsp;</li></ul>
+					</div>
+					<div class="node ready">
+						<ul>
+							<li class="tx1">&nbsp;</li>
+							<li class="tx2"><spring:message code="order.label.query.sendtoborder"/></li>
+							<li id="track_time_0" class="tx3">
+							<fmt:formatDate value="${time.finishTime}" pattern="yyyy-MM-dd"/> <br>
+							<fmt:formatDate value="${time.finishTime}" pattern="HH:mm:ss"/>
+							</li>
+						</ul>
+					</div>
+					
+				</c:if>
+				<c:if test="${time.status==3}">
+					<div class="proce ready">
+						<ul><li class="tx1">&nbsp;</li></ul>
+					</div>
+					<div class="node ready">
+						<ul>
+							<li class="tx1">&nbsp;</li>
+							<li class="tx2"><spring:message code="order.label.query.arriveborder"/></li>
+							<li id="track_time_0" class="tx3">
+							<fmt:formatDate value="${time.finishTime}" pattern="yyyy-MM-dd"/> <br>
+							<fmt:formatDate value="${time.finishTime}" pattern="HH:mm:ss"/>
+							</li>
+						</ul>
+					</div>
+					
+				</c:if>
+				<c:if test="${time.status==4}">
+					<div class="proce ready">
+						<ul><li class="tx1">&nbsp;</li></ul>
+					</div>
+					<div class="node ready">
+						<ul>
+							<li class="tx1">&nbsp;</li>
+							<li class="tx2"><spring:message code="order.label.query.hadget"/></li>
+							<li id="track_time_0" class="tx3">
+							<fmt:formatDate value="${time.finishTime}" pattern="yyyy-MM-dd"/> <br>
+							<fmt:formatDate value="${time.finishTime}" pattern="HH:mm:ss"/>
+							</li>
+						</ul>
+					</div>
+					
+				</c:if>
+				<c:if test="${time.status==5}">
+					<div class="proce ready">
+						<ul><li class="tx1">&nbsp;</li></ul>
+					</div>
+					<div class="node ready">
+						<ul>
+							<li class="tx1">&nbsp;</li>
+							<li class="tx2"><spring:message code="order.label.query.sendtohn"/></li>
+							<li id="track_time_0" class="tx3">
+							<fmt:formatDate value="${time.finishTime}" pattern="yyyy-MM-dd"/> <br>
+							<fmt:formatDate value="${time.finishTime}" pattern="HH:mm:ss"/>
+							</li>
+						</ul>
+					</div>
+				</c:if>
+			<c:if test="${time.status==6}">
+					<div class="proce ready">
+						<ul><li class="tx1">&nbsp;</li></ul>
+					</div>
+					<div class="node ready">
+						<ul>
+							<li class="tx1">&nbsp;</li>
+							<li class="tx2"><spring:message code="order.label.query.sendtohcm"/></li>
+							<li id="track_time_0" class="tx3">
+							<fmt:formatDate value="${time.finishTime}" pattern="yyyy-MM-dd"/> <br>
+							<fmt:formatDate value="${time.finishTime}" pattern="HH:mm:ss"/>
+							</li>
+						</ul>
+					</div>
+				</c:if>
+				<c:if test="${time.status==7}">
+					<div class="proce ready">
+						<ul><li class="tx1">&nbsp;</li></ul>
+					</div>
+					<div class="node ready">
+						<ul>
+							<li class="tx1">&nbsp;</li>
+							<li class="tx2"><spring:message code="order.label.query.goodsinware"/></li>
+							<li id="track_time_0" class="tx3">
+							<fmt:formatDate value="${time.finishTime}" pattern="yyyy-MM-dd"/> <br>
+							<fmt:formatDate value="${time.finishTime}" pattern="HH:mm:ss"/>
+							</li>
+						</ul>
+					</div>
+				</c:if>
+				<c:if test="${time.status==8}">
+					<div class="proce ready">
+						<ul><li class="tx1">&nbsp;</li></ul>
+					</div>
+					<div class="node ready">
+						<ul>
+							<li class="tx1">&nbsp;</li>
+							<li class="tx2"><spring:message code="order.label.query.customergetgoods"/></li>
+							<li id="track_time_0" class="tx3">
+							<fmt:formatDate value="${time.finishTime}" pattern="yyyy-MM-dd"/> <br>
+							<fmt:formatDate value="${time.finishTime}" pattern="HH:mm:ss"/>
+							</li>
+						</ul>
+					</div>
+				</c:if>
+				<c:if test="${time.status==9}">
+					<div class="proce ready">
+						<ul><li class="tx1">&nbsp;</li></ul>
+					</div>
+					<div class="node ready">
+						<ul>
+							<li class="tx1">&nbsp;</li>
+							<li class="tx2"><spring:message code="order.label.query.getmoney"/></li>
+							<li id="track_time_0" class="tx3">
+							<fmt:formatDate value="${time.finishTime}" pattern="yyyy-MM-dd"/> <br>
+							<fmt:formatDate value="${time.finishTime}" pattern="HH:mm:ss"/>
+							</li>
+						</ul>
+					</div>
+				</c:if>
+			</c:forEach>
+			<script> 
+				var allstatus="";
+				var isHN = ${order.goalAddr};//1河内 2胡志明
+				if(isHN==1){
+					allstatus ="2,3,4,5,7,8,9,10";
+				}else{
+					allstatus = "2,3,4,6,7,8,9,10";
+				}
+				var unstatus = new Array();
+                      if(status==""){
+                      	unstatus = allstatus.split(",");
+                      }else{
+                      	var st=allstatus.split(",");
+                      	var index = 0;
+                      	for(var i=0;i<st.length;i++){
+                      		if(status.indexOf(""+st[i])==-1){
+                      			unstatus[index++] =st[i];
+                      		}
+                      	}
+                      }
+                      var statusName="";
+				var process=true;
+				var clss='wait';
+				for(var i=0;i<unstatus.length;i++){
+					if(i==0){
+						clss='doing';
+					}else{
+						clss='wait';
+					}
+					process=true;
+					if(unstatus[i]==2){
+						statusName = '<spring:message code="order.label.query.sendtoborder"/>';
+					}else if(unstatus[i]==3){
+						statusName = '<spring:message code="order.label.query.arriveborder"/>';
+					}else if(unstatus[i]==4){
+						statusName = '<spring:message code="order.label.query.hadget"/>';
+					}else if(unstatus[i]==5){
+						statusName = '<spring:message code="order.label.query.sendtohn"/>';
+					}else if(unstatus[i]==6){
+						statusName = '<spring:message code="order.label.query.sendtohcm"/>';
+					}else if(unstatus[i]==7){
+						statusName = '<spring:message code="order.label.query.goodsinware"/>';
+					}else if(unstatus[i]==8){
+						statusName = '<spring:message code="order.label.query.customergetgoods"/>';
+					}else if(unstatus[i]==9){
+						statusName = '<spring:message code="order.label.query.getmoney"/>';
+					}else if(unstatus[i]==10){
+						statusName = '<spring:message code="order.label.query.finish"/>';
+					}
+					
+					$("#process").append(getStatusName(statusName,process,clss));
+				}
+                      
+			</script>
+		</div>	
+   	</td>
+   </tr>
+   </c:if>
    </tbody>
 </table>
 </div>
@@ -226,7 +447,6 @@
 	</select>
 </div>
 	
-	<script type="text/javascript"src="../../js/jquery-1.8.0.min.js" ></script> 
 	<script type="text/javascript" src="../../js/jquery.validate.js"></script>
 	<script type="text/javascript" src="../../js/jquery.form.js"></script>
 	<script type="text/javascript" src="../../js/jquery.i18n.properties-min-1.0.9.js"></script>
@@ -288,7 +508,7 @@
 	        	                    if(data==1){
 	        	                    	alert( $.i18n.prop('opSucc'));
 	        	                    	top.document.getElementById("menu").src = './getMenusById.do?id=8&type=nojump';
-	        	                    	location.href="list.do";
+	        	                    	location.href="list.do?status=${order.status}";
 	        	                    }else if(data==2){
 	        	                    	alert( $.i18n.prop('customerinfo_error'));
 	        	                    	$("#submit").attr("disabled", false); 

@@ -84,6 +84,16 @@
 		function edit(id){
 			location.href="init.do?id="+id;
 		}
+		 $(function(){
+		        jQuery.i18n.properties({
+		            name : 'strings', //资源文件名称
+		            path : '../../js/i18n/', //资源文件路径
+		            mode : 'map', //用Map的方式使用资源文件中的值
+		            language :curlang ,
+		            callback : function() {//加载成功后设置显示内容
+		            }
+		        });
+		 });
 		function DelRow(idx) {
 			if(confirm($.i18n.prop('confirm'))){
 			    var data = {

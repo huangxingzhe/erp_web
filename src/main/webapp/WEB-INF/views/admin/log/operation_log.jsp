@@ -24,15 +24,16 @@
       <td >
       	<select name="item" id="item">
       		<option value="">--选择类型--</option>
-      		<option value="8" <c:if test="${item==8}">selected</c:if>>新增订单</option>
-      		<option value="9" <c:if test="${item==9}">selected</c:if>>编辑订单</option>
+      		<option value="9" <c:if test="${item==9}">selected</c:if>>新增订单</option>
+      		<option value="10" <c:if test="${item==10}">selected</c:if>>编辑订单</option>
       		<option value="1" <c:if test="${item==1}">selected</c:if>>操作确认发货</option>
       		<option value="2" <c:if test="${item==2}">selected</c:if>>操作确认到边界</option>
       		<option value="3" <c:if test="${item==3}">selected</c:if>>操作确认已提取</option>
       		<option value="4" <c:if test="${item==4}">selected</c:if>>操作确认发往河内</option>
       		<option value="5" <c:if test="${item==5}">selected</c:if>>操作确认发往胡志明</option>
-      		<option value="6" <c:if test="${item==6}">selected</c:if>>操作确认客户已收货</option>
-      		<option value="7" <c:if test="${item==7}">selected</c:if>>操作确认已收款</option>
+      		<option value="6" <c:if test="${item==6}">selected</c:if>>操作确认货到库</option>
+      		<option value="7" <c:if test="${item==7}">selected</c:if>>操作确认客户已收货</option>
+      		<option value="8" <c:if test="${item==8}">selected</c:if>>操作确认已收款</option>
       	</select>
       </td>
        <td  class="tx-c">登录时间:</td>
@@ -66,17 +67,18 @@
 						<td class=content>${st.index+1}</td>
 						<td class=content>${log.account}</td>
 						<td class=content>
-					      		<c:if test="${log.item==8}">新增订单</c:if>
-					      		<c:if test="${log.item==9}">编辑订单</c:if>
+					      		<c:if test="${log.item==9}">新增订单</c:if>
+					      		<c:if test="${log.item==10}">编辑订单</c:if>
 					      		<c:if test="${log.item==1}">操作确认发货</c:if>
 					      		<c:if test="${log.item==2}">操作确认到边界</c:if>
 					      		<c:if test="${log.item==3}">操作确认已提取</c:if>
 					      		<c:if test="${log.item==4}">操作确认发往河内</c:if>
 					      		<c:if test="${log.item==5}">操作确认发往胡志明</c:if>
-					      		<c:if test="${log.item==6}">操作确认客户已收货</c:if>
-					      		<c:if test="${log.item==7}">操作确认已收款</c:if>
+					      		<c:if test="${log.item==6}">操作确认货到库</c:if>
+					      		<c:if test="${log.item==7}">操作确认客户已收货</c:if>
+					      		<c:if test="${log.item==8}">操作确认已收款</c:if>
 						</td>
-						<td class=content><fmt:formatDate value="${log.createTime}" pattern="yyyy-MM-dd hh:mm:ss"/></td>
+						<td class=content><fmt:formatDate value="${log.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 						<td class=content style="text-align:left;padding-left:5px;">${log.content}</td>
 						
 					</tr>

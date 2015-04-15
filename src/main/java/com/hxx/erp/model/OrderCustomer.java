@@ -1,5 +1,6 @@
 package com.hxx.erp.model;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -14,6 +15,7 @@ public class OrderCustomer {
 	private double amount;
 	private int orderId;
 	private OrderInfo order;
+	private Date createTime;//订单创建时间
 	private List<OrderTime> times;
 	public int getId() {
 		return id;
@@ -74,6 +76,12 @@ public class OrderCustomer {
 	}
 	public void setTimes(List<OrderTime> times) {
 		this.times = times;
+	}
+	public Date getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 }

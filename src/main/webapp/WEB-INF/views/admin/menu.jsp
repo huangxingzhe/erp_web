@@ -49,7 +49,7 @@ function gotoUrl(url,id){
 </div>
 <script>
 	var orderMenuId = ${menu.id};
-	//表示订单管理
+	//8 表示订单管理
 	if(orderMenuId!=null && orderMenuId !=undefined && orderMenuId ==8){
 		$.getJSON("../admin/order/queryCount.do",function(data){
 			for(var key in data){

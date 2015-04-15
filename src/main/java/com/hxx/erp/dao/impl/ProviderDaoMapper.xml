@@ -28,7 +28,9 @@
         <delete id="delete" parameterType="int">
         	delete from t_provider where id = #{id}
         </delete>
-        
+        <select id="query" parameterType="provider" resultMap="providerDaoMapperResultMap">    
+            select * from t_provider where code = #{code}   
+        </select>
         <select id="queryList" resultMap="providerDaoMapperResultMap" parameterType="java.util.Map">
              select * from t_provider 
              <trim prefix="where" prefixOverrides="and"> 

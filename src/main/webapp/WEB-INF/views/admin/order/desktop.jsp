@@ -53,11 +53,17 @@
     <td width=200 class="content">总金额：</td>
     <td width=150 class="content">￥<a id="n6" href="javascript:void(0)" onclick="gotoUrl(6)" style="color:red;text-decoration:underline">0</a>元</td>
   </tr>
-   <tr>
-    <td width=200 class="content"><spring:message code="order.label.desktop.peddingreceivemoney"/>：</td>
+  <tr>
+    <td width=200 class="content"><spring:message code="order.label.desktop.goodsinware"/>：</td>
     <td width=150 class="content"><a id="s7" href="javascript:void(0)" onclick="gotoUrl(7)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
     <td width=200 class="content">总金额：</td>
     <td width=150 class="content">￥<a id="n7" href="javascript:void(0)" onclick="gotoUrl(7)" style="color:red;text-decoration:underline">0</a>元</td>
+  </tr>
+  <tr>
+    <td width=200 class="content"><spring:message code="order.label.desktop.peddingreceivemoney"/>：</td>
+    <td width=150 class="content"><a id="s8" href="javascript:void(0)" onclick="gotoUrl(8)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
+    <td width=200 class="content">总金额：</td>
+    <td width=150 class="content">￥<a id="n8" href="javascript:void(0)" onclick="gotoUrl(8)" style="color:red;text-decoration:underline">0</a>元</td>
   </tr>
    </tbody>
 </table>

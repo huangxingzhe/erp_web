@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hxx.erp.model.Customer;
 import com.hxx.erp.model.Goods;
 import com.hxx.erp.service.GoodsService;
 
@@ -57,6 +58,11 @@ public class GoodsController {
 	public int add(@ModelAttribute Goods goods){
 		int ret = 0;
 		try {
+			Goods good = service.query(goods);
+			if(good !=null && good.getId()!=goods.getId()){//已存在相同编号
+				ret = 2;
+				return ret;
+			}
 			if(goods.getId() == 0){
 				service.add(goods);
 			}else{

@@ -53,7 +53,7 @@
         	update t_order_info set amount=#{amount} ,pay_no=#{payNo},pay_time=#{payTime},
         	provider_name=#{providerName},goods_name=#{goodsName},
         	num=#{num},border_addr=#{borderAddr},goal_addr=#{goalAddr},receive_user=#{receiveUser},
-        	status=#{status},user_id=#{userId},create_time=#{createTime},update_time=#{updateTime},
+        	status=#{status},user_id=#{userId},update_time=#{updateTime},
         	logistics_name=#{logisticsName}, logistics_order=#{logisticsOrder},pic_url=#{picUrl},
         	border_logistics=#{borderLogistics},border_phone=#{borderPhone},cn_fare=#{cnFare},vn_fare=#{vnFare},
             get_goods_user=#{getGoodsUser},cn_receiver_phone=#{cnReceiverPhone},vn_receiver_phone=#{vnReceiverPhone},
@@ -70,13 +70,14 @@
 			SELECT * FROM ((SELECT COUNT(*) AS s1 FROM t_order_info WHERE type=0 and  STATUS=1)AS s1,(SELECT COUNT(*) s2 FROM t_order_info WHERE type=0 and STATUS=2)AS s2,
 			(SELECT COUNT(*)s3 FROM t_order_info WHERE type=0 and STATUS=3)AS s3,(SELECT COUNT(*)s4 FROM t_order_info WHERE type=0 and STATUS=4)AS s4,(SELECT COUNT(*) s5
 			FROM t_order_info WHERE type=0 and STATUS=5)AS s5,(SELECT COUNT(*) s6 FROM t_order_info WHERE type=0 and STATUS=6)AS s6,
-			(SELECT COUNT(*) s7 FROM t_order_info WHERE type=0 and STATUS=7)AS s7,(SELECT COUNT(*) s8 FROM t_order_info WHERE type=0 and STATUS=8)AS s8)
+			(SELECT COUNT(*) s7 FROM t_order_info WHERE type=0 and STATUS=7)AS s7,(SELECT COUNT(*) s8 FROM t_order_info WHERE type=0 and STATUS=8)AS s8,
+			(SELECT COUNT(*) s9 FROM t_order_info WHERE type=0 and STATUS=9)AS s9)
         </select>
          <select id="queryCountAndAmount" resultType="java.util.Map">
 			SELECT * FROM ((SELECT COUNT(*) s1 ,SUM(amount) AS n1 FROM t_order_info WHERE TYPE=0 AND STATUS=1)AS s1,(SELECT COUNT(*) s2 ,SUM(amount) AS n2 FROM t_order_info WHERE TYPE=0 AND STATUS=2)AS s2,
 			(SELECT COUNT(*)s3 ,SUM(amount) AS n3 FROM t_order_info WHERE TYPE=0 AND STATUS=3)AS s3,(SELECT COUNT(*)s4,SUM(amount) AS n4 FROM t_order_info WHERE TYPE=0 AND STATUS=4)AS s4,(SELECT COUNT(*) s5
 			,SUM(amount) AS n5 FROM t_order_info WHERE TYPE=0 AND STATUS=5)AS s5,(SELECT COUNT(*) s6,SUM(amount) AS n6 FROM t_order_info WHERE TYPE=0 AND STATUS=6)AS s6,
-			(SELECT COUNT(*) s7,SUM(amount) AS n7 FROM t_order_info WHERE TYPE=0 AND STATUS=7)AS s7)
+			(SELECT COUNT(*) s7,SUM(amount) AS n7 FROM t_order_info WHERE TYPE=0 AND STATUS=7)AS s7,(SELECT COUNT(*) s8,SUM(amount) AS n8 FROM t_order_info WHERE TYPE=0 AND STATUS=8)AS s8)
         </select>
         <select id="queryListByPage" resultMap="orderInfoDaoMapperResultMap" parameterType="java.util.Map">
              select * from t_order_info where type=0
@@ -98,15 +99,15 @@
 	             <if test="endPayTime!=null and endPayTime !=''">
 	             	 <![CDATA[  and date_format(pay_time,'%Y-%m-%d') <=#{endPayTime} ]]>
 	             </if> 
-	             <if test="cusNo!=null or cusName !=null">
+	             <if test="cusNo!=null or orderCode !=null">
 	                and id in (
 	                	select order_id from t_order_customer 
 	                	 <trim prefix="where" prefixOverrides="and"> 
 	                	     <if test="cusNo!=null and cusNo !=''">
 				             	and cus_no =#{cusNo}
 				             </if>
-				             <if test="cusName!=null and cusName !=''">
-				             	and cus_name =#{cusName}
+				             <if test="orderCode!=null and orderCode !=''">
+				             	and order_code =#{orderCode}
 				             </if>
 	                	 </trim>
 	                )
@@ -162,8 +163,8 @@
 	                	     <if test="cusNo!=null and cusNo !=''">
 				             	and cus_no =#{cusNo}
 				             </if>
-				             <if test="cusName!=null and cusName !=''">
-				             	and cus_name =#{cusName}
+				             <if test="orderCode!=null and orderCode !=''">
+				             	and order_code =#{orderCode}
 				             </if>
 	                	 </trim>
 	                )

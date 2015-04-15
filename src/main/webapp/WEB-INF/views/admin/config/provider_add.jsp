@@ -90,7 +90,9 @@
 	            	                    if(data==1){
 	            	                    	alert($.i18n.prop('opSucc'));
 	            	                    	location.href="list.do";
-	            	                    }else{
+	            	                    }else if(data==2){
+		        	                    	alert($.i18n.prop('exist_code'));
+		        	                    }else{
 	            	                    	alert($.i18n.prop('opFail'));
 	            	                    }
 	            	                }  

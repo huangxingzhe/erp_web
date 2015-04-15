@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hxx.erp.model.Goods;
 import com.hxx.erp.model.Provider;
 import com.hxx.erp.service.ProviderService;
 
@@ -60,6 +61,11 @@ public class ProviderController {
 	public int add(@ModelAttribute Provider provider){
 		int ret = 0;
 		try {
+			Provider pro = service.query(provider);
+			if(pro !=null && pro.getId()!=provider.getId()){//已存在相同编号
+				ret = 2;
+				return ret;
+			}
 			if(provider.getId() == 0){
 				service.add(provider);
 			}else{

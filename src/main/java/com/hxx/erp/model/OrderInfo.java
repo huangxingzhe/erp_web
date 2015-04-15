@@ -1,6 +1,7 @@
 package com.hxx.erp.model;
 
 import java.util.Date;
+import java.util.List;
 
 //货物订单信息
 public class OrderInfo {
@@ -37,6 +38,7 @@ public class OrderInfo {
 	private double receiveMoney;//收回货款
 	private String mark;//备注
 	private double profit;//利润率
+	private List<OrderTime> times;
 	
 	
 	
@@ -262,7 +264,11 @@ public class OrderInfo {
 	public void setProfit(double profit) {
 		this.profit = profit;
 	}
-	
-	
+	public List<OrderTime> getTimes() {
+		return times;
+	}
+	public void setTimes(List<OrderTime> times) {
+		this.times = times;
+	}
 	
 }
