@@ -263,6 +263,104 @@ Log log = LogFactory.getLog(this.getClass());
 		return "/admin/order/list";
 	}
 	
+	
+	@RequestMapping("/allList")
+	public String allList(HttpServletRequest request,Model model){
+		try {
+			String status = (String)request.getParameter("status");
+			String payNo = request.getParameter("payNo");
+			String cusNo = request.getParameter("cusNo");
+			String orderCode = request.getParameter("orderCode");//客户订单号
+			String goodsName = request.getParameter("goodsName");
+			String logisticsOrder = request.getParameter("logisticsOrder");
+			String providerName = request.getParameter("providerName");
+			String startPayTime = request.getParameter("startPayTime");
+			String endPayTime = request.getParameter("endPayTime");
+			
+			String currentPage = request.getParameter("currentPage");
+			String pageCount = request.getParameter("pageCount");
+			if(StringUtils.isEmpty(status)){
+				status="1";
+			}
+			Map<String,Object> params = new HashMap<String,Object>();
+			params.put("status", status);
+			params.put("payNo", payNo);
+			params.put("goodsName", goodsName);
+			params.put("logisticsOrder", logisticsOrder);
+			params.put("providerName",providerName );
+			params.put("startPayTime",startPayTime);
+			params.put("endPayTime",endPayTime);
+			if(!StringUtils.isEmpty(cusNo)){
+				params.put("cusNo",cusNo);
+			}
+			if(!StringUtils.isEmpty(orderCode)){
+				params.put("orderCode",orderCode);
+			}
+			Page<OrderInfo> page = new Page<OrderInfo>();
+			if(!StringUtils.isEmpty(pageCount)){
+				page.setPageCount(Integer.valueOf(pageCount));
+			}
+			if(!StringUtils.isEmpty(currentPage)){
+				page.setCurrentPage(Integer.valueOf(currentPage));
+			}
+			params.put("page", page);
+			
+			List<OrderInfo> orderInfos = service.queryListByPage(params);
+			
+			int nums = 0;
+			double amounts = 0;
+			double receiveMoney =0;
+			for(OrderInfo o: orderInfos){
+				nums+=o.getNum();
+				amounts+=o.getAmount();
+				receiveMoney+=o.getReceiveMoney();
+				if(o.getReceiveMoney()>0){
+					double all = o.getAmount()+o.getCnFare()+o.getVnFare();
+					o.setProfit((o.getReceiveMoney()-all)/o.getReceiveMoney());
+				}else{
+					o.setProfit(0);
+				}
+				
+			}
+			model.addAttribute("orders", orderInfos);
+			model.addAttribute("page",page);
+			List<Provider> providers = providerService.queryList(null);
+			model.addAttribute("providers", providers);
+			List<Goods> goods = goodsService.queryList(null);
+			model.addAttribute("goodss", goods);
+			model.addAttribute("status", status);
+			model.addAttribute("payNo", payNo);
+			model.addAttribute("cusNo", cusNo);
+			model.addAttribute("orderCode", orderCode);
+			model.addAttribute("goodsName", goodsName);
+			model.addAttribute("logisticsOrder", logisticsOrder);
+			model.addAttribute("providerName", providerName);
+			model.addAttribute("startPayTime", startPayTime);
+			model.addAttribute("endPayTime", endPayTime);
+			model.addAttribute("nums", nums);
+			DecimalFormat df = new DecimalFormat("#.00");
+			model.addAttribute("amounts", df.format(amounts));
+			model.addAttribute("receiveMoney", df.format(receiveMoney));
+			//如果大于1页才去查
+			if(orderInfos!=null && orderInfos.size()>=page.getPageCount()){
+				Map<String,Object> statMap = service.totalStat(params);
+				model.addAttribute("totalNums", statMap.get("num"));
+				model.addAttribute("totalAmounts", df.format(statMap.get("amount")));
+				model.addAttribute("totalReceiveMoney", df.format(statMap.get("receiveMoney")));
+			}else{
+				model.addAttribute("totalNums", nums);
+				model.addAttribute("totalAmounts", df.format(amounts));
+				model.addAttribute("totalReceiveMoney", df.format(receiveMoney));
+			}
+			
+			
+			
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		return "/admin/order/all_list";
+	}
+	
 	//客户或客服查询接口
 	@RequestMapping("/query")
 	public String query(HttpServletRequest request,Model model){
