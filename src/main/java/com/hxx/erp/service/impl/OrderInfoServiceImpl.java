@@ -80,6 +80,11 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 		return dao.totalStat(params);
 	}
 
+	@Override
+	public String getMaxPayNo(Map<String,Object> params) throws Exception {
+		return dao.getMaxPayNo(params);
+	}
+
 	
 	
 }

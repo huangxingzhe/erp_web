@@ -34,24 +34,22 @@
         </delete>
         
         <select id="queryList" resultMap="orderCustomerDaoMapperResultMap" parameterType="java.util.Map">
-             select * from t_order_customer 
-             <trim prefix="where" prefixOverrides="and"> 
+             select * from t_order_customer c,t_order_info o where o.type=0 and c.order_id=o.id
                  <if test="orderId!=null and orderId !=''">
-	             	and order_id =#{orderId}
+	             	and c.order_id =#{orderId}
 	             </if>
 	             <if test="cusNo!=null and cusNo !=''">
-	             	and cus_no =#{cusNo}
+	             	and c.cus_no =#{cusNo}
 	             </if>
-	              <if test="orderCode!=null and orderCode !=''">
-	             	and order_code =#{orderCode}
+	             <if test="orderCode!=null and orderCode !=''">
+	             	and c.order_code =#{orderCode}
 	             </if>
 	             <if test="cusName!=null and cusName!=''">
-	             	and cus_name like CONCAT('%','${cusName}','%' ) 
+	             	and c.cus_name like CONCAT('%','${cusName}','%' ) 
 	             </if>
 	             <if test="startTime!=null and startTime !=''">
-	             	<![CDATA[and date_format(create_time,'%Y-%m-%d') >=#{startTime}]]>
+	             	<![CDATA[and date_format(c.create_time,'%Y-%m-%d') >=#{startTime}]]>
 	             </if> 
-             </trim>
-				order by id 
+				order by c.id 
         </select>
     </mapper>    

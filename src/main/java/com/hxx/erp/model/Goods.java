@@ -6,6 +6,7 @@ public class Goods {
 	private String code;
 	private String name;
 	private int status;
+	private String type;//表示产品的类型,如T十字绣 G杂货
 	public int getId() {
 		return id;
 	}
@@ -30,5 +31,10 @@ public class Goods {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 }

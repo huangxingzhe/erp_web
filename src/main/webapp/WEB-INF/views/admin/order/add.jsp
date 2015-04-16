@@ -48,6 +48,30 @@ function getStatusName(statusName,process,clss){
 <table cellspacing=0 cellpadding=2 width="100%" align=center border=0>
   <tbody>
   <tr>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.providerName"/>：</td>
+    <td height=30 style="padding-left:12px;">
+    	<select name="providerName" id="providerName" style="width:153px;">
+    		<option value=""><spring:message code="admin.label.select"/></option>
+    		<c:forEach items="${providers}" var="provider">
+    			<option label="${provider.name}" value="${provider.name}" 
+    				<c:if test="${provider.name==order.providerName}">selected</c:if>>
+    			</option>
+    		</c:forEach>
+    	</select>
+    </td>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.goodsName"/>：</td>
+    <td height=30 style="padding-left:12px;">
+    	<select name="goodsName" id="goodsName" style="width:153px;" onchange="getPayNo(this)">
+    		<option value=""><spring:message code="admin.label.select"/></option>
+	    	<c:forEach items="${goodss}" var="goods">
+	   			<option label="${goods.name}" value="${goods.name}" 
+	   				<c:if test="${goods.name==order.goodsName}">selected</c:if>  id="${goods.type}">
+	   			</option>
+	   		</c:forEach>
+   		</select>
+    </td>
+  </tr>
+  <tr>
   	<td class=title_bg  height=30><spring:message code="order.label.payNo"/>：</td>
     <td height=30 style="padding-left:10px;">
     	<input name="payNo" value="${order.payNo}" id="payNo"/>
@@ -57,7 +81,6 @@ function getStatusName(statusName,process,clss){
     	<input name="payTime" type="text" id="payTime" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'});" value="${order.payTime}" readonly=true style="width:150px;" />
     </td>
   </tr>
-  
    <tr>
   	<td class=title_bg  height=30><spring:message code="order.label.amount"/>：</td>
     <td height=30 style="padding-left:10px;">
@@ -68,30 +91,7 @@ function getStatusName(statusName,process,clss){
     	<input name="num" value="${order.num}" id="num"/>
     </td>
   </tr>
-  <tr>
-    <td class=title_bg  width=100 height=30><spring:message code="order.label.providerName"/>：</td>
-    <td height=30 style="padding-left:12px;">
-    	<select name="providerName" id="providerName" style="width:153px;">
-    		<option value=""><spring:message code="admin.label.select"/></option>
-    		<c:forEach items="${providers}" var="provider">
-    			<option label="${provider.name}" value="${provider.name}" 
-    				<c:if test="${provider.name==order.providerName}">selected</c:if> >
-    			</option>
-    		</c:forEach>
-    	</select>
-    </td>
-    <td class=title_bg  width=100 height=30><spring:message code="order.label.goodsName"/>：</td>
-    <td height=30 style="padding-left:12px;">
-    	<select name="goodsName" id="goodsName" style="width:153px;">
-    		<option value=""><spring:message code="admin.label.select"/></option>
-	    	<c:forEach items="${goodss}" var="goods">
-	   			<option label="${goods.name}" value="${goods.name}" 
-	   				<c:if test="${goods.name==order.goodsName}">selected</c:if> >
-	   			</option>
-	   		</c:forEach>
-   		</select>
-    </td>
-   </tr>
+  
    <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.logisticsName"/>：</td>
     <td height=30 style="padding-left:10px;">
@@ -571,6 +571,18 @@ function getStatusName(statusName,process,clss){
 	 function del(obj){
 		 $(obj).parent().parent().remove();
 		 index --;
+	 }
+	 
+	 function getPayNo(obj){
+		 var payType = $(obj).find("option:selected").attr("id");
+		 var data={
+				 payType:payType
+			 };
+		 $.getJSON("getMaxPayNo.do", data, function(result) {
+				if (result !="0"){
+					$("#payNo").val(result);
+				}
+		 }); 
 	 }
 	</script>
 

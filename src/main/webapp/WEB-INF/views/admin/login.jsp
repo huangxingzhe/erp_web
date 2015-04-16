@@ -271,8 +271,10 @@ function readCookie(name){
 	                    if(data==1){
 	                    	location.href="../admin/index.do";
 	                    }else if(data==2 || data==3){
+	                    	$("#submit").attr("disabled", false); 
 	                    	alert("登录账号或密码不正确!");
 	                    }else{
+	                    	$("#submit").attr("disabled", false); 
 	                    	alert("系统错误，请尝试再登录!");
 	                    }
 	                }  

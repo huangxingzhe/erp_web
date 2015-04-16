@@ -30,7 +30,7 @@
 					</tr>
 					<c:forEach items="${roles}" var="role" >
 						<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#CDE6FF'" onmouseout="this.bgColor='#FFFFFF'" >
-							<td height="30"><input type="checkbox"  value="${role.id}" name="roleIds" id="role${role.id}" <c:if test="${role.checked!=null}">checked</c:if>>
+							<td height="30"><input type="radio"  value="${role.id}" name="roleIds" id="role${role.id}" <c:if test="${role.checked!=null}">checked</c:if>>
 							<strong>${role.name}</strong></td>
 						</tr>
 					</c:forEach>

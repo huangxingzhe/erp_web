@@ -1,6 +1,9 @@
 package com.hxx.erp.controller.admin;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hxx.erp.common.Constant;
+import com.hxx.erp.model.Role;
 import com.hxx.erp.model.UserInfo;
 import com.hxx.erp.model.UserLoginLog;
+import com.hxx.erp.service.RoleService;
 import com.hxx.erp.service.UserInfoService;
 import com.hxx.erp.service.UserLoginLogService;
 import com.hxx.erp.util.MD5Util;
@@ -29,6 +34,8 @@ public class LoginController {
 	private UserInfoService service;
 	@Autowired
 	private UserLoginLogService logService;
+	@Autowired
+	private RoleService roleService;
 	
 	@RequestMapping("/login")
 	@ResponseBody
@@ -43,6 +50,12 @@ public class LoginController {
 					session.setAttribute(Constant.SESSION_LOGIN_ADMIN_ID, user.getId());
 					session.setAttribute(Constant.SESSION_LOGIN_ADMIN_ACCOUNT, user.getAccount());
 					session.setAttribute(Constant.SESSION_LOGIN_ADMIN_NAME, user.getName());
+					Map<String,Object> params = new HashMap<String,Object>();
+					params.put("userId", user.getId());
+					List<Role> roles = roleService.queryList(params);
+					if(roles != null && roles.size()>0){
+						session.setAttribute(Constant.SESSION_LOGIN_ADMIN_ROLEID, roles.get(0).getId());
+					}
 					ret = 1;//登录成功
 					log.info("login success...");
 					

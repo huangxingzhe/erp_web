@@ -179,15 +179,15 @@ function getStatusName(statusName,process,clss){
 		<td width="15%" height=28><spring:message code="order.customer.SendNum"/></td>
 		<td width="15%" height=28><spring:message code="order.customer.ReceiveNum"/></td>
 	  </tr>
-	   <c:forEach items="${orderCustomers}" var="customer" varStatus="status">
+	  <c:forEach items="${orderCustomers}" var="customer" varStatus="status">
 	   		<input type="hidden" name="ocIds" value="${customer.id}">
 	   		<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#CDE6FF'" onmouseout="this.bgColor='#FFFFFF'">
 			    <td height=30>
 			    	<input type="hidden" name="cusNos" value="${customer.cusNo}#${customer.cusName}">
 			    	${customer.cusName}
 			    </td>
-			    <td height=30><input type="hidden" name="amounts" value="${customer.amount}">${customer.amount}</td>
 			    <td height=30><input type="hidden" name="orderCodes" value="${customer.orderCode}">${customer.orderCode}</td>
+			    <td height=30><input type="hidden" name="amounts" value="${customer.amount}">${customer.amount}</td>
 			    <td height=30><input type="hidden" name="sendNums" style="width:40px;text-align:center;" value="${customer.sendNum}">${customer.sendNum}</td>
 			    <td height=30><input type="text" name="realNums" style="width:40px;text-align:center;" value="${customer.realNum}"></td>
 			 </tr>

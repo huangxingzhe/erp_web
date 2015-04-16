@@ -46,12 +46,17 @@
 	<tr>
 	  <td height="30" class="tx-c"><spring:message code="order.customer.cusOrderNo"/></td>
       <td><input name="orderCode" type="text" value="${orderCode}" maxlength="11" id="orderCode" class="dtext" /></td>
-      <td height="30" class="tx-c"><spring:message code="order.customer.cusNo"/></td>
-      <td><input name="cusNo" type="text" value="${cusNo}" maxlength="11" id="cusNo" class="dtext" /></td>
-      <td class="tx-c"><spring:message code="order.customer.cusName"/></td>
-      <td>
-      	<input name="cusName" type="text" value="${cusName}" maxlength="11" id="cusName" class="dtext" />
-	  </td>
+      <c:if test="${sessionScope.session_login_admin_roleid==1|| sessionScope.session_login_admin_roleid==3}">
+	      <td height="30" class="tx-c"><spring:message code="order.customer.cusNo"/></td>
+	      <td><input name="cusNo" type="text" value="${cusNo}" maxlength="11" id="cusNo" class="dtext" /></td>
+	      <td class="tx-c"><spring:message code="order.customer.cusName"/></td>
+	      <td>
+	      	<input name="cusName" type="text" value="${cusName}" maxlength="11" id="cusName" class="dtext" />
+		  </td>
+	  </c:if>
+	  <c:if test="${sessionScope.session_login_admin_roleid!=1&&sessionScope.session_login_admin_roleid!=3}">
+	      <td height="30" class="tx-c" colspan="4">&nbsp;</td>
+	  </c:if>
 	  <td colspan="6" style="text-align:center;"><input type="submit" value="<spring:message code="admin.label.query"/> " class="button"></td>
     </tr>
   </table>
@@ -73,6 +78,8 @@
 							class="searchzone"><spring:message code="order.label.createTime"/></span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.goodsName"/></span></td>
+						<td width="100" height=28 class=biaoti><span
+							class="searchzone"><spring:message code="order.label.num"/></span></td>
 						<td class=biaoti width=150><span class="searchzone">
 							<spring:message code="admin.label.op"/>
 						</span></td>
@@ -85,16 +92,17 @@
 							<td class=content>${customer.cusName}</td>
 							<td class=content><fmt:formatDate value="${customer.order.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 							<td class=content>${customer.order.goodsName}</td>
+							<td class=content>${customer.sendNum}</td>
 							<td class=content>
 								<a href="javascript:detail(${customer.id})"><spring:message code="admin.label.query"/></a>
-								<c:if test="${sessionScope.session_login_admin_id==1}">
+								<c:if test="${sessionScope.session_login_admin_roleid==1}">
 								&nbsp;&nbsp;
 								<a href="javascript:edit(${customer.order.id})"><spring:message code="admin.label.edit"/></a>
 								</c:if>
 							</td>
 						</tr>
 						<tr style="display:none" id="cus${customer.id}">
-							<td class=content colspan="7">
+							<td class=content colspan="8">
 							<div id="process${customer.id}" class="process">
 								<script> 
 									var status="";

@@ -206,7 +206,7 @@ public class ExportData {
 			//	String name = URLEncoder.encode(exportfileName, "UTF-8");
 				String name=new String((exportfileName).getBytes("gbk"),"iso8859-1");
 	
-				response.setHeader("Content-Disposition", "attachment;filename="+name);     //创建execl第一行数句(标题)
+				response.setHeader("Content-Disposition", "attachment;filename="+name+".xls");     //创建execl第一行数句(标题)
 				
 				// 标题字体
 				jxl.write.WritableFont wfc = new jxl.write.WritableFont(

@@ -56,11 +56,6 @@
      <select id="queryAll" resultMap="roleResultMap" parameterType="java.util.Map">
      	SELECT r.* ,REPLACE(ur.user_id,#{userId},'checked') AS checked 
 		FROM t_role r LEFT JOIN t_user_role ur ON  r.id = ur.role_id AND ur.user_id = #{userId}
-		 <trim prefix="where" prefixOverrides="and" >
-           <if test="customerId!='' and customerId!=null">
-                and r.customer_id=#{customerId}
-           </if>
-       	</trim>   
      </select>
      <insert id="addRoleMenu" parameterType="java.util.List" >
         insert into t_role_menu(role_id,menu_id) 

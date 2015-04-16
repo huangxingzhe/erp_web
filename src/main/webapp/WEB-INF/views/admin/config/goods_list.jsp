@@ -37,6 +37,8 @@
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="goods.label.code"/></span></td>
 						<td width="100" height=28 class=biaoti><span
+							class="searchzone"><spring:message code="goods.label.type"/></span></td>
+						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="goods.label.status"/></span></td>
 						<td class=biaoti width=50><span class="searchzone">
 							<spring:message code="admin.label.op"/>
@@ -47,6 +49,7 @@
 							<td class=content>&nbsp;</td>
 							<td class=content>${goods.name}</td>
 							<td class=content>${goods.code}</td>
+							<td class=content>${goods.type}</td>
 							<td class=content>
 								<c:if test="${goods.status==1}"><spring:message code="admin.label.normal"/></c:if>
 				    			<c:if test="${goods.status==2}"><spring:message code="admin.label.unnormal"/></c:if>

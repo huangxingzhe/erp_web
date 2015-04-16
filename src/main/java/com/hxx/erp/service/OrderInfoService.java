@@ -17,4 +17,5 @@ public interface OrderInfoService extends BaseService<OrderInfo>{
 	
 	public Map<String,Object> totalStat(Map<String,Object> params) throws Exception;
 
+	public String getMaxPayNo(Map<String,Object> params) throws Exception;
 }

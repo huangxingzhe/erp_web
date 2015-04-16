@@ -16,5 +16,7 @@ public interface OrderInfoDao extends BaseDao<OrderInfo>{
 	public int updateType(int id,int type) throws Exception;
 	
 	public Map<String,Object> totalStat(Map<String,Object> params) throws Exception;
+	
+	public String getMaxPayNo(Map<String,Object> params) throws Exception;
 
 }

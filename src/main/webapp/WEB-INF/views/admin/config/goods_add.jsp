@@ -36,6 +36,12 @@
     </td>
    </tr>
    <tr>
+    <td align=middle width=100 height=30><spring:message code="goods.label.type"/></td>
+    <td height=30>
+    	<input name="type" value="${goods.type}" id="type"/>
+    </td>
+   </tr>
+   <tr>
     <td align=middle width=100 height=30><spring:message code="goods.label.status"/></td>
     <td height=30>
     	<select name="status" id="status">
@@ -69,11 +75,13 @@
 	            	var v = jQuery("#form").validate({
 	        			rules: {
 	        				name:"required",
-	        				code:"required"
+	        				code:"required",
+	        				type:"required"
 	        			},
 	        			messages: {
 	        				name: $.i18n.prop('goods_name'),
-	        				code: $.i18n.prop('goods_code')
+	        				code: $.i18n.prop('goods_code'),
+	        				type: $.i18n.prop('goods_type')
 	        			},
 	        			submitHandler: function(form) {
 	        				jQuery(form).ajaxSubmit({  
