@@ -108,52 +108,67 @@ function getStatusName(statusName,process,clss){
    		</select>
     </td>
    </tr>
-   <tr>
+    <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.receiveUser"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="receiveUser" value="${order.receiveUser}" id="receiveUser" readonly="readonly" />
+    	<input name="receiveUser" value="${order.receiveUser}" id="receiveUser" readonly="readonly"/>
     </td>
-    <td class=title_bg  width=100 height=30><spring:message code="order.label.receiveMoney"/>：</td>
+     <td class=title_bg  width=100 height=30><spring:message code="order.label.cnReceiverPhone"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="receiveMoney" value="${order.receiveMoney}" id="receiveMoney" readonly="readonly" />
+    	<input name="cnReceiverPhone" value="${order.cnReceiverPhone}" id="cnReceiverPhone" readonly="readonly"/>
     </td>
    </tr>
    <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.borderLogistics"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="borderLogistics" value="${order.borderLogistics}" id="borderLogistics" readonly="readonly" />
+    	<input name="borderLogistics" value="${order.borderLogistics}" id="borderLogistics" readonly="readonly"/>
     </td>
      <td class=title_bg  width=100 height=30><spring:message code="order.label.borderPhone"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="borderPhone" value="${order.borderPhone}" id="borderPhone" readonly="readonly" />
+    	<input name="borderPhone" value="${order.borderPhone}" id="borderPhone" readonly="readonly"/>
     </td>
    </tr>
    <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.cnFare"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="cnFare" value="${order.cnFare}" id="cnFare" readonly="readonly" />
+    	<input name="cnFare" value="${order.cnFare}" id="cnFare" onblur="isPriceNumber(this)"   readonly="readonly"/>
     </td>
-     <td class=title_bg  width=100 height=30><spring:message code="order.label.vnFare"/>：</td>
+     <td class=title_bg  width=100 height=30><spring:message code="order.label.vnFare" />：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="vnFare" value="${order.vnFare}" id="vnFare" readonly="readonly" />
+    	<input name="vnFare" value="${order.vnFare}" id="vnFare"  onblur="isPriceNumber(this)" readonly="readonly" />
     </td>
    </tr>
    <tr>
-    <td class=title_bg  width=100 height=30><spring:message code="order.label.cnReceiverPhone"/>：</td>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.fee"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="cnReceiverPhone" value="${order.cnReceiverPhone}" id="cnReceiverPhone" readonly="readonly" />
+    	<input name="fee" value="${order.fee}" id="fee" onblur="isPriceNumber(this)"  readonly="readonly"/>
     </td>
-     <td class=title_bg  width=100 height=30><spring:message code="order.label.vnReceiverPhone"/>：</td>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.receiveMoney"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="vnReceiverPhone" value="${order.vnReceiverPhone}" id="vnReceiverPhone" readonly="readonly" />
+    	<input name="receiveMoney" value="${order.receiveMoney}" id="receiveMoney" onblur="isPriceNumber(this)" readonly="readonly" />
     </td>
+    
    </tr>
     <tr>
      <td class=title_bg  width=100 height=30><spring:message code="order.label.getGoodsUser"/>：</td>
-     <td height=30 style="padding-left:10px;" colspan="3">
-    	<input name="getGoodsUser" value="${order.getGoodsUser}" id="getGoodsUser" readonly="readonly" />
+     <td height=30 style="padding-left:10px;">
+    	<input name="getGoodsUser" value="${order.getGoodsUser}" id="getGoodsUser" readonly="readonly"/>
     </td>
-    
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.makeOrderUser"/>：</td>
+    <td height=30 style="padding-left:10px;">
+     	<c:if test="${order.id>0}">
+    	<input name="userId" value="${order.userId}" id="userId" readonly="readonly"/>
+    	</c:if>
+    	<c:if test="${order==null||order.id==0}">
+    	<input name="userId" value="${sessionScope.session_login_admin_name}" id="userId" readonly="readonly"/>
+    	</c:if>
+    </td>
+   </tr>
+    <tr>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.vnReceiverPhone"/>：</td>
+    <td height=30 style="padding-left:10px;" colspan="3">
+    	<input name="vnReceiverPhone" value="${order.vnReceiverPhone}" id="vnReceiverPhone" readonly="readonly"/>
+    </td>
    </tr>
    <tr>
      <td class=title_bg  width=100 height=30><spring:message code="order.label.mark"/>：</td>

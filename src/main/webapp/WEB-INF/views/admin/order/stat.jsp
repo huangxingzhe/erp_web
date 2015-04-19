@@ -24,7 +24,7 @@
 	<tr>
 	  <td class="tx-c"><spring:message code="order.label.goodsName"/></td>
       <td>
-      	<select name="goodsName" id="goodsName">
+      	<select name="goodsName" id="goodsName" style="width:160px;">
     		<option value=""><spring:message code="admin.label.select"/></option>
 	    	<c:forEach items="${goodss}" var="goods">
 	   			<option label="${goods.name}" value="${goods.name}" 
@@ -35,7 +35,7 @@
 	  </td> 
 	  <td height="30" class="tx-c"><spring:message code="order.label.providerName"/></td>
       <td>
-      	<select name="providerName" id="providerName">
+      	<select name="providerName" id="providerName" style="width:160px;">
     		<option value=""><spring:message code="admin.label.select"/></option>
     		<c:forEach items="${providers}" var="provider">
     			<option label="${provider.name}" value="${provider.name}" 

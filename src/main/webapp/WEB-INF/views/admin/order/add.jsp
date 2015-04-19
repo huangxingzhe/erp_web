@@ -50,7 +50,7 @@ function getStatusName(statusName,process,clss){
   <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.providerName"/>：</td>
     <td height=30 style="padding-left:12px;">
-    	<select name="providerName" id="providerName" style="width:153px;">
+    	<select name="providerName" id="providerName" style="width:160px;">
     		<option value=""><spring:message code="admin.label.select"/></option>
     		<c:forEach items="${providers}" var="provider">
     			<option label="${provider.name}" value="${provider.name}" 
@@ -61,7 +61,7 @@ function getStatusName(statusName,process,clss){
     </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.goodsName"/>：</td>
     <td height=30 style="padding-left:12px;">
-    	<select name="goodsName" id="goodsName" style="width:153px;" onchange="getPayNo(this)">
+    	<select name="goodsName" id="goodsName" style="width:160px;" onchange="getPayNo(this)">
     		<option value=""><spring:message code="admin.label.select"/></option>
 	    	<c:forEach items="${goodss}" var="goods">
 	   			<option label="${goods.name}" value="${goods.name}" 
@@ -105,7 +105,7 @@ function getStatusName(statusName,process,clss){
    <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.borderAddr"/>：</td>
     <td height=30 style="padding-left:12px;">
-    	<select name="borderAddr" id="borderAddr" style="width:153px;">
+    	<select name="borderAddr" id="borderAddr" style="width:160px;">
     		<option value=""><spring:message code="admin.label.select"/></option>
    			<option value="1" <c:if test="${order.borderAddr==1}">selected</c:if>>
    			<spring:message code="order.label.border.dongxing"/></option>
@@ -115,7 +115,7 @@ function getStatusName(statusName,process,clss){
     </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.goalAddr"/>：</td>
     <td height=30 style="padding-left:12px;">
-    	<select name="goalAddr" id="goalAddr" style="width:153px;">
+    	<select name="goalAddr" id="goalAddr" style="width:160px;">
     		<option value=""><spring:message code="admin.label.select"/></option>
 	    	<option value="1" <c:if test="${order.goalAddr==1}">selected</c:if>>
    			<spring:message code="order.label.goal.hn"/></option>
@@ -129,9 +129,9 @@ function getStatusName(statusName,process,clss){
     <td height=30 style="padding-left:10px;">
     	<input name="receiveUser" value="${order.receiveUser}" id="receiveUser"/>
     </td>
-    <td class=title_bg  width=100 height=30><spring:message code="order.label.receiveMoney"/>：</td>
+     <td class=title_bg  width=100 height=30><spring:message code="order.label.cnReceiverPhone"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="receiveMoney" value="${order.receiveMoney}" id="receiveMoney" onblur="isPriceNumber(this)"  />
+    	<input name="cnReceiverPhone" value="${order.cnReceiverPhone}" id="cnReceiverPhone"/>
     </td>
    </tr>
    <tr>
@@ -155,19 +155,35 @@ function getStatusName(statusName,process,clss){
     </td>
    </tr>
    <tr>
-    <td class=title_bg  width=100 height=30><spring:message code="order.label.cnReceiverPhone"/>：</td>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.fee"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="cnReceiverPhone" value="${order.cnReceiverPhone}" id="cnReceiverPhone"/>
+    	<input name="fee" value="${order.fee}" id="fee" onblur="isPriceNumber(this)"  />
     </td>
-     <td class=title_bg  width=100 height=30><spring:message code="order.label.vnReceiverPhone"/>：</td>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.receiveMoney"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="vnReceiverPhone" value="${order.vnReceiverPhone}" id="vnReceiverPhone"/>
+    	<input name="receiveMoney" value="${order.receiveMoney}" id="receiveMoney" onblur="isPriceNumber(this)"  />
     </td>
+    
    </tr>
     <tr>
      <td class=title_bg  width=100 height=30><spring:message code="order.label.getGoodsUser"/>：</td>
-     <td height=30 style="padding-left:10px;" colspan="3">
+     <td height=30 style="padding-left:10px;">
     	<input name="getGoodsUser" value="${order.getGoodsUser}" id="getGoodsUser"/>
+    </td>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.makeOrderUser"/>：</td>
+    <td height=30 style="padding-left:10px;">
+     	<c:if test="${order.id>0}">
+    	<input name="userId" value="${order.userId}" id="userId" readonly="readonly"/>
+    	</c:if>
+    	<c:if test="${order==null||order.id==0}">
+    	<input name="userId" value="${sessionScope.session_login_admin_name}" id="userId" readonly="readonly"/>
+    	</c:if>
+    </td>
+   </tr>
+    <tr>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.vnReceiverPhone"/>：</td>
+    <td height=30 style="padding-left:10px;" colspan="3">
+    	<input name="vnReceiverPhone" value="${order.vnReceiverPhone}" id="vnReceiverPhone"/>
     </td>
     
    </tr>
@@ -495,6 +511,10 @@ function getStatusName(statusName,process,clss){
 	        				var vnFare = $.trim($("#vnFare").val());
 	        				if(vnFare==''){
 	        					$("#vnFare").val(0.00);
+	        				}
+	        				var fee = $.trim($("#fee").val());
+	        				if(fee==''){
+	        					$("#fee").val(0.00);
 	        				}
 	        				var receiveMoney = $.trim($("#receiveMoney").val());
 	        				if(receiveMoney==''){

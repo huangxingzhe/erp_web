@@ -119,13 +119,10 @@ Log log = LogFactory.getLog(this.getClass());
 			}
 			
 			String account = (String)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_ACCOUNT);
-			if(account == null)
-				return ret;
 			if(order.getId() == 0){
 				order.setStatus(1);//待发货
 				order.setCreateTime(new Date());
 				order.setUpdateTime(new Date());
-				order.setUserId(account);
 				service.add(order);
 				for(int i=0;i<cusNos.length;i++){
 					addOrderCustomer(order,cusNos[i],orderCodes[i],amounts[i],sendNums[i],realNums[i],new Date());
@@ -177,6 +174,7 @@ Log log = LogFactory.getLog(this.getClass());
 		String orderCode = request.getParameter("orderCode");//客户订单号
 		String goodsName = request.getParameter("goodsName");
 		String logisticsOrder = request.getParameter("logisticsOrder");
+		String logisticsName = request.getParameter("logisticsName");
 		String providerName = request.getParameter("providerName");
 		String startPayTime = request.getParameter("startPayTime");
 		String endPayTime = request.getParameter("endPayTime");
@@ -194,6 +192,7 @@ Log log = LogFactory.getLog(this.getClass());
 			params.put("payNo", payNo);
 			params.put("goodsName", goodsName);
 			params.put("logisticsOrder", logisticsOrder);
+			params.put("logisticsName", logisticsName);
 			params.put("providerName",providerName );
 			params.put("startPayTime",startPayTime);
 			params.put("endPayTime",endPayTime);
@@ -217,16 +216,21 @@ Log log = LogFactory.getLog(this.getClass());
 			int nums = 0;
 			double amounts = 0;
 			double receiveMoney =0;
+			Map<String,Object> orderIdParam = new HashMap<String,Object>();
 			for(OrderInfo o: orderInfos){
 				nums+=o.getNum();
 				amounts+=o.getAmount();
 				receiveMoney+=o.getReceiveMoney();
 				if(o.getReceiveMoney()>0){
-					double all = o.getAmount()+o.getCnFare()+o.getVnFare();
+					double all = o.getAmount()+o.getCnFare()+o.getVnFare()+o.getFee();
 					o.setProfit((o.getReceiveMoney()-all)/o.getReceiveMoney());
 				}else{
 					o.setProfit(0);
 				}
+				orderIdParam.put("orderId", o.getId());
+				List<OrderCustomer> oCusList = oCusService.queryList(orderIdParam);
+				o.setoCusList(oCusList);
+				orderIdParam.clear();
 				
 			}
 			model.addAttribute("orders", orderInfos);
@@ -241,6 +245,7 @@ Log log = LogFactory.getLog(this.getClass());
 			model.addAttribute("orderCode", orderCode);
 			model.addAttribute("goodsName", goodsName);
 			model.addAttribute("logisticsOrder", logisticsOrder);
+			model.addAttribute("logisticsName", logisticsName);
 			model.addAttribute("providerName", providerName);
 			model.addAttribute("startPayTime", startPayTime);
 			model.addAttribute("endPayTime", endPayTime);
@@ -356,11 +361,6 @@ Log log = LogFactory.getLog(this.getClass());
 			ExportData.exportByProperties(orderInfos,"货物订单明细表", head,properties,types, width, width.length, response);
 		} catch (Exception e) {
 			log.error("",e);
-			/*response.setContentType("text/html;charset=utf-8");
-			PrintWriter out=response.getWriter();
-			out.println(false);    
-			out.flush();
-			out.close();*/
 		}
 		return null;
 	}
@@ -454,13 +454,6 @@ Log log = LogFactory.getLog(this.getClass());
 				service.update(order);
 				OrderTime ot = new OrderTime();
 				ot.setFinishTime(new Date());
-//				if(order.getGoalAddr().endsWith(GOAL_ADDR_HN) && Integer.valueOf(status) ==6){//6表示正发往河内或胡志明
-//					ot.setStatus(Integer.valueOf(status));
-//					item = Integer.valueOf(status)-1;
-//				}else{
-//					ot.setStatus(Integer.valueOf(status)+1);
-//					item = Integer.valueOf(status);
-//				}
 				ot.setStatus(Integer.valueOf(status)+1);
 				item = Integer.valueOf(status);
 				ot.setOrderId(order.getId());

@@ -15,61 +15,101 @@
 <div class=namezone>订单情况
 <div class=tablezone>
 <div class=noticediv id=notice></div>
-<table cellspacing=0 cellpadding=2 width="100%" align=center border=0>
+<table cellspacing=0 cellpadding=3 width="100%" align=center border=0>
   <tbody>
+  	<tr class=list>
+		<td width="150" height=28 class=biaoti><span
+			class="searchzone">订单状态</span></td>
+		<td width="150" height=28 class=biaoti><span
+			class="searchzone">订单数</span></td>
+		<td width="150" height=28 class=biaoti><span
+			class="searchzone">货款金额(元)</span></td>
+		<td width="150" height=28 class=biaoti><span
+			class="searchzone">国内运费(元)</span></td>
+		<td width="150" height=28 class=biaoti><span
+			class="searchzone">越南运费(元)</span></td>
+		<td width="150" height=28 class=biaoti><span
+			class="searchzone">账转费用(元)</span></td>
+	</tr>						
    <tr>
-    <td width="200" class="content"><spring:message code="order.label.desktop.peddingsend"/>：</td>
-    <td width=150 class="content"><a id="s1" href="javascript:void(0)" onclick="gotoUrl(1)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
-    <td width="200" class="content">总金额：</td>
-    <td width=150 class="content">￥<a id="n1" href="javascript:void(0)" onclick="gotoUrl(1)" style="color:red;text-decoration:underline">0</a>元</td>
+    <td width="150" class="content"><spring:message code="order.label.desktop.peddingsend"/>：</td>
+    <td width=150 class="content"><a id="s1" href="javascript:void(0)" onclick="gotoUrl(1)" style="color:red;text-decoration:underline"> 0 </a></td>
+    <td width=150 class="content"><a id="n1" href="javascript:void(0)" onclick="gotoUrl(1)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="c1" href="javascript:void(0)" onclick="gotoUrl(1)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="v1" href="javascript:void(0)" onclick="gotoUrl(1)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="f1" href="javascript:void(0)" onclick="gotoUrl(1)" style="color:red;text-decoration:underline">0</a></td>
   </tr>
   <tr bgcolor="f2f9fd">
-    <td width="200" class="content"><spring:message code="order.label.desktop.sendtoborder"/>：</td>
-    <td width=150 class="content"><a id="s2" href="javascript:void(0)" onclick="gotoUrl(2)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
-    <td width="200" class="content">总金额：</td>
-    <td width=150 class="content">￥<a id="n2" href="javascript:void(0)" onclick="gotoUrl(2)" style="color:red;text-decoration:underline">0</a>元</td>
+    <td width="150" class="content"><spring:message code="order.label.desktop.sendtoborder"/>：</td>
+    <td width=150 class="content"><a id="s2" href="javascript:void(0)" onclick="gotoUrl(2)" style="color:red;text-decoration:underline"> 0 </a></td>
+    <td width=150 class="content"><a id="n2" href="javascript:void(0)" onclick="gotoUrl(2)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="c2" href="javascript:void(0)" onclick="gotoUrl(2)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="v2" href="javascript:void(0)" onclick="gotoUrl(2)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="f2" href="javascript:void(0)" onclick="gotoUrl(2)" style="color:red;text-decoration:underline">0</a></td>
+ 	
   </tr>
    <tr>
-    <td width=200 class="content"><spring:message code="order.label.desktop.arriveborder"/>：</td>
-    <td width=150 class="content"><a id="s3" href="javascript:void(0)" onclick="gotoUrl(3)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
-    <td width=200 class="content">总金额：</td>
-    <td width=150 class="content">￥<a id="n3" href="javascript:void(0)" onclick="gotoUrl(3)" style="color:red;text-decoration:underline">0</a>元</td>
+    <td width=150 class="content"><spring:message code="order.label.desktop.arriveborder"/>：</td>
+    <td width=150 class="content"><a id="s3" href="javascript:void(0)" onclick="gotoUrl(3)" style="color:red;text-decoration:underline"> 0 </a></td>
+    <td width=150 class="content"><a id="n3" href="javascript:void(0)" onclick="gotoUrl(3)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="c3" href="javascript:void(0)" onclick="gotoUrl(3)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="v3" href="javascript:void(0)" onclick="gotoUrl(3)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="f3" href="javascript:void(0)" onclick="gotoUrl(3)" style="color:red;text-decoration:underline">0</a></td>
+  	
   </tr>
    <tr bgcolor="f2f9fd">
-    <td width=200 class="content"><spring:message code="order.label.desktop.hadget"/>：</td>
-    <td width=150 class="content"><a id="s4" href="javascript:void(0)" onclick="gotoUrl(4)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
-    <td width=200 class="content">总金额：</td>
-    <td width=150 class="content">￥<a id="n4" href="javascript:void(0)" onclick="gotoUrl(4)" style="color:red;text-decoration:underline">0</a>元</td>
+    <td width=150 class="content"><spring:message code="order.label.desktop.hadget"/>：</td>
+    <td width=150 class="content"><a id="s4" href="javascript:void(0)" onclick="gotoUrl(4)" style="color:red;text-decoration:underline"> 0 </a></td>
+    <td width=150 class="content"><a id="n4" href="javascript:void(0)" onclick="gotoUrl(4)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="c4" href="javascript:void(0)" onclick="gotoUrl(4)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="v4" href="javascript:void(0)" onclick="gotoUrl(4)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="f4" href="javascript:void(0)" onclick="gotoUrl(4)" style="color:red;text-decoration:underline">0</a></td>
+  	
   </tr>
    <tr>
-    <td width=200 class="content"><spring:message code="order.label.desktop.sendtohn"/>：</td>
-    <td width=150 class="content"><a id="s5" href="javascript:void(0)" onclick="gotoUrl(5)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
-    <td width=200 class="content">总金额：</td>
-    <td width=150 class="content">￥<a id="n5" href="javascript:void(0)" onclick="gotoUrl(5)" style="color:red;text-decoration:underline">0</a>元</td>
+    <td width=150 class="content"><spring:message code="order.label.desktop.sendtohn"/>：</td>
+    <td width=150 class="content"><a id="s5" href="javascript:void(0)" onclick="gotoUrl(5)" style="color:red;text-decoration:underline"> 0 </a></td>
+    <td width=150 class="content"><a id="n5" href="javascript:void(0)" onclick="gotoUrl(5)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="c5" href="javascript:void(0)" onclick="gotoUrl(5)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="v5" href="javascript:void(0)" onclick="gotoUrl(5)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="f5" href="javascript:void(0)" onclick="gotoUrl(5)" style="color:red;text-decoration:underline">0</a></td>
+  	
   </tr>
    <tr bgcolor="f2f9fd">
-    <td width=200 class="content"><spring:message code="order.label.desktop.sendtohcm"/>：</td>
-     <td width=150 class="content"><a id="s6" href="javascript:void(0)" onclick="gotoUrl(6)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
-    <td width=200 class="content">总金额：</td>
-    <td width=150 class="content">￥<a id="n6" href="javascript:void(0)" onclick="gotoUrl(6)" style="color:red;text-decoration:underline">0</a>元</td>
+    <td width=150 class="content"><spring:message code="order.label.desktop.sendtohcm"/>：</td>
+     <td width=150 class="content"><a id="s6" href="javascript:void(0)" onclick="gotoUrl(6)" style="color:red;text-decoration:underline"> 0 </a></td>
+    <td width=150 class="content"><a id="n6" href="javascript:void(0)" onclick="gotoUrl(6)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="c6" href="javascript:void(0)" onclick="gotoUrl(6)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="v6" href="javascript:void(0)" onclick="gotoUrl(6)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="f6" href="javascript:void(0)" onclick="gotoUrl(6)" style="color:red;text-decoration:underline">0</a></td>
+  	
   </tr>
   <tr>
-    <td width=200 class="content"><spring:message code="order.label.desktop.goodsinware"/>：</td>
-    <td width=150 class="content"><a id="s7" href="javascript:void(0)" onclick="gotoUrl(7)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
-    <td width=200 class="content">总金额：</td>
-    <td width=150 class="content">￥<a id="n7" href="javascript:void(0)" onclick="gotoUrl(7)" style="color:red;text-decoration:underline">0</a>元</td>
+    <td width=150 class="content"><spring:message code="order.label.desktop.goodsinware"/>：</td>
+    <td width=150 class="content"><a id="s7" href="javascript:void(0)" onclick="gotoUrl(7)" style="color:red;text-decoration:underline"> 0 </a></td>
+    <td width=150 class="content"><a id="n7" href="javascript:void(0)" onclick="gotoUrl(7)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="c7" href="javascript:void(0)" onclick="gotoUrl(7)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="v7" href="javascript:void(0)" onclick="gotoUrl(7)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="f7" href="javascript:void(0)" onclick="gotoUrl(7)" style="color:red;text-decoration:underline">0</a></td>
+ 	
+  </tr>
+  <tr bgcolor="f2f9fd">
+    <td width=150 class="content"><spring:message code="order.label.desktop.peddingreceivemoney"/>：</td>
+    <td width=150 class="content"><a id="s8" href="javascript:void(0)" onclick="gotoUrl(8)" style="color:red;text-decoration:underline"> 0 </a></td>
+    <td width=150 class="content"><a id="n8" href="javascript:void(0)" onclick="gotoUrl(8)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="c8" href="javascript:void(0)" onclick="gotoUrl(8)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="v8" href="javascript:void(0)" onclick="gotoUrl(8)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="f8" href="javascript:void(0)" onclick="gotoUrl(8)" style="color:red;text-decoration:underline">0</a></td>
+  	
   </tr>
   <tr>
-    <td width=200 class="content"><spring:message code="order.label.desktop.peddingreceivemoney"/>：</td>
-    <td width=150 class="content"><a id="s8" href="javascript:void(0)" onclick="gotoUrl(8)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
-    <td width=200 class="content">总金额：</td>
-    <td width=150 class="content">￥<a id="n8" href="javascript:void(0)" onclick="gotoUrl(8)" style="color:red;text-decoration:underline">0</a>元</td>
-  </tr>
-  <tr>
-    <td width=200 class="content"><spring:message code="order.label.desktop.finish"/>：</td>
-    <td width=150 class="content"><a id="s9" href="javascript:void(0)" onclick="gotoUrl(9)" style="color:red;text-decoration:underline"> 0 </a>笔</td>
-    <td width=200 class="content">总金额：</td>
-    <td width=150 class="content">￥<a id="n9" href="javascript:void(0)" onclick="gotoUrl(9)" style="color:red;text-decoration:underline">0</a>元</td>
+    <td width=150 class="content"><spring:message code="order.label.desktop.finish"/>：</td>
+    <td width=150 class="content"><a id="s9" href="javascript:void(0)" onclick="gotoUrl(9)" style="color:red;text-decoration:underline"> 0 </a></td>
+    <td width=150 class="content"><a id="n9" href="javascript:void(0)" onclick="gotoUrl(9)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="c9" href="javascript:void(0)" onclick="gotoUrl(9)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="v9" href="javascript:void(0)" onclick="gotoUrl(9)" style="color:red;text-decoration:underline">0</a></td>
+    <td width=150 class="content"><a id="f9" href="javascript:void(0)" onclick="gotoUrl(9)" style="color:red;text-decoration:underline">0</a></td>
+ 	
   </tr>
    </tbody>
 </table>

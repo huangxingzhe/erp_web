@@ -27,6 +27,7 @@
 	        <result property="borderPhone" column="border_phone" /> 
 	        <result property="cnFare" column="cn_fare" />  
 	        <result property="vnFare" column="vn_fare" /> 
+	        <result property="fee" column="fee" /> 
 	        <result property="getGoodsUser" column="get_goods_user" /> 
 	        <result property="cnReceiverPhone" column="cn_receiver_phone" />
 	        <result property="vnReceivePhone" column="vn_receive_phone" />   
@@ -41,12 +42,12 @@
         <insert id="add" parameterType="orderInfo" useGeneratedKeys="true" keyProperty="id">
             INSERT INTO t_order_info (amount, pay_no,pay_time, provider_name, 
             goods_name,num,border_addr,goal_addr,receive_user,status,user_id,create_time,update_time,
-            logistics_name,logistics_order,pic_url,border_logistics,border_phone,cn_fare,vn_fare,get_goods_user,
+            logistics_name,logistics_order,pic_url,border_logistics,border_phone,cn_fare,vn_fare,fee,get_goods_user,
             cn_receiver_phone,vn_receiver_phone,receive_money,mark)
             VALUES(#{amount},#{payNo},#{payTime},#{providerName},#{goodsName},#{num},
             #{borderAddr},#{goalAddr},#{receiveUser},#{status},#{userId},#{createTime},#{updateTime},
             #{logisticsName},#{logisticsOrder},#{picUrl},#{borderLogistics},#{borderPhone},#{cnFare},#{vnFare},
-            #{getGoodsUser},#{cnReceiverPhone},#{vnReceiverPhone},#{receiveMoney},#{mark})
+            #{fee},#{getGoodsUser},#{cnReceiverPhone},#{vnReceiverPhone},#{receiveMoney},#{mark})
         </insert>
         
         <update id="update" parameterType="orderInfo" >
@@ -55,7 +56,7 @@
         	num=#{num},border_addr=#{borderAddr},goal_addr=#{goalAddr},receive_user=#{receiveUser},
         	status=#{status},user_id=#{userId},update_time=#{updateTime},
         	logistics_name=#{logisticsName}, logistics_order=#{logisticsOrder},pic_url=#{picUrl},
-        	border_logistics=#{borderLogistics},border_phone=#{borderPhone},cn_fare=#{cnFare},vn_fare=#{vnFare},
+        	border_logistics=#{borderLogistics},border_phone=#{borderPhone},cn_fare=#{cnFare},vn_fare=#{vnFare},fee=#{fee},
             get_goods_user=#{getGoodsUser},cn_receiver_phone=#{cnReceiverPhone},vn_receiver_phone=#{vnReceiverPhone},
             receive_money= #{receiveMoney},mark=#{mark}
         	where id=#{id}
@@ -77,11 +78,11 @@
 			(SELECT COUNT(*) s9 FROM t_order_info WHERE type=0 and STATUS=9)AS s9)
         </select>
          <select id="queryCountAndAmount" resultType="java.util.Map">
-			SELECT * FROM ((SELECT COUNT(*) s1 ,SUM(amount) AS n1 FROM t_order_info WHERE TYPE=0 AND STATUS=1)AS s1,(SELECT COUNT(*) s2 ,SUM(amount) AS n2 FROM t_order_info WHERE TYPE=0 AND STATUS=2)AS s2,
-			(SELECT COUNT(*)s3 ,SUM(amount) AS n3 FROM t_order_info WHERE TYPE=0 AND STATUS=3)AS s3,(SELECT COUNT(*)s4,SUM(amount) AS n4 FROM t_order_info WHERE TYPE=0 AND STATUS=4)AS s4,(SELECT COUNT(*) s5
-			,SUM(amount) AS n5 FROM t_order_info WHERE TYPE=0 AND STATUS=5)AS s5,(SELECT COUNT(*) s6,SUM(amount) AS n6 FROM t_order_info WHERE TYPE=0 AND STATUS=6)AS s6,
-			(SELECT COUNT(*) s7,SUM(amount) AS n7 FROM t_order_info WHERE TYPE=0 AND STATUS=7)AS s7,(SELECT COUNT(*) s8,SUM(amount) AS n8 FROM t_order_info WHERE TYPE=0 AND STATUS=8)AS s8,
-			(SELECT COUNT(*) s9,SUM(amount) AS n9 FROM t_order_info WHERE TYPE=0 AND STATUS=9)AS s9)
+			SELECT * FROM ((SELECT COUNT(*) s1 ,SUM(amount) AS n1,SUM(cn_fare) c1,SUM(vn_fare) v1,SUM(fee) f1 FROM t_order_info WHERE TYPE=0 AND STATUS=1)AS s1,(SELECT COUNT(*) s2 ,SUM(amount) AS n2 ,SUM(cn_fare) c2,SUM(vn_fare) v2,SUM(fee) f2 FROM t_order_info WHERE TYPE=0 AND STATUS=2)AS s2,
+			(SELECT COUNT(*)s3 ,SUM(amount) AS n3,SUM(cn_fare) c3,SUM(vn_fare) v3,SUM(fee) f3  FROM t_order_info WHERE TYPE=0 AND STATUS=3)AS s3,(SELECT COUNT(*)s4,SUM(amount) AS n4,SUM(cn_fare) c4,SUM(vn_fare) v4,SUM(fee) f4 FROM t_order_info WHERE TYPE=0 AND STATUS=4)AS s4,(SELECT COUNT(*) s5
+			,SUM(amount) AS n5,SUM(cn_fare) c5,SUM(vn_fare) v5,SUM(fee) f5 FROM t_order_info WHERE TYPE=0 AND STATUS=5)AS s5,(SELECT COUNT(*) s6,SUM(amount) AS n6,SUM(cn_fare) c6,SUM(vn_fare) v6,SUM(fee) f6 FROM t_order_info WHERE TYPE=0 AND STATUS=6)AS s6,
+			(SELECT COUNT(*) s7,SUM(amount) AS n7,SUM(cn_fare) c7,SUM(vn_fare) v7,SUM(fee) f7 FROM t_order_info WHERE TYPE=0 AND STATUS=7)AS s7,(SELECT COUNT(*) s8,SUM(amount) AS n8,SUM(cn_fare) c8,SUM(vn_fare) v8,SUM(fee) f8 FROM t_order_info WHERE TYPE=0 AND STATUS=8)AS s8,
+			(SELECT COUNT(*) s9,SUM(amount) AS n9,SUM(cn_fare) c9,SUM(vn_fare) v9,SUM(fee) f9 FROM t_order_info WHERE TYPE=0 AND STATUS=9)AS s9)
         </select>
         <select id="queryListByPage" resultMap="orderInfoDaoMapperResultMap" parameterType="java.util.Map">
              select * from t_order_info where type=0
@@ -96,6 +97,9 @@
 	             </if>
 	             <if test="logisticsOrder!=null and logisticsOrder !=''">
 	             	and logistics_order =#{logisticsOrder}
+	             </if>
+	             <if test="logisticsName!=null and logisticsName !=''">
+	             	and logistics_name like CONCAT('%','${logisticsName}','%' ) 
 	             </if>
 	             <if test="providerName!=null and providerName !=''">
 	             	and provider_name =#{providerName}

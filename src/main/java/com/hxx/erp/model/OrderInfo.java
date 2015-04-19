@@ -32,6 +32,7 @@ public class OrderInfo {
 	private String borderPhone;//边界货运电话
 	private double cnFare;//国内运费
 	private double vnFare;//越南运费
+	private double fee;//转账手续费
 	private String getGoodsUser;//提货人
 	private String cnReceiverPhone;//国内收货人电话
 	private String vnReceiverPhone;//越南收货联系电话
@@ -39,6 +40,7 @@ public class OrderInfo {
 	private String mark;//备注
 	private double profit;//利润率
 	private List<OrderTime> times;
+	private List<OrderCustomer> oCusList;
 	
 	
 	
@@ -270,5 +272,17 @@ public class OrderInfo {
 	public void setTimes(List<OrderTime> times) {
 		this.times = times;
 	}
-	
+	public double getFee() {
+		return fee;
+	}
+	public void setFee(double fee) {
+		this.fee = fee;
+	}
+	public List<OrderCustomer> getoCusList() {
+		return oCusList;
+	}
+	public void setoCusList(List<OrderCustomer> oCusList) {
+		this.oCusList = oCusList;
+	}
+
 }

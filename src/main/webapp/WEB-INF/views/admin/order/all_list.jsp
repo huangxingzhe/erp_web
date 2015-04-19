@@ -13,6 +13,7 @@
 <link href="../../images/style.css" type=text/css rel=stylesheet>
 <link href="../../js/getdate/skin/WdatePicker.css" rel="stylesheet" type="text/css">
 <script language="javascript" type="text/javascript" src="../../js/getdate/WdatePicker.js"></script>
+<script type="text/javascript" src="../../js/jquery.min.js"></script>
 
 </head>
 
@@ -26,9 +27,17 @@
       <td><input name="cusNo" type="text" value="${cusNo}" maxlength="11" id="cusNo" class="dtext" /></td>
 	  <td height="30" class="tx-c"><spring:message code="order.customer.cusOrderNo"/></td>
       <td><input name="orderCode" type="text" value="${orderCode}" maxlength="11" id="orderCode" class="dtext" /></td>
-	  <td class="tx-c"><spring:message code="order.label.goodsName"/></td>
+       <td  height="30" class="tx-c"><spring:message code="order.label.payNo"/></td>
+      <td><input name="payNo" type="text" value="${payNo}" maxlength="11" id="payNo" class="dtext" /></td>
+    </tr>
+    <tr>
+      <td  height="30" class="tx-c"><spring:message code="order.label.logisticsOrder"/></td>
+      <td><input name="logisticsOrder" type="text" value="${logisticsOrder}" maxlength="11" id="logisticsOrder" class="dtext" /></td>
+      <td  height="30" class="tx-c"><spring:message code="order.label.logisticsName"/></td>
+      <td><input name="logisticsName" type="text" value="${logisticsName}" maxlength="11" id="logisticsName" class="dtext" /></td>
+      <td class="tx-c"><spring:message code="order.label.goodsName"/></td>
       <td>
-      	<select name="goodsName" id="goodsName">
+      	<select name="goodsName" id="goodsName" style="width:160px;">
     		<option value=""><spring:message code="admin.label.select"/></option>
 	    	<c:forEach items="${goodss}" var="goods">
 	   			<option label="${goods.name}" value="${goods.name}" 
@@ -37,9 +46,12 @@
 	   		</c:forEach>
    		</select>
 	  </td> 
+    </tr>
+    <tr>
+     
 	  <td height="30" class="tx-c"><spring:message code="order.label.providerName"/></td>
-      <td>
-      	<select name="providerName" id="providerName">
+      <td >
+      	<select name="providerName" id="providerName" style="width:160px;">
     		<option value=""><spring:message code="admin.label.select"/></option>
     		<c:forEach items="${providers}" var="provider">
     			<option label="${provider.name}" value="${provider.name}" 
@@ -48,13 +60,7 @@
     		</c:forEach>
     	</select>
       </td>
-    </tr>
-    <tr>
-      <td  height="30" class="tx-c"><spring:message code="order.label.payNo"/></td>
-      <td><input name="payNo" type="text" value="${payNo}" maxlength="11" id="payNo" class="dtext" /></td>
-      <td  height="30" class="tx-c"><spring:message code="order.label.logisticsOrder"/></td>
-      <td><input name="logisticsOrder" type="text" value="${logisticsOrder}" maxlength="11" id="logisticsOrder" class="dtext" /></td>
-      <td  class="tx-c"><spring:message code="order.label.payTime"/></td>
+         <td  class="tx-c"><spring:message code="order.label.payTime"/></td>
       <td colspan="3">
       	<input name="startPayTime" type="text" id="startPayTime" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'});" value="${startPayTime}" readonly=true style="width:150px;" />
       	TO
@@ -92,41 +98,15 @@
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.payNo"/></span></td>
 						<td width="100" height=28 class=biaoti><span
+							class="searchzone"><spring:message code="order.customer.cusName"/></span></td>
+						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.providerName"/></span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.goodsName"/></span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.payTime"/></span></td>
 						<td width="100" height=28 class=biaoti><span
-							class="searchzone">
-							<c:if test="${status==1}">
-								<spring:message code="order.label.createTime"/>
-							</c:if>
-							<c:if test="${status==2}">
-								<spring:message code="order.label.sendTime"/>
-							</c:if>
-							<c:if test="${status==3}">
-								<spring:message code="order.label.boderTime"/>
-							</c:if>
-							<c:if test="${status==4}">
-								<spring:message code="order.label.arriveTime"/>
-							</c:if>
-							<c:if test="${status==5}">
-								<spring:message code="order.label.getTime"/>
-							</c:if>
-							<c:if test="${status==6}">
-								<spring:message code="order.label.getTime"/>
-							</c:if>
-							<c:if test="${status==7}">
-								<spring:message code="order.label.inWareTime"/>
-							</c:if>
-							<c:if test="${status==8}">
-									<spring:message code="order.label.customerTime"/>
-							</c:if>
-							<c:if test="${status==9}">
-								<spring:message code="order.label.moneyTime"/>
-							</c:if>
-							</span></td>
+							class="searchzone"><spring:message code="order.label.updateTime"/></span></td>
 						<td width="70" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.days"/></span></td>
 						<td width="100" height=28 class=biaoti><span
@@ -153,8 +133,28 @@
 						<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#f2f9fd'" onmouseout="this.bgColor='#FFFFFF'" id="order${order.id}">
 							<td height=25 class=content>${st.index+1}</td>
 							<td class=content>${order.payNo}</td>
-							<td class=content>${order.providerName}</td>
-							<td class=content>${order.goodsName}</td>
+							<td class=content >
+								<script>
+									var name ="";
+									var oId = ${order.id};
+								</script>
+								<c:forEach items="${order.oCusList}" var="ocus" varStatus="ot">
+									<script> 
+										name+="${ocus.cusName} | ";
+									</script>
+									<c:if test="${ot.index<3}">
+										${ocus.cusName}<br>
+									</c:if>
+									<c:if test="${ot.index>2 && ot.last}">
+										<span title="" id="cusName${order.id}">...</span>
+										<script> 
+											$("#cusName"+oId).attr("title",name);
+										</script>
+									</c:if>
+								</c:forEach>
+							</td>
+							<td class=content width=100>${order.providerName}</td>
+							<td class=content width=100>${order.goodsName}</td>
 							<td class=content>${fn:substring(order.payTime, 0, 19)}</td>
 							<td class=content title="<spring:message code="order.label.createTime"/>:<fmt:formatDate value="${order.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"><fmt:formatDate value="${order.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 							<td class=content>${order.days}<spring:message code="order.label.date"/></td>
@@ -168,7 +168,7 @@
 								<c:if test="${order.goalAddr==2}"><spring:message code="order.label.goal.hcm"/></c:if>
 							</td>
 							<td class=content>${order.num}</td>
-							<td class=content title="<spring:message code="order.label.cnFare"/>:${order.cnFare}&nbsp;<spring:message code="order.label.vnFare"/>:${order.vnFare}">
+							<td class=content title="<spring:message code="order.label.cnFare"/>:${order.cnFare}&nbsp;<spring:message code="order.label.vnFare"/>:${order.vnFare}&nbsp;<spring:message code="order.label.fee"/>:${order.fee}">
 								<fmt:formatNumber type="number" pattern="￥.00" value="${order.amount}" />
 							</td>
 							<td class=content>
