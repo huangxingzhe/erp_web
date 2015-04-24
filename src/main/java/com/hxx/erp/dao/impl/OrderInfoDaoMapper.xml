@@ -33,6 +33,7 @@
 	        <result property="vnReceivePhone" column="vn_receive_phone" />   
 	        <result property="receiveMoney" column="receive_money" />  
 	        <result property="mark" column="mark" />   
+	        <result property="fundsId" column="funds_id" />   
     	</resultMap>  
        
         <select id="get" parameterType="int" resultMap="orderInfoDaoMapperResultMap">    
@@ -43,11 +44,11 @@
             INSERT INTO t_order_info (amount, pay_no,pay_time, provider_name, 
             goods_name,num,border_addr,goal_addr,receive_user,status,user_id,create_time,update_time,
             logistics_name,logistics_order,pic_url,border_logistics,border_phone,cn_fare,vn_fare,fee,get_goods_user,
-            cn_receiver_phone,vn_receiver_phone,receive_money,mark)
+            cn_receiver_phone,vn_receiver_phone,receive_money,mark,funds_id)
             VALUES(#{amount},#{payNo},#{payTime},#{providerName},#{goodsName},#{num},
             #{borderAddr},#{goalAddr},#{receiveUser},#{status},#{userId},#{createTime},#{updateTime},
             #{logisticsName},#{logisticsOrder},#{picUrl},#{borderLogistics},#{borderPhone},#{cnFare},#{vnFare},
-            #{fee},#{getGoodsUser},#{cnReceiverPhone},#{vnReceiverPhone},#{receiveMoney},#{mark})
+            #{fee},#{getGoodsUser},#{cnReceiverPhone},#{vnReceiverPhone},#{receiveMoney},#{mark},#{fundsId})
         </insert>
         
         <update id="update" parameterType="orderInfo" >
@@ -58,7 +59,7 @@
         	logistics_name=#{logisticsName}, logistics_order=#{logisticsOrder},pic_url=#{picUrl},
         	border_logistics=#{borderLogistics},border_phone=#{borderPhone},cn_fare=#{cnFare},vn_fare=#{vnFare},fee=#{fee},
             get_goods_user=#{getGoodsUser},cn_receiver_phone=#{cnReceiverPhone},vn_receiver_phone=#{vnReceiverPhone},
-            receive_money= #{receiveMoney},mark=#{mark}
+            receive_money= #{receiveMoney},mark=#{mark},funds_id=#{fundsId}
         	where id=#{id}
         </update>
         <update id="updateType" >

@@ -26,15 +26,17 @@
 				<tbody>
 					<c:forEach items="${menus}" var="menu" >
 						<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#CDE6FF'" onmouseout="this.bgColor='#FFFFFF'" >
-							<td><input type="checkbox"  value="${menu.id}" name="menuIds" id="menu${menu.id}" <c:if test="${menu.checked!=null}">checked</c:if>><strong>${menu.name}</strong></td>
+							<td class=biaoti style="text-align:left;border:0px;"><input type="checkbox"  value="${menu.id}" name="menuIds" id="menu${menu.id}" <c:if test="${menu.checked!=null}">checked</c:if>><strong>${menu.name}</strong></td>
 						</tr>
-							<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#CDE6FF'" onmouseout="this.bgColor='#FFFFFF'" >
-								<td height="40">
-									<c:forEach items="${menu.childs}" var="child" >
-										<input type="checkbox"  value="${child.id}" name="menuIds" class="checkbox" <c:if test="${child.checked!=null}">checked</c:if> id="menu${child.id}">${child.name}
-									</c:forEach>
-								</td>
-							</tr>
+						<tr bgcolor="#FFFFFF" >
+							<td height="40">
+								<c:forEach items="${menu.childs}" var="child" varStatus="st">
+								<%-- 	<input type="checkbox"  value="${child.id}" name="menuIds" class="checkbox" <c:if test="${child.checked!=null}">checked</c:if> id="menu${child.id}">
+									<span style="width:150px;padding:5px;">${child.name}</span>
+									<c:if test="${(st.index+1)%5==0}"><br/></c:if> --%>
+								</c:forEach>
+							</td>
+						</tr>
 					</c:forEach>
 				</tbody>
 			</table>

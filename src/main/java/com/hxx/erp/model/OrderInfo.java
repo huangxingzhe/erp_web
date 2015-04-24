@@ -38,6 +38,7 @@ public class OrderInfo {
 	private String vnReceiverPhone;//越南收货联系电话
 	private double receiveMoney;//收回货款
 	private String mark;//备注
+	private int fundsId;//付款账户id
 	private double profit;//利润率
 	private List<OrderTime> times;
 	private List<OrderCustomer> oCusList;
@@ -283,6 +284,12 @@ public class OrderInfo {
 	}
 	public void setoCusList(List<OrderCustomer> oCusList) {
 		this.oCusList = oCusList;
+	}
+	public int getFundsId() {
+		return fundsId;
+	}
+	public void setFundsId(int fundsId) {
+		this.fundsId = fundsId;
 	}
 
 }

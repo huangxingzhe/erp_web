@@ -15,61 +15,33 @@
 <body>
 
 <form name="form" id="form" action="add.do" method="post" >
-<c:if test="${menu.id>0}">
-<input type="hidden" name="id" value="${menu.id}" id="menuId">
-<input type="hidden" name="level" value="${menu.level}">
+<c:if test="${privilege.id>0}">
+<input type="hidden" name="id" value="${privilege.id}">
 </c:if>
 <div class=formzone>
-<div class=namezone><c:if test="${menu==null||menu.id==0}">添加菜单</c:if>
-<c:if test="${menu.id>0}">修改菜单</c:if></div>
+<div class=namezone><c:if test="${privilege==null||privilege.id==0}">添加权限</c:if>
+<c:if test="${privilege.id>0}">修改权限</c:if></div>
 <div class=tablezone>
 <div class=noticediv id=notice></div>
 <table cellspacing=0 cellpadding=2 width="100%" align=center border=0>
   <tbody>
   <tr>
-    <td align=middle width=100 height=30>所属菜单</td>
+    <td align=middle width=100 height=30>权限名称</td>
     <td height=30>
-    	<select name="pid" >
-    		<option value="0">顶级菜单</option>
-    		<c:forEach items="${menus}" var="me">
-    			<option label="${me.name}" value="${me.id}" <c:if test="${me.id==menu.pid}">selected</c:if> ></option>
-    		</c:forEach>
-    	</select>
+    	<input name="name" value="${privilege.name}"/>
     </td>
   </tr>
   <tr>
-    <td align=middle height=30>菜单名称</td>
+    <td align=middle width=100 height=30>权限值</td>
     <td height=30>
-    	<input name="name" value="${menu.name}" id="name"/>
+    	<input name="value" value="${privilege.value}"/>
     </td>
   </tr>
-  <tr>
-    <td align=middle width=100 height=30>菜单URL</td>
-    <td height=30>
-    	<input name="url" value="${menu.url}" id="url"/>
-    </td>
-   </tr>
-   <tr>
-    <td align=middle width=100 height=30>排序</td>
-    <td height=30>
-    	<input name="position" value="${menu.position}" id="position"/>
-   </tr>
-   <tr>
-    <td align=middle width=100 height=30>权限</td>
-    <td height=30>
-    	<c:forEach items="${privileges}" var="pri" varStatus="st">
-    		<input type="checkbox" name="priIds" value="${pri.id}" id="pri" <c:if test="${pri.check==true}">checked</c:if>/>
-    		${pri.name}&nbsp;&nbsp;
-    		<c:if test="${(st.index+1)%5==0}">
-    			<br/>
-    		</c:if>
-    	</c:forEach>
-   </tr>
    </tbody>
 </table>
 </div>
 <div class=adminsubmit><input class="button" type="submit" value="提交" />  
-<input class="button" type="button" value="返回" onclick="javascript:location.href='list.do'"/> 
+<input class="button" type="button" value="返回" onclick="history.go(-1)"/> 
 </div>
 </div>
 </form>
@@ -82,16 +54,11 @@
 		var v = jQuery("#form").validate({
 			rules: {
 				name:"required",
-				position:{
-					required:true,
-					digits:true}
+				value:"required"
 			},
 			messages: {
-				name: "请填写菜单名称",
-				position:{
-					required:"请填写排序号",
-					digits:"请填写整数"
-				}
+				name: "请填写权限名称",
+				value:"请填写权限值"
 			},
 			submitHandler: function(form) {
 				jQuery(form).ajaxSubmit({  
@@ -100,15 +67,9 @@
 	                success:function(data){ //提交成功的回调函数  
 	                    if(data==1){
 	                    	alert("操作成功!");
-	                    	var menuId = $("#menuId").val();
-	                    	if(menuId == undefined||menuId==''){
-	                    		$("#name").val("");
-		                    	$("#url").val("");
-		                    	$("#position").val("");
-	                    	}else{
-	                    		location.href="list.do";
-	                    	}
-	                    	
+	                    	location.href="list.do";
+	                    }else if(data==2){
+	                    	alert("该权限值已存在!");
 	                    }else{
 	                    	alert("操作错误，请重新提交尝试!");
 	                    }

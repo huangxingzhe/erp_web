@@ -39,6 +39,8 @@ function getStatusName(statusName,process,clss){
 <input type="hidden" name="id" value="${order.id}" id="orderId">
 <input type="hidden" name="status" value="${order.status}" id="status">
 <input type="hidden" name="createTime" value="${order.createTime}" id="createTime">
+<input type="hidden" name="oldAmount" value="${order.amount}" id="oldAmount">
+<input type="hidden" name="oldFundsId" value="${order.fundsId}" id="oldFundsId">
 </c:if>
 <div class=formzone>
 <div class=namezone><c:if test="${order==null||order.id==0}"><spring:message code="order.label.add"/></c:if>
@@ -86,12 +88,34 @@ function getStatusName(statusName,process,clss){
     <td height=30 style="padding-left:10px;">
     	<input name="amount" value="${order.amount}" id="amount" onblur="isPriceNumber(this)" />
     </td>
+    <td class=title_bg  height=30><spring:message code="order.label.fundsName"/>：</td>
+    <td height=30 style="padding-left:10px;">
+    	<select name="fundsId" id="fundsId" style="width:160px;" onchange="selectAccount()">
+    		<option value=""><spring:message code="admin.label.select"/></option>
+   			<c:forEach items="${funds}" var="fund">
+    			<option label="${fund.name}" value="${fund.id}" 
+    				<c:if test="${fund.id==order.fundsId}">selected</c:if>>
+    			</option>
+    		</c:forEach>
+   		</select>
+   		<span id="overMoney"></span>
+    </td>
+  </tr>
+    <tr>
     <td class=title_bg  height=30><spring:message code="order.label.num"/>：</td>
     <td height=30 style="padding-left:10px;">
     	<input name="num" value="${order.num}" id="num"/>
     </td>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.makeOrderUser"/>：</td>
+    <td height=30 style="padding-left:10px;">
+     	<c:if test="${order.id>0}">
+    	<input name="userId" value="${order.userId}" id="userId" readonly="readonly"/>
+    	</c:if>
+    	<c:if test="${order==null||order.id==0}">
+    	<input name="userId" value="${sessionScope.session_login_admin_name}" id="userId" readonly="readonly"/>
+    	</c:if>
+    </td>
   </tr>
-  
    <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.logisticsName"/>：</td>
     <td height=30 style="padding-left:10px;">
@@ -170,21 +194,13 @@ function getStatusName(statusName,process,clss){
      <td height=30 style="padding-left:10px;">
     	<input name="getGoodsUser" value="${order.getGoodsUser}" id="getGoodsUser"/>
     </td>
-    <td class=title_bg  width=100 height=30><spring:message code="order.label.makeOrderUser"/>：</td>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.vnReceiverPhone"/>：</td>
     <td height=30 style="padding-left:10px;">
-     	<c:if test="${order.id>0}">
-    	<input name="userId" value="${order.userId}" id="userId" readonly="readonly"/>
-    	</c:if>
-    	<c:if test="${order==null||order.id==0}">
-    	<input name="userId" value="${sessionScope.session_login_admin_name}" id="userId" readonly="readonly"/>
-    	</c:if>
+    	<input name="vnReceiverPhone" value="${order.vnReceiverPhone}" id="vnReceiverPhone"/>
     </td>
    </tr>
     <tr>
-    <td class=title_bg  width=100 height=30><spring:message code="order.label.vnReceiverPhone"/>：</td>
-    <td height=30 style="padding-left:10px;" colspan="3">
-    	<input name="vnReceiverPhone" value="${order.vnReceiverPhone}" id="vnReceiverPhone"/>
-    </td>
+    
     
    </tr>
    <tr>
@@ -488,7 +504,8 @@ function getStatusName(statusName,process,clss){
 	        				logisticsName:"required",
 	        				receiveUser:"required",
 	        				borderAddr:"required",
-	        				goalAddr:"required"
+	        				goalAddr:"required",
+	        				fundsId:"required"
 	        			},
 	        			messages: {
 	        				payNo: $.i18n.prop('isNotEmpty'),
@@ -500,7 +517,8 @@ function getStatusName(statusName,process,clss){
 	        				logisticsName: $.i18n.prop('isNotEmpty'),
 	        				receiveUser: $.i18n.prop('isNotEmpty'),
 	        				borderAddr: $.i18n.prop('isNotEmpty'),
-	        				goalAddr: $.i18n.prop('isNotEmpty')
+	        				goalAddr: $.i18n.prop('isNotEmpty'),
+	        				fundsId: $.i18n.prop('isNotEmpty')
 	        			},
 	        			submitHandler: function(form) {
 	        				$("#submit").attr("disabled", true); 
@@ -601,6 +619,20 @@ function getStatusName(statusName,process,clss){
 		 $.getJSON("getMaxPayNo.do", data, function(result) {
 				if (result !="0"){
 					$("#payNo").val(result);
+				}
+		 }); 
+	 }
+	 function selectAccount(){
+		 var fundsId = $("#fundsId").val();
+		 if(fundsId==''){
+			 return;
+		 }
+		 var data={
+				 id:fundsId
+			 };
+		 $.getJSON("../funds/getOverMoney.do", data, function(result) {
+				if (result !=""){
+					$("#overMoney").html("￥"+result);
 				}
 		 }); 
 	 }

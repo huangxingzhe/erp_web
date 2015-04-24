@@ -1,5 +1,6 @@
 package com.hxx.erp.controller.admin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hxx.erp.model.Menu;
+import com.hxx.erp.model.MenuPrivilege;
+import com.hxx.erp.model.Privilege;
+import com.hxx.erp.service.MenuPrivilegeService;
 import com.hxx.erp.service.MenuService;
+import com.hxx.erp.service.PrivilegeService;
 
 @Controller
 @RequestMapping("/admin/menu")
@@ -27,20 +32,39 @@ public class MenuController extends BaseController{
 	
 	@Autowired
 	private MenuService service;
+	@Autowired
+	private PrivilegeService priService;
+	@Autowired
+	private MenuPrivilegeService mpService;
 	
 	@RequestMapping("/init")
 	public String init(HttpServletRequest request,Model model){
 		try {
+			Map<String,Object> params =  new HashMap<String,Object>();
 			String id = request.getParameter("id");
 			if(!StringUtils.isEmpty(id)){
 				Menu menu = service.get(Integer.valueOf(id));
 				model.addAttribute("menu", menu);
 			}
-			Map<String,Object> params =  new HashMap<String,Object>();
+			params.clear();
 			params.put("level",1);
-			List<Menu> menus = null;
-			menus = service.queryList(params);
+			List<Menu> menus = service.queryList(params);
+			List<Privilege> privileges = priService.queryList(null);
 			model.addAttribute("menus", menus);
+			model.addAttribute("privileges", privileges);
+			if(!StringUtils.isEmpty(id)){
+				params.clear();
+				params.put("menuId", id);
+				List<MenuPrivilege> mps = mpService.queryList(params);
+				for(Privilege pri : privileges){
+					for(MenuPrivilege mp : mps){
+						if(pri.getId()==mp.getPriId()){
+							pri.setCheck(true);
+							break;
+						}
+					}
+				}
+			}
 		} catch (Exception e) {
 			log.error("",e);
 		}
@@ -50,7 +74,9 @@ public class MenuController extends BaseController{
 	
 	@RequestMapping("/add")
 	@ResponseBody
-	public int add(@ModelAttribute Menu menu){
+	public int add(@ModelAttribute Menu menu,HttpServletRequest request){
+		String[] priIds = request.getParameterValues("priIds");
+		
 		int ret = 0;
 		try {
 			if(menu.getId() == 0){
@@ -63,7 +89,15 @@ public class MenuController extends BaseController{
 				service.add(menu);
 			}else{
 				service.update(menu);
+				Map<String,Object> params = new HashMap<String, Object>();
+				params.put("menuId", menu.getId());
+				mpService.delete(params);
 			}
+			List<MenuPrivilege> mpList = new ArrayList<MenuPrivilege>();
+			for(String priId :priIds){
+				mpList.add(new MenuPrivilege(menu.getId(), Integer.valueOf(priId)));
+			}
+			mpService.addBatch(mpList);
 			ret = 1;//操作成功
 		} catch (Exception e) {
 			log.error("",e);

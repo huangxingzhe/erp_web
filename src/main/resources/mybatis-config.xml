@@ -25,7 +25,10 @@
 		<typeAlias alias="orderTime" type="com.hxx.erp.model.OrderTime" />
 		<typeAlias alias="userLoginLog" type="com.hxx.erp.model.UserLoginLog" />
 		<typeAlias alias="operationLog" type="com.hxx.erp.model.OperationLog" />
-		
+		<typeAlias alias="funds" type="com.hxx.erp.model.Funds" />
+		<typeAlias alias="fundsProcess" type="com.hxx.erp.model.FundsProcess" />
+		<typeAlias alias="privilege" type="com.hxx.erp.model.Privilege" />
+		<typeAlias alias="menuPrivilege" type="com.hxx.erp.model.MenuPrivilege" />
 	</typeAliases>
 	
 	<plugins>
@@ -48,5 +51,9 @@
 		<mapper resource="com/hxx/erp/dao/impl/OrderTimeDaoMapper.xml"/>
 		<mapper resource="com/hxx/erp/dao/impl/UserLoginLogDaoMapper.xml"/>
 		<mapper resource="com/hxx/erp/dao/impl/OperationLogDaoMapper.xml"/>
+		<mapper resource="com/hxx/erp/dao/impl/FundsDaoMapper.xml"/>
+		<mapper resource="com/hxx/erp/dao/impl/FundsProcessDaoMapper.xml"/>
+		<mapper resource="com/hxx/erp/dao/impl/PrivilegeDaoMapper.xml"/>
+		<mapper resource="com/hxx/erp/dao/impl/MenuPrivilegeDaoMapper.xml"/>
 	</mappers>
 </configuration>

@@ -32,6 +32,8 @@ import com.hxx.erp.common.Constant;
 import com.hxx.erp.common.ExportData;
 import com.hxx.erp.common.Page;
 import com.hxx.erp.model.Customer;
+import com.hxx.erp.model.Funds;
+import com.hxx.erp.model.FundsProcess;
 import com.hxx.erp.model.Goods;
 import com.hxx.erp.model.OperationLog;
 import com.hxx.erp.model.OrderCustomer;
@@ -39,6 +41,8 @@ import com.hxx.erp.model.OrderInfo;
 import com.hxx.erp.model.OrderTime;
 import com.hxx.erp.model.Provider;
 import com.hxx.erp.service.CustomerService;
+import com.hxx.erp.service.FundsProcessService;
+import com.hxx.erp.service.FundsService;
 import com.hxx.erp.service.GoodsService;
 import com.hxx.erp.service.OperationLogService;
 import com.hxx.erp.service.OrderCustomerService;
@@ -65,7 +69,11 @@ Log log = LogFactory.getLog(this.getClass());
 	private OrderTimeService orderTimeService;
 	@Autowired
 	private OperationLogService opService;
-	
+	@Autowired
+	private FundsService fundsService;
+	@Autowired
+	private FundsProcessService processService;
+	private static final DecimalFormat df = new DecimalFormat("#.00");
 	@RequestMapping("/init")
 	public String init(HttpServletRequest request,Model model){
 		String detail = request.getParameter("type");
@@ -75,9 +83,11 @@ Log log = LogFactory.getLog(this.getClass());
 			List<Provider> providers = providerService.queryList(null);
 			List<Goods> goods = goodsService.queryList(null);
 			List<Customer> customers = customerService.queryList(null);
+			List<Funds> funds = fundsService.queryList(null);
 			model.addAttribute("customers", customers);
 			model.addAttribute("providers", providers);
 			model.addAttribute("goodss", goods);
+			model.addAttribute("funds", funds);
 			if(!StringUtils.isEmpty(id)){
 				OrderInfo orderInfo = service.get(Integer.valueOf(id));
 				orderInfo.setTimes(orderTimeService.getByOrderId(Integer.valueOf(id)));
@@ -108,6 +118,8 @@ Log log = LogFactory.getLog(this.getClass());
 			String[] realNums = request.getParameterValues("realNums");
 			String[] orderCodes = request.getParameterValues("orderCodes");
 			String[] amounts = request.getParameterValues("amounts");
+			String oldAmount = request.getParameter("oldAmount");
+			String oldFundsId = request.getParameter("oldFundsId");
 			if(StringUtils.isEmpty(cusNos)||cusNos[0].indexOf("#")==-1){
 				ret = 2;
 				return ret;
@@ -119,16 +131,60 @@ Log log = LogFactory.getLog(this.getClass());
 			}
 			
 			String account = (String)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_ACCOUNT);
-			if(order.getId() == 0){
+			Funds funds = fundsService.get(order.getFundsId());
+			if(order.getId() == 0){//添加
+				double money = funds.getOverMoney();
+				funds.setOutcome(funds.getOutcome()+order.getAmount());
+				funds.setOverMoney(funds.getOverMoney()-order.getAmount());
+				fundsService.update(funds);
 				order.setStatus(1);//待发货
 				order.setCreateTime(new Date());
 				order.setUpdateTime(new Date());
-				service.add(order);
+				try{
+					service.add(order);
+					FundsProcess process = new FundsProcess();
+					process.setAmount(order.getAmount());
+					process.setType(3);//支出货款
+					process.setCreateTime(new Date());
+					process.setFundsName(funds.getName());
+					process.setMark("共支付货款：￥"+df.format(order.getAmount()));
+					process.setProviderName(order.getProviderName());
+					String userName = (String)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_NAME);
+					process.setUserId(userName);
+					processService.add(process);
+				}catch(Exception e){
+					log.error("add order failed,rollback money",e);
+					funds.setOverMoney(money);
+					fundsService.update(funds);
+					return ret = 0;
+				}
 				for(int i=0;i<cusNos.length;i++){
 					addOrderCustomer(order,cusNos[i],orderCodes[i],amounts[i],sendNums[i],realNums[i],new Date());
 				}
 				addOperationLog(order,account,9);//8新增订单类型
-			}else{
+			}else{ //更新
+				if(StringUtils.isEmpty(oldFundsId)){
+					return ret=0;
+				}	
+				if(Integer.valueOf(oldFundsId) == order.getFundsId()){//新老账号为同一账号
+					if(Double.valueOf(oldAmount)!=order.getAmount()){
+						funds.setOutcome(funds.getOutcome()-Double.valueOf(oldAmount)+order.getAmount());
+						funds.setOverMoney(funds.getOverMoney()+Double.valueOf(oldAmount)-order.getAmount());
+						fundsService.update(funds);
+					}
+				}else{
+					//先把钱退回原来账号
+					Funds oldF = fundsService.get(Integer.valueOf(oldFundsId));
+					oldF.setOutcome(oldF.getOutcome()-Double.valueOf(oldAmount));
+					oldF.setOverMoney(oldF.getOverMoney()+Double.valueOf(oldAmount));
+					fundsService.update(oldF);
+					//减少新账号的余额
+					funds.setOutcome(funds.getOutcome()+order.getAmount());
+					funds.setOverMoney(funds.getOverMoney()-order.getAmount());
+					fundsService.update(funds);
+				}
+				
+				
 				order.setUpdateTime(new Date());
 				service.update(order);
 				oCusService.delete(order.getId());
@@ -250,7 +306,7 @@ Log log = LogFactory.getLog(this.getClass());
 			model.addAttribute("startPayTime", startPayTime);
 			model.addAttribute("endPayTime", endPayTime);
 			model.addAttribute("nums", nums);
-			DecimalFormat df = new DecimalFormat("#.00");
+			
 			model.addAttribute("amounts", df.format(amounts));
 			model.addAttribute("receiveMoney", df.format(receiveMoney));
 			//如果大于1页才去查
@@ -475,6 +531,13 @@ Log log = LogFactory.getLog(this.getClass());
 	public String delete(@RequestParam int id){
 		String ret = "0";
 		try {
+			OrderInfo order = service.get(id);
+			Funds funds = fundsService.get(order.getFundsId());
+			if(funds !=null){
+				funds.setOutcome(funds.getOutcome()-order.getAmount());
+				funds.setOverMoney(funds.getOverMoney()+order.getAmount());
+				fundsService.update(funds);
+			}
 			int result = service.updateType(id, 1);//1表示逻辑删除 0为正常
 			if(result == 1){
 				ret = "1";

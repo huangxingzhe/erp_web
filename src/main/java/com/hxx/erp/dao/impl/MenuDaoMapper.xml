@@ -19,7 +19,7 @@
             select * from t_menu where id = #{id}   
         </select>  
         
-        <insert id="add" parameterType="menu" >
+        <insert id="add" parameterType="menu" useGeneratedKeys="true" keyProperty="id">
             INSERT INTO t_menu (name, url, level, pid, position,status)
             VALUES(#{name},#{url}, #{level}, #{pid},#{position},#{status});
             
