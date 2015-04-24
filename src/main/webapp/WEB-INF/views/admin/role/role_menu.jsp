@@ -34,6 +34,33 @@
 								<%-- 	<input type="checkbox"  value="${child.id}" name="menuIds" class="checkbox" <c:if test="${child.checked!=null}">checked</c:if> id="menu${child.id}">
 									<span style="width:150px;padding:5px;">${child.name}</span>
 									<c:if test="${(st.index+1)%5==0}"><br/></c:if> --%>
+									
+									<div class="subItem">
+										<!--内层Repeater-->
+
+										<div class="subItem2">
+											<span class="q01"><input
+												id="repParent_ctl01_repSubItem_ctl00_chkPw" type="checkbox"
+												name="repParent$ctl01$repSubItem$ctl00$chkPw"
+												checked="checked" onclick="fnUnCheck(this);"><label
+												for="repParent_ctl01_repSubItem_ctl00_chkPw">流水账</label></span>
+										</div>
+										<div class="subPriDiv" id="q01DIV" onmouseover="delayHide();"
+											onmouseout="hideMe(this)"></div>
+
+										<div class="subItem2">
+											<span class="q02"><input
+												id="repParent_ctl01_repSubItem_ctl01_chkPw" type="checkbox"
+												name="repParent$ctl01$repSubItem$ctl01$chkPw"
+												checked="checked" onclick="fnUnCheck(this);"><label
+												for="repParent_ctl01_repSubItem_ctl01_chkPw">日常收款</label></span><span
+												class="subBtn" onclick="showSubDiv(this,'q02DIV');">&nbsp;&nbsp;子权限</span>
+										</div>
+
+
+
+										<!--内层Repeater结束-->
+									</div>
 								</c:forEach>
 							</td>
 						</tr>
