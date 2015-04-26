@@ -59,22 +59,22 @@
 	   	 </trim>
 	 </select>
 	 
-	 <!-- 根据菜单id查询菜单下所有菜单菜单权限表id xiongmin-->
+	 <!-- 根据菜单id查询菜单下所有菜单菜单权限表id -->
 	 <select id="findMenuPrivilegeMenuId" resultMap="privilegeResultMap" parameterType="java.util.Map">
 	      select id menuPrivilegeId from t_menu_privilege where menu_id = #{menuId}
 	 </select>
 	 
 	 
-	 <!-- 根据菜单id删除菜单的所有权限 xiongmin -->
+	 <!-- 根据菜单id删除菜单的所有权限  -->
 	 <delete id="deleteMenuId" parameterType="int">
 	 	delete from t_menu_privilege where menu_id = #{menuId}
 	 </delete> 
 	 
-	 <!-- 查询权限  xiongmin -->
+	 <!-- 查询权限   -->
 	 <select id="findPrivilege" resultMap="privilegeResultMap" parameterType="java.util.Map">
 	      select * from t_privilege pri
 	      <trim prefix="where" prefixOverrides="and" >
-	      	   <!-- 根据菜单id查询权限 xiongmin -->
+	      	   <!-- 根据菜单id查询权限  -->
 		       <if test="menuId!=null">
 		           and exists (
 	 					select 1 from t_menu_privilege mpri where pri.id = mpri.pri_id and mpri.menu_id = #{menuId}
@@ -84,7 +84,7 @@
 	 </select>
 	 
 	 
-	<!-- 根据菜单id查询拼凑权限 xiongmin  -->
+	<!-- 根据菜单id查询拼凑权限   -->
 	 <select id="pcPrivilegeMenuId" parameterType="int" resultMap="privilegeResultMap">
 	 	select mepri.id id,pri.name name from t_privilege pri,t_menu_privilege mepri where  pri.id = mepri.pri_id and mepri.menu_id = #{menuId}
 	 </select>

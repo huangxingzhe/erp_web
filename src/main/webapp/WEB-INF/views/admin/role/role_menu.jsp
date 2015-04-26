@@ -8,6 +8,53 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>home</title>
 <link href="../../images/style.css" type=text/css rel=stylesheet>
+<style>
+ .priviTitle
+{
+    display: block;
+    border: solid 1px #cde6ff;
+    background-color: #f2f9fd;
+    padding: 5px 5px;
+}
+div.subItem
+{
+    overflow: hidden;
+    padding: 5px 10px;
+    zoom: 1;
+}
+div.subItem2
+{
+    display: inline-block;
+    width: 165px;
+    height: 25px;
+    line-height: 25px;
+    float: left;
+    overflow: hidden;
+}
+.subPriDiv
+{
+    position: fixed;
+    border: solid 1px #888;
+    height: 200px;
+    width: 120px;
+    left: 10px;
+    display: none;
+    z-index: 500;
+    background-color: #DEDEDE;
+}
+.subPriDiv span
+{
+    display: block;
+    line-height: 16px;
+    height: 16px;
+    margin: 2px;
+}
+span.subBtn
+{
+    color: #1565AF;
+    cursor: pointer;
+}
+</style>
 </head>
 
 <body>
@@ -25,43 +72,32 @@
 			<table cellspacing=0 cellpadding=3 width="100%" align=center border=0>
 				<tbody>
 					<c:forEach items="${menus}" var="menu" >
-						<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#CDE6FF'" onmouseout="this.bgColor='#FFFFFF'" >
+						<%-- <tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#CDE6FF'" onmouseout="this.bgColor='#FFFFFF'" >
 							<td class=biaoti style="text-align:left;border:0px;"><input type="checkbox"  value="${menu.id}" name="menuIds" id="menu${menu.id}" <c:if test="${menu.checked!=null}">checked</c:if>><strong>${menu.name}</strong></td>
-						</tr>
+						</tr> --%>
 						<tr bgcolor="#FFFFFF" >
 							<td height="40">
-								<c:forEach items="${menu.childs}" var="child" varStatus="st">
 								<%-- 	<input type="checkbox"  value="${child.id}" name="menuIds" class="checkbox" <c:if test="${child.checked!=null}">checked</c:if> id="menu${child.id}">
 									<span style="width:150px;padding:5px;">${child.name}</span>
 									<c:if test="${(st.index+1)%5==0}"><br/></c:if> --%>
-									
+								<div>
+									<h4 class="priviTitle">${menu.name}<input id="" type="checkbox" name="menuIds" <c:if test="${menu.checked!=null}">checked</c:if>
+									  onclick="fnCheckItem(this);"><label for="">全选</label></h4>
 									<div class="subItem">
-										<!--内层Repeater-->
-
+										<c:forEach items="${menu.childs}" var="child" varStatus="st">
 										<div class="subItem2">
-											<span class="q01"><input
-												id="repParent_ctl01_repSubItem_ctl00_chkPw" type="checkbox"
-												name="repParent$ctl01$repSubItem$ctl00$chkPw"
-												checked="checked" onclick="fnUnCheck(this);"><label
-												for="repParent_ctl01_repSubItem_ctl00_chkPw">流水账</label></span>
+											<span class="q01"><input id="" type="checkbox" name="menuIds"
+											<c:if test="${child.checked!=null}">checked</c:if> onclick="fnUnCheck(this);"><label for="">${child.name}</label></span>
+											<span class="subBtn" onclick="showSubDiv(this,'q01DIV');">&nbsp;&nbsp;子权限</span>
 										</div>
-										<div class="subPriDiv" id="q01DIV" onmouseover="delayHide();"
-											onmouseout="hideMe(this)"></div>
-
-										<div class="subItem2">
-											<span class="q02"><input
-												id="repParent_ctl01_repSubItem_ctl01_chkPw" type="checkbox"
-												name="repParent$ctl01$repSubItem$ctl01$chkPw"
-												checked="checked" onclick="fnUnCheck(this);"><label
-												for="repParent_ctl01_repSubItem_ctl01_chkPw">日常收款</label></span><span
-												class="subBtn" onclick="showSubDiv(this,'q02DIV');">&nbsp;&nbsp;子权限</span>
+										<div class="subPriDiv" id="q01DIV" onmouseover="delayHide();" onmouseout="hideMe(this)">
+											<span class="RVA"><input id="" type="checkbox" name="" checked="checked" onclick="setParentCheck(this,'q01');" />
+											<label for="">添加日常收款</label></span>
 										</div>
-
-
-
-										<!--内层Repeater结束-->
+										</c:forEach>
 									</div>
-								</c:forEach>
+								</div>	
+								
 							</td>
 						</tr>
 					</c:forEach>
@@ -111,6 +147,59 @@
 		});
 		
 	});
+    //选择当前节点下所有子元素
+    function fnCheckItem(obj) {
+        //找到当前对象的父对象
+        var div = obj.parentNode.parentNode;
+        //找到checkbox
+        var chks = div.getElementsByTagName("input");
+
+        for (i = 0; i < chks.length; i++) {
+            if (chks[i].type == 'checkbox') {
+                chks[i].checked = obj.checked;
+            }
+        }
+    }
+
+    //去除当前元素的父元素的全选
+    function fnUnCheck(obj) {
+        var divID = obj.parentNode.className + "DIV";
+        $.each($("#" + divID + " :checkbox"), function (i, o) {
+            o.checked = obj.checked;
+        });
+    }
+    function setParentCheck(obj, parentID) {
+        if (obj.checked) {
+            $.each($("." + parentID + " :checkbox"), function (i, o) {
+                o.checked = obj.checked;
+            });
+        }
+    }
+    function showSubDiv(obj, id) {
+        var xy = getAbsPoint(obj);
+        var top = xy.Y - getScrollTop();
+        document.getElementById(id).style.left = xy.X + "px";
+        document.getElementById(id).style.top = top + "px";
+        document.getElementById(id).style.display = "block";
+    }
+    var hideID = "";
+    function delayHide(obj) {
+        hideID = "";
+    }
+    function hideMe(obj) {
+        hideID = obj.id;
+        window.setTimeout("closeDiv();", 1);
+    }
+    function closeDiv() {
+        if (hideID != "") {
+            document.getElementById(hideID).style.display = "none";
+        }
+    }
+    function getScrollTop() {
+        var scrollPos = document.getElementById("bodyDIV").scrollTop;
+        return scrollPos;
+    } 
+
 	</script>
 </body>
 </html>

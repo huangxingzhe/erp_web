@@ -24,19 +24,19 @@ import com.hxx.erp.model.Role;
 import com.hxx.erp.model.RoleMenu;
 import com.hxx.erp.model.UserInfo;
 import com.hxx.erp.service.MenuService;
+import com.hxx.erp.service.PrivilegeService;
 import com.hxx.erp.service.RoleService;
 
 @Controller
 @RequestMapping("/admin/role")
 public class RoleController extends BaseController{
-	
 	Log log = LogFactory.getLog(this.getClass());
-	
 	@Autowired
 	private RoleService service;
-	
 	@Autowired
 	private MenuService menuService;
+	@Autowired
+	private PrivilegeService priService;
 	
 	@RequestMapping("/init")
 	public String init(@RequestParam int id,Model model){
@@ -103,7 +103,6 @@ public class RoleController extends BaseController{
 		String id = request.getParameter("id");
 		try {
 			Role role = service.get(Integer.valueOf(id));
-//			int customerId = getCustomer(request);
 			Map<String,Object> params =  new HashMap<String,Object>();
 			params.put("level",1);
 			params.put("roleId",role.getId());
@@ -114,26 +113,8 @@ public class RoleController extends BaseController{
 				params.put("pid", m.getId());
 				params.put("roleId",role.getId());
 				m.setChilds(menuService.queryMenuByRole(params));
+//				m.setPris(priService.f);
 			}
-//			if(role.getCustomerId() ==-1){
-//				menus = menuService.queryMenuByRole(params);
-//				for(Menu m : menus){
-//					params.clear();
-//					params.put("pid", m.getId());
-//					params.put("roleId",role.getId());
-//					m.setChilds(menuService.queryMenuByRole(params));
-//				}
-//			}else{
-//				params.put("customerId", role.getCustomerId());
-//				menus = menuService.queryMenuForCustomer(params);
-//				for(Menu m : menus){
-//					params.clear();
-//					params.put("pid", m.getId());
-//					params.put("roleId",role.getId());
-//					params.put("customerId", role.getCustomerId());
-//					m.setChilds(menuService.queryMenuForCustomer(params));
-//				}
-//			}
 			model.addAttribute("menus", menus);
 			model.addAttribute("role", role);
 				

@@ -13,6 +13,7 @@ public class Menu implements Serializable{
 	private int level;
 	private int status;
 	private List<Menu> childs;
+	private List<Privilege> pris;
 	private String checked;
 	
 	public Menu(){}
@@ -87,6 +88,14 @@ public class Menu implements Serializable{
 
 	public void setChecked(String checked) {
 		this.checked = checked;
+	}
+
+	public List<Privilege> getPris() {
+		return pris;
+	}
+
+	public void setPris(List<Privilege> pris) {
+		this.pris = pris;
 	}
 
 
