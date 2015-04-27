@@ -6,7 +6,8 @@
 	     <id property="id" column="id" />         
 	     <result property="name" column="name" />  
 	     <result property="value" column="value" />
-	     <result property="menuPrivilegeId" column="menuPrivilegeId" />
+	     <result property="menuPrivilegeId" column="mpId" />
+	     <result property="checked" column="checked" />
 	</resultMap>    
 	
 	<resultMap id="menuPrivilegeMap" type="privilege">
@@ -43,49 +44,10 @@
 	 <select id="queryList" resultMap="privilegeResultMap">
 	      select * from t_privilege
 	 </select>
-	 
-	 <select id="check" parameterType="privilege" resultType="java.lang.Integer">
-	    select count(1) from t_privilege 
-	      <trim prefix="where" prefixOverrides="and" >
-	       <if test="id!=0 and id!=null">
-	            and id=#{id}
-	       </if>
-	       <if test="name!='' and name!=null">
-	            and name=#{name}
-	       </if>
-	       <if test="id!=0">
-	            and id=#{id}
-	       </if>             
-	   	 </trim>
+	 <select id="queryPrivilegeByRoleIdAndMenuId"  resultMap="privilegeResultMap" parameterType="java.util.Map">
+		  SELECT p.*,REPLACE(rp.role_id,#{roleId},'checked') AS checked,mp.id as mpId FROM (SELECT * FROM t_menu_privilege WHERE menu_id=#{menuId} )mp 
+		  LEFT JOIN t_role_privilege rp ON mp.id = rp.menu_pri_id AND rp.role_id=#{roleId}
+		  LEFT JOIN t_privilege p  ON p.id = mp.pri_id
 	 </select>
 	 
-	 <!-- 根据菜单id查询菜单下所有菜单菜单权限表id -->
-	 <select id="findMenuPrivilegeMenuId" resultMap="privilegeResultMap" parameterType="java.util.Map">
-	      select id menuPrivilegeId from t_menu_privilege where menu_id = #{menuId}
-	 </select>
-	 
-	 
-	 <!-- 根据菜单id删除菜单的所有权限  -->
-	 <delete id="deleteMenuId" parameterType="int">
-	 	delete from t_menu_privilege where menu_id = #{menuId}
-	 </delete> 
-	 
-	 <!-- 查询权限   -->
-	 <select id="findPrivilege" resultMap="privilegeResultMap" parameterType="java.util.Map">
-	      select * from t_privilege pri
-	      <trim prefix="where" prefixOverrides="and" >
-	      	   <!-- 根据菜单id查询权限  -->
-		       <if test="menuId!=null">
-		           and exists (
-	 					select 1 from t_menu_privilege mpri where pri.id = mpri.pri_id and mpri.menu_id = #{menuId}
-	 				)
-		       </if>         
-	   	  </trim>
-	 </select>
-	 
-	 
-	<!-- 根据菜单id查询拼凑权限   -->
-	 <select id="pcPrivilegeMenuId" parameterType="int" resultMap="privilegeResultMap">
-	 	select mepri.id id,pri.name name from t_privilege pri,t_menu_privilege mepri where  pri.id = mepri.pri_id and mepri.menu_id = #{menuId}
-	 </select>
 </mapper>    

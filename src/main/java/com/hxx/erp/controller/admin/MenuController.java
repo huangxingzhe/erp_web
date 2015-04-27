@@ -93,7 +93,7 @@ public class MenuController extends BaseController{
 				params.put("menuId", menu.getId());
 				mpService.delete(params);
 			}
-			if(StringUtils.isEmpty(priIds)){
+			if(!StringUtils.isEmpty(priIds)){
 				List<MenuPrivilege> mpList = new ArrayList<MenuPrivilege>();
 				for(String priId :priIds){
 					mpList.add(new MenuPrivilege(menu.getId(), Integer.valueOf(priId)));

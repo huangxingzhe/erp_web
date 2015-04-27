@@ -54,33 +54,24 @@ public class PrivilegeServiceImpl implements PrivilegeService{
 		return dao.queryList(params);
 	}
 
-	
-	@Override
-	public List<Privilege> pcPrivilegeMenuId(Integer menuId) {
-		return dao.pcPrivilegeMenuId(menuId);
-	}
-
-	@Override
-	public List<Privilege> findPrivilege(Map<String, Object> params) {
-		return dao.findPrivilege(params);
-	}
-
-	@Override
-	public void deleteMenuId(int menuId) {
-		dao.delete(menuId);
-	}
-
-	@Override
-	public List<Privilege> findMenuPrivilegeMenuId(Integer menuId) {
-		return dao.findMenuPrivilegeMenuId(menuId);
-	}
 
 	@Override
 	public List<Privilege> queryList() throws Exception {
 		return dao.queryList();
 	}
-	
 
+	@Override
+	public List<Privilege> queryPrivilegeByRoleIdAndMenuId(
+			Map<String, Object> params) {
+		return dao.queryPrivilegeByRoleIdAndMenuId(params);
+	}
+
+	@Override
+	public List<Privilege> query(Map<String, Object> params) {
+		return dao.query(params);
+	}
+	
+	
 	
 	
 	

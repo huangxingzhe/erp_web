@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+<mapper namespace="com.hxx.erp.dao.RolePrivilegeDao">
+ 	<resultMap id="rolePrivilegeMap" type="rolePrivilege">  
+	     <id property="id" column="id" />   
+	     <result property="roleId" column="roleId" />      
+	     <result property="menuPriId" column="menuPriId" />  
+	</resultMap>     
+	
+	<!-- 删除角色权限  -->
+	<delete id="deleteRolePrivilegeId" parameterType="java.util.Map">
+	 	delete from t_role_privilege 
+	 	<trim prefix="where" prefixOverrides="and" >
+	 		<!-- 根据菜单权限id删除角色权限  -->
+           	<if test="menuprivilegeIds!=null">
+                and menu_pri_id in (${menuprivilegeIds})
+           	</if>
+           	<!-- 根据角色id删除角色权限 -->
+           	<if test="roleId != null">
+           		and role_id = #{roleId}
+           	</if>
+        </trim>
+	</delete> 
+	
+    <!-- 配置角色权限  -->
+	<insert id="addBatch" parameterType="java.util.List" >
+		insert into t_role_privilege(role_id,menu_pri_id) values
+		<foreach collection="list" item="item" index="index" separator=",">  
+       		(#{item.roleId},#{item.menuPriId})  
+   		</foreach>  
+	</insert>
+</mapper>    

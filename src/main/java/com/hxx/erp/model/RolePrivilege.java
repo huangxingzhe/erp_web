@@ -6,29 +6,17 @@ package com.hxx.erp.model;
  */
 public class RolePrivilege {
 	private static final long serialVersionUID = 1L;
-	/**
-	 * id
-	 */
 	private int id;
-	/**
-	 * 角色id
-	 */
 	private Role role;
-	/**
-	 * 权限id
-	 */
-	private RoleMenuPrivilege roleMenuPrivilege;
-	
-	/**
-	 * 角色Id
-	 */
-	private String roleId;
-	
-	/**
-	 * 菜单权限关联表id
-	 */
+	private int roleId;
 	private int menuPriId;
-	
+	public RolePrivilege(){
+	}
+
+	public RolePrivilege(int roleId,int menuPriId){
+		this.roleId = roleId;
+		this.menuPriId = menuPriId;
+	}
 	
 	public int getId() {
 		return id;
@@ -46,23 +34,15 @@ public class RolePrivilege {
 		this.role = role;
 	}
 	
-	public RoleMenuPrivilege getRoleMenuPrivilege() {
-		return roleMenuPrivilege;
-	}
-	
-	public void setRoleMenuPrivilege(RoleMenuPrivilege roleMenuPrivilege) {
-		this.roleMenuPrivilege = roleMenuPrivilege;
-	}
-	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-	public String getRoleId() {
+	public int getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(String roleId) {
+	public void setRoleId(int roleId) {
 		this.roleId = roleId;
 	}
 

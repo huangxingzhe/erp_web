@@ -1,6 +1,9 @@
 package com.hxx.erp.common;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -14,7 +17,11 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.hxx.erp.model.Privilege;
+import com.hxx.erp.service.PrivilegeService;
 
 public class AuthFilter implements Filter {
 	Log log = LogFactory.getLog(this.getClass());
@@ -66,6 +73,24 @@ public class AuthFilter implements Filter {
 			 response.sendRedirect(loginUrl);
 			 return;
 		}else{
+			 String menuId = request.getParameter("menuId");
+			 Integer roleId = (Integer)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_ROLEID);
+//			 if(!StringUtils.isEmpty(menuId)){
+//				PrivilegeService service = (PrivilegeService)AppContextUtil.getBean("privilegeService");
+//				Map<String,Object> params = new HashMap<String,Object>();
+//				params.put("roleId", roleId);
+//				params.put("menuId", Integer.valueOf(menuId));
+//				List<Privilege> pris;
+//				try {
+//					pris = service.query(params);
+//					for(Privilege p : pris){
+//						request.setAttribute(p.getValue(), p.getValue());
+//					}
+//				} catch (Exception e) {
+//					log.error("",e);
+//				}
+//				
+//			 }			
 			 chain.doFilter(req, rsp);
 	         return;
 		}

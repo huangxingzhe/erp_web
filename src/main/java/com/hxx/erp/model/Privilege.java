@@ -16,6 +16,7 @@ public class Privilege implements Serializable{
 	/*下面为临时变量 */
 	private Integer menuPrivilegeId;	//菜单权限表id
 	private boolean check;				//菜单是否拥有该权限、角色是否拥有该权限
+	private String checked;
 	public Privilege(){
 	}
 
@@ -68,4 +69,13 @@ public class Privilege implements Serializable{
 	public void setCheck(boolean check) {
 		this.check = check;
 	}
+
+	public String getChecked() {
+		return checked;
+	}
+
+	public void setChecked(String checked) {
+		this.checked = checked;
+	}
+
 }

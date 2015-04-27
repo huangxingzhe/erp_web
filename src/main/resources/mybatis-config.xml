@@ -29,6 +29,7 @@
 		<typeAlias alias="fundsProcess" type="com.hxx.erp.model.FundsProcess" />
 		<typeAlias alias="privilege" type="com.hxx.erp.model.Privilege" />
 		<typeAlias alias="menuPrivilege" type="com.hxx.erp.model.MenuPrivilege" />
+		<typeAlias alias="rolePrivilege" type="com.hxx.erp.model.RolePrivilege" />
 	</typeAliases>
 	
 	<plugins>
@@ -55,5 +56,6 @@
 		<mapper resource="com/hxx/erp/dao/impl/FundsProcessDaoMapper.xml"/>
 		<mapper resource="com/hxx/erp/dao/impl/PrivilegeDaoMapper.xml"/>
 		<mapper resource="com/hxx/erp/dao/impl/MenuPrivilegeDaoMapper.xml"/>
+		<mapper resource="com/hxx/erp/dao/impl/RolePrivilegeDaoMapper.xml"/>
 	</mappers>
 </configuration>

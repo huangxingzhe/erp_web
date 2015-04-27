@@ -68,31 +68,27 @@ span.subBtn
 	</div>
 	<form id="form" action="addRoleMenu.do" method="post">
 		<input name="id" value="${role.id}" type="hidden"/>
-		<div class=listzone>
+		<div class=listzone id="bodyDIV">
 			<table cellspacing=0 cellpadding=3 width="100%" align=center border=0>
 				<tbody>
 					<c:forEach items="${menus}" var="menu" >
-						<%-- <tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#CDE6FF'" onmouseout="this.bgColor='#FFFFFF'" >
-							<td class=biaoti style="text-align:left;border:0px;"><input type="checkbox"  value="${menu.id}" name="menuIds" id="menu${menu.id}" <c:if test="${menu.checked!=null}">checked</c:if>><strong>${menu.name}</strong></td>
-						</tr> --%>
 						<tr bgcolor="#FFFFFF" >
 							<td height="40">
-								<%-- 	<input type="checkbox"  value="${child.id}" name="menuIds" class="checkbox" <c:if test="${child.checked!=null}">checked</c:if> id="menu${child.id}">
-									<span style="width:150px;padding:5px;">${child.name}</span>
-									<c:if test="${(st.index+1)%5==0}"><br/></c:if> --%>
 								<div>
-									<h4 class="priviTitle">${menu.name}<input id="" type="checkbox" name="menuIds" <c:if test="${menu.checked!=null}">checked</c:if>
+									<h4 class="priviTitle">${menu.name}<input id="" type="checkbox" name="menuIds" value="${menu.id}" <c:if test="${menu.checked!=null}">checked</c:if>
 									  onclick="fnCheckItem(this);"><label for="">全选</label></h4>
 									<div class="subItem">
 										<c:forEach items="${menu.childs}" var="child" varStatus="st">
 										<div class="subItem2">
-											<span class="q01"><input id="" type="checkbox" name="menuIds"
+											<span class="q${child.id}"><input id="" type="checkbox" name="menuIds" value="${child.id}"
 											<c:if test="${child.checked!=null}">checked</c:if> onclick="fnUnCheck(this);"><label for="">${child.name}</label></span>
-											<span class="subBtn" onclick="showSubDiv(this,'q01DIV');">&nbsp;&nbsp;子权限</span>
+											<c:if test="${!empty child.pris}"><span class="subBtn" onclick="showSubDiv(this,'q${child.id}DIV');">&nbsp;&nbsp;子权限</span></c:if>
 										</div>
-										<div class="subPriDiv" id="q01DIV" onmouseover="delayHide();" onmouseout="hideMe(this)">
-											<span class="RVA"><input id="" type="checkbox" name="" checked="checked" onclick="setParentCheck(this,'q01');" />
-											<label for="">添加日常收款</label></span>
+										<div class="subPriDiv" id="q${child.id}DIV" onmouseover="delayHide();" onmouseout="hideMe(this)">
+											<c:forEach items="${child.pris}" var="pri">
+											<span><input id="" type="checkbox" name="menuPriIds" value="${pri.menuPrivilegeId}" <c:if test="${pri.checked!=null}">checked</c:if> onclick="setParentCheck(this,'q${child.id}');" />
+											<label for="">${pri.name}</label></span>
+											</c:forEach>
 										</div>
 										</c:forEach>
 									</div>
@@ -147,6 +143,15 @@ span.subBtn
 		});
 		
 	});
+	//获得绝对位置
+	function getAbsPoint(obj) {
+	    var x = obj.offsetLeft, y = obj.offsetTop;
+	    while (obj = obj.offsetParent) {
+	        x += obj.offsetLeft;
+	        y += obj.offsetTop;
+	    }
+	    return { X: x, Y: y };
+	}
     //选择当前节点下所有子元素
     function fnCheckItem(obj) {
         //找到当前对象的父对象

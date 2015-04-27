@@ -22,9 +22,11 @@ import com.hxx.erp.common.Page;
 import com.hxx.erp.model.Menu;
 import com.hxx.erp.model.Role;
 import com.hxx.erp.model.RoleMenu;
+import com.hxx.erp.model.RolePrivilege;
 import com.hxx.erp.model.UserInfo;
 import com.hxx.erp.service.MenuService;
 import com.hxx.erp.service.PrivilegeService;
+import com.hxx.erp.service.RolePrivilegeService;
 import com.hxx.erp.service.RoleService;
 
 @Controller
@@ -33,6 +35,8 @@ public class RoleController extends BaseController{
 	Log log = LogFactory.getLog(this.getClass());
 	@Autowired
 	private RoleService service;
+	@Autowired
+	private RolePrivilegeService rolePriService;
 	@Autowired
 	private MenuService menuService;
 	@Autowired
@@ -112,8 +116,14 @@ public class RoleController extends BaseController{
 				params.clear();
 				params.put("pid", m.getId());
 				params.put("roleId",role.getId());
-				m.setChilds(menuService.queryMenuByRole(params));
-//				m.setPris(priService.f);
+				List<Menu> subMenu = menuService.queryMenuByRole(params);
+				for(Menu me:subMenu){
+					params.clear();
+					params.put("menuId", me.getId());
+					params.put("roleId", role.getId());
+					me.setPris(priService.queryPrivilegeByRoleIdAndMenuId(params));
+				}
+				m.setChilds(subMenu);
 			}
 			model.addAttribute("menus", menus);
 			model.addAttribute("role", role);
@@ -129,23 +139,34 @@ public class RoleController extends BaseController{
 	@ResponseBody
 	public int addRoleMenu(HttpServletRequest request,Model model){
 		String[] menuIds = request.getParameterValues("menuIds");
+		String[] menuPriIds = request.getParameterValues("menuPriIds");
+		if(StringUtils.isEmpty(menuIds) || StringUtils.isEmpty(menuPriIds)){
+			return 2;
+		}
 		String id = request.getParameter("id");
 		int ret = 0 ;
 		try {
 			if(!StringUtils.isEmpty(id)){
+				//添加角色菜单
 				int roleId = Integer.valueOf(id);
 				List<RoleMenu> list = new ArrayList<RoleMenu>();
-				if(menuIds.length>0){
-					for(int i=0;i<menuIds.length;i++){
-						RoleMenu rm = new RoleMenu(roleId, Integer.valueOf(menuIds[i]));
-						list.add(rm);
-					}
-					service.deleteRoleMenu(roleId);
-					service.addRoleMenu(list);
-					ret = 1;
-				}else{
-					ret = 2;
+				for(int i=0;i<menuIds.length;i++){
+					RoleMenu rm = new RoleMenu(roleId, Integer.valueOf(menuIds[i]));
+					list.add(rm);
 				}
+				service.deleteRoleMenu(roleId);
+				service.addRoleMenu(list);
+				//添加角色下的菜单权限
+				List<RolePrivilege> rps = new ArrayList<RolePrivilege>();
+				for(int i=0;i<menuPriIds.length;i++){
+					RolePrivilege rp = new RolePrivilege(roleId, Integer.valueOf(menuPriIds[i]));
+					rps.add(rp);
+				}
+				Map<String,Object> params = new HashMap<String, Object>();
+				params.put("roleId", roleId);
+				rolePriService.deleteRolePrivilegeId(params);
+				rolePriService.addBatch(rps);
+				ret = 1;
 			}
 		} catch (Exception e) {
 			log.error("",e);

@@ -14,7 +14,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript">
 var menuId=0;
 function gotoUrl(url,id){
-	 parent.document.getElementById("main").src = ".."+url;
+	 if(url==null || url==''){
+		 return;
+	 }
+	 var mark='?';
+	 if(url.indexOf("?")!=-1){
+		 mark="&";
+	 }
+	 parent.document.getElementById("main").src = ".."+url+mark+"menuId="+id;
      document.getElementById("m"+id).className = 'thisclass';
      if(menuId>0 && menuId!=id) document.getElementById("m"+menuId).className = '';
      menuId = id;
