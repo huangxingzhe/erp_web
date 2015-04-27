@@ -61,9 +61,7 @@
 	<table height=30 cellspacing=0 cellpadding=0 width="100%" border=0>
 		<tbody>
 			<tr>
-				<td align=right colspan=3><input
-					onclick="javascript:location.href='init.do'" type="button" value="<spring:message code="admin.label.add"/>"
-					class="button"> <input onclick="location.href='list.do'"
+				<td align=right colspan=3><input onclick="location.href='list.do'"
 					type="button" value="<spring:message code="admin.label.refresh"/>" class="button" /></td>
 			</tr>
 		</tbody>

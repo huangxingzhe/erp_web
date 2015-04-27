@@ -41,6 +41,7 @@
 
 <body>
 <form id="form" action="query.do" method="post">
+	<input type="hidden" name="menuId" value="${menuId}">
 	<div class=searchzone>
 	<table height=35 cellspacing=0 cellpadding=0 width="100%" border=0>
 	<tr>
@@ -94,8 +95,10 @@
 							<td class=content>${customer.order.goodsName}</td>
 							<td class=content>${customer.sendNum}</td>
 							<td class=content>
+								<c:if test="${detail!=null}">
 								<a href="javascript:detail(${customer.id})"><spring:message code="admin.label.query"/></a>
-								<c:if test="${sessionScope.session_login_admin_roleid==1}">
+								</c:if>
+								<c:if test="${update!=null}">
 								&nbsp;&nbsp;
 								<a href="javascript:edit(${customer.order.id})"><spring:message code="admin.label.edit"/></a>
 								</c:if>

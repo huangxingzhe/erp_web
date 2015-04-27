@@ -39,7 +39,15 @@ function gotoUrl(url,id){
         	<c:forEach items="${menus}" var="me" varStatus="status">
         		<c:if test="${status.index==0}">
         			<c:if test="${type!='nojump'}">
-        				<script>top.document.getElementById("main").src = "<%=basePath%>${me.url}"</script>
+        				<script>
+        				 var url = '${me.url}';
+        				 var mark='?';
+        				 if(url.indexOf("?")!=-1){
+        					 mark="&";
+        				 }
+        				 url = url+mark+'menuId='+${me.id};
+        				 top.document.getElementById("main").src = "<%=basePath%>"+url;
+        				</script>
         			</c:if>
         			<li id="m${me.id}"><a href="javascript:void(0)" target='main' onclick="gotoUrl('${me.url}','${me.id}')">${me.name}</a></li>
         		</c:if>

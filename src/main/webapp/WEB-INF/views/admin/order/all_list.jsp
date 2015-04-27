@@ -19,6 +19,7 @@
 
 <body>
 <form id="form" action="list.do" method="post">
+<input type="hidden" name="menuId" value="${menuId}">
 	<div class=searchzone>
 	<input type="hidden" name="status" value="11">
 	<table height=35 cellspacing=0 cellpadding=0 width="100%" border=0>
@@ -77,13 +78,16 @@
 	<table height=30 cellspacing=0 cellpadding=0 width="100%" border=0>
 		<tbody>
 			<tr>
-				<td align=right colspan=3><input
-					onclick="javascript:location.href='init.do'" type="button" value="<spring:message code="admin.label.add"/>"
-					class="button"> <input onclick="location.href='list.do?status=${status}'"
-					type="button" value="<spring:message code="admin.label.refresh"/>" class="button" />
-					<input onclick="exportXLS();"
-					type="button" value="<spring:message code="admin.label.export"/>" class="button" />
-					</td>
+				<td align=right colspan=3>
+				<c:if test="${add!=null}">
+					<input onclick="javascript:location.href='init.do'" type="button" value="<spring:message code="admin.label.add"/>"
+					class="button">
+				</c:if>
+				<input onclick="location.href='list.do?status=${status}'" type="button" value="<spring:message code="admin.label.refresh"/>" class="button" />
+				<c:if test="${export!=null}">
+				<input onclick="exportXLS();" type="button" value="<spring:message code="admin.label.export"/>" class="button" />
+				</c:if>
+				</td>
 			</tr>
 		</tbody>
 		</table>
@@ -210,75 +214,66 @@
 								</c:if>
 							</td>
 							<td id="opt_${order.id}" class=content>
-							<a href="javascript:detail(${order.id},${order.status})"><spring:message code="admin.label.detail"/></a>
-								<c:if test="${order.status==1}">
-									<c:if test="${sessionScope.session_login_admin_roleid==1}">
-										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
-									</c:if>
+								<c:if test="${detail!=null}">
+								<a href="javascript:detail(${order.id},${order.status})"><spring:message code="admin.label.detail"/></a>
+								</c:if>
+								<c:if test="${update!=null}">
+									<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
+								</c:if>
+								<c:if test="${delete!=null}">
 									<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
-									<br>
-								<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.sendToBorder"/></a>
+								</c:if>
+								<c:if test="${order.status==1}">
+										<c:if test="${check!=null}">
+										<br>
+										<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.sendToBorder"/></a>
+										</c:if>
 								</c:if>
 								<c:if test="${order.status==2}">
-									<c:if test="${sessionScope.session_login_admin_roleid==1}">
-										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
-										<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
+									<c:if test="${check!=null}">
+										<br>
+										<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.arrivedBorder"/></a>
 									</c:if>
-									<br>
-									<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.arrivedBorder"/></a>
 								</c:if>
 								<c:if test="${order.status==3}">
-									<c:if test="${sessionScope.session_login_admin_roleid==1}">
-										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
-										<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
+									<c:if test="${check!=null}">
+										<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.hadGet"/></a>
 									</c:if>
-									<br>
-									<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.hadGet"/></a>
 								</c:if>
 								<c:if test="${order.status==4}">
-									<c:if test="${sessionScope.session_login_admin_roleid==1}">
-										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
-										<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
-									</c:if>
-									<br>
-									<c:if test="${order.goalAddr==1}">
-										<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.sendToHN"/></a>
-									</c:if>
-									<c:if test="${order.goalAddr==2}">
-										<a href="javascript:update(${order.id},${order.status+1})"><spring:message code="order.label.status.sendToHCM"/></a>
-									</c:if>
+									<c:if test="${check!=null}">
+										<br>
+										<c:if test="${order.goalAddr==1}">
+											<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.sendToHN"/></a>
+										</c:if>
+										<c:if test="${order.goalAddr==2}">
+											<a href="javascript:update(${order.id},${order.status+1})"><spring:message code="order.label.status.sendToHCM"/></a>
+										</c:if>
+									</c:if>	
 								</c:if>
 								<c:if test="${order.status==5}">
-									<c:if test="${sessionScope.session_login_admin_roleid==1}">
-										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
-										<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
+									<c:if test="${check!=null}">
+										<br>
+										<a href="javascript:update(${order.id},${order.status+1})"><spring:message code="order.label.status.goodsWare"/></a>
 									</c:if>
-									<br>
-								<a href="javascript:update(${order.id},${order.status+1})"><spring:message code="order.label.status.goodsWare"/></a>
 								</c:if>
 								<c:if test="${order.status==6}">
-									<c:if test="${sessionScope.session_login_admin_roleid==1}">
-										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
-										<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
+									<c:if test="${check!=null}">
+										<br>
+										<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.goodsWare"/></a>
 									</c:if>
-								<br>
-								<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.goodsWare"/></a>
 								</c:if>
 								<c:if test="${order.status==7}">
-									<c:if test="${sessionScope.session_login_admin_roleid==1}">
-										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
-										<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
+									<c:if test="${check!=null}">
+										<br>
+										<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.receive"/></a>
 									</c:if>
-								<br>
-								<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.receive"/></a>
 								</c:if>
 								<c:if test="${order.status==8}">
-									<c:if test="${sessionScope.session_login_admin_roleid==1}">
-										<a href="javascript:edit(${order.id})"><spring:message code="admin.label.edit"/></a>
-										<a href="javascript:DelRow(${order.id})"><spring:message code="admin.label.delete"/></a>
+									<c:if test="${check!=null}">
+										<br>
+										<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.getMoney"/></a>
 									</c:if>
-								<br>
-								<a href="javascript:update(${order.id},${order.status})"><spring:message code="order.label.status.getMoney"/></a>
 								</c:if>
 							</td>
 						</tr>

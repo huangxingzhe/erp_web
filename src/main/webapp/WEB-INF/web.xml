@@ -32,7 +32,6 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/erp-common-context.xml</param-value>
 	</context-param>
-	
 	<listener>        
             <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>    
     </listener> 
@@ -93,4 +92,7 @@
 		<exception-type>java.lang.Exception</exception-type>
 		<location>/error500.jsp</location>
 	</error-page>
+	<listener>        
+            <listener-class>com.hxx.erp.common.AppContextUtil</listener-class>    
+    </listener> 
 </web-app>

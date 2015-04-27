@@ -16,9 +16,12 @@
 	<table height=30 cellspacing=0 cellpadding=0 width="100%" border=0>
 		<tbody>
 			<tr>
-				<td align=right colspan=3><input
+				<td align=right colspan=3>
+				<c:if test="${add!=null}"><input
 					onclick="javascript:location.href='init.do'" type="button" value="<spring:message code="admin.label.add"/>"
-					class="button"> <input onclick="location.href='list.do'"
+					class="button">
+				</c:if>
+				 <input onclick="location.href='list.do'"
 					type="button" value="<spring:message code="admin.label.refresh"/>" class="button" /></td>
 			</tr>
 		</tbody>
@@ -54,8 +57,13 @@
 							</td>
 							<td class=content>${provider.address}</td>
 							<td class=content id="opt_${provider.id}">
+							<c:if test="${update!=null}">
 							<a href="javascript:edit(${provider.id})"><spring:message code="admin.label.edit"/></a>
-							&nbsp;&nbsp;<a href="javascript:DelRow(${provider.id})"><spring:message code="admin.label.delete"/></a></td>
+							</c:if>
+							<c:if test="${delete!=null}">
+							&nbsp;&nbsp;<a href="javascript:DelRow(${provider.id})"><spring:message code="admin.label.delete"/></a>
+							</c:if>
+							</td>
 						</tr>
 					</c:forEach>
 				</tbody>

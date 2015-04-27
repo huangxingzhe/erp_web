@@ -13,6 +13,7 @@
 
 <body>
 	<form id="form2" action="list.do" method="post">
+	<input type="hidden" name="menuId" value="${menuId}">
 		<div class=searchzone>
 	<table height=35 cellspacing=0 cellpadding=0 width="100%" border=0>
 	<tr>
@@ -67,8 +68,16 @@
 						<td class=content><c:if test="${user.status==1}">正常</c:if><c:if test="${user.status==0}">冻结</c:if></td>
 						<td class=content>${user.phone}</td>
 						<td class=content><fmt:formatDate value="${user.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-						<td class=content id="opt_${user.id}"><a href="javascript:edit(${user.id})">修改</a>&nbsp;&nbsp;<a href="javascript:DelRow(${user.id})">删除</a>
+						<td class=content id="opt_${user.id}">
+						<c:if test="${update!=null}">
+						<a href="javascript:edit(${user.id})">修改</a>
+						</c:if>
+						<c:if test="${delete!=null}">
+ 						&nbsp;&nbsp;<a href="javascript:DelRow(${user.id})">删除</a>
+ 						</c:if>
+ 						<c:if test="${bind!=null}">
 						&nbsp;&nbsp;<a href="javascript:bindRole(${user.id})">分配角色</a>
+						</c:if>
 						</td>
 					</tr>
 					</c:forEach>
