@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+        
+    <!DOCTYPE mapper PUBLIC     
+        "-//mybatis.org//DTD Mapper 3.0//EN"    
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+    <mapper namespace="com.hxx.erp.dao.ProviderDao">    	
+    	<resultMap id="providerDaoMapperResultMap" type="provider">  
+	        <id property="id" column="id" />  
+	        <result property="name" column="name" />  
+	        <result property="code" column="code" /> 
+	        <result property="address" column="address" />
+	        <result property="status" column="status" />
+    	</resultMap>  
+       
+         <select id="get" parameterType="int" resultMap="providerDaoMapperResultMap">    
+            select * from t_provider where id = #{id}   
+        </select>  
+        
+        <insert id="add" parameterType="provider" >
+            INSERT INTO t_provider (name, code,address,status)
+            VALUES(#{name},#{code},#{address},#{status})
+        </insert>
+        
+        <update id="update" parameterType="provider" >
+        	update t_provider set name=#{name} ,code=#{code},
+        	address=#{address},status=#{status}  where id=#{id}
+        </update>
+        <delete id="delete" parameterType="int">
+        	delete from t_provider where id = #{id}
+        </delete>
+        <select id="query" parameterType="provider" resultMap="providerDaoMapperResultMap">    
+            select * from t_provider where code = #{code}   
+        </select>
+        <select id="queryList" resultMap="providerDaoMapperResultMap" parameterType="java.util.Map">
+             select * from t_provider 
+             <trim prefix="where" prefixOverrides="and"> 
+	             <if test="status!=null">
+	             	and status =#{status}
+	             </if>
+	             <if test="name!=null and name !=''">
+	             	and name like CONCAT('%','${name}','%' ) 
+	             </if>
+             </trim>
+				order by id 
+        </select>
+    </mapper>    

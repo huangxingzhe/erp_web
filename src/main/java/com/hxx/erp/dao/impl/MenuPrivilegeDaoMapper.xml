@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+<mapper namespace="com.hxx.erp.dao.MenuPrivilegeDao">
+	<resultMap id="menuPrivilegeMap" type="menuPrivilege">  
+	     <id property="id" column="id" />   
+	     <result property="menuId" column="menu_id" />      
+	     <result property="priId" column="pri_id" />  
+	</resultMap>   
+	<resultMap id="menuPrivilegeRoleMap" type="menuPrivilege">  
+	     <id property="id" column="id" />   
+	     <result property="menuId" column="menu_id" />      
+	     <result property="priId" column="id" />  
+	     <result property="roleId" column="role_id" />      
+	     <result property="priName" column="name" />  
+	</resultMap>   
+	
+	<!-- 给菜单分配权限  -->
+	<insert id="addBatch" parameterType="java.util.List" >
+		insert into t_menu_privilege(menu_id,pri_id) values
+		<foreach collection="list" item="item" index="index" separator=",">  
+       		(#{item.menuId},#{item.priId})  
+   		</foreach>  
+	</insert>
+	 
+	<!-- 查询菜单权限  -->
+	<select id="queryList" resultMap="menuPrivilegeMap" parameterType="java.util.Map">
+		select id,menu_id,pri_id from t_menu_privilege 
+		 <trim prefix="where" prefixOverrides="and" >
+	       <if test="menuId!=null">
+	            and menu_id=#{menuId}
+	       </if>
+	       <if test="priId!=null">
+	            and pri_id=#{priId}
+	       </if>            
+	   	 </trim>
+	</select>
+	
+	<!-- 删除菜单权限  -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from t_menu_privilege where menu_id=#{menuId}
+	</delete>
+	<select id="getMenuPrivilegeByRole" resultMap="menuPrivilegeRoleMap" >
+		SELECT pp.name,pp.id,pp.menu_id,rp.role_id FROM(SELECT p.name,p.id AS pid,mp.* 
+		FROM t_menu_privilege mp,t_privilege p WHERE p.id = mp.pri_id  ORDER BY mp.menu_id) pp 
+		LEFT JOIN t_role_privilege rp ON pp.id = rp.menu_pri_id
+        <if test="_parameter!=null and _parameter!=''">
+           and rp.role_id=#{_parameter}
+        </if>
+	</select>
+</mapper>    

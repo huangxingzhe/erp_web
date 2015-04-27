@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+        
+    <!DOCTYPE mapper PUBLIC     
+        "-//mybatis.org//DTD Mapper 3.0//EN"    
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+    <mapper namespace="com.hxx.erp.dao.UserLoginLogDao">    	
+    	<resultMap id="userLoginLogDaoMapperResultMap" type="userLoginLog">  
+	        <id property="id" column="id" />  
+	        <result property="account" column="account" />  
+	        <result property="lastIp" column="last_ip" /> 
+	         <result property="updateIp" column="update_ip" /> 
+	        <result property="lastTime" column="last_time" />
+	        <result property="updateTime" column="update_time" />
+	        <result property="num" column="num" />
+    	</resultMap>  
+       
+         <select id="get" parameterType="int" resultMap="userLoginLogDaoMapperResultMap">    
+            select * from t_user_login_log where id = #{id}   
+         </select>  
+         
+         <select id="query" parameterType="userLoginLog" resultMap="userLoginLogDaoMapperResultMap">    
+            select * from t_user_login_log where account = #{account}   
+         </select>  
+        
+        <insert id="add" parameterType="userLoginLog" >
+            INSERT INTO t_user_login_log (account, last_ip,update_ip,last_time,update_time,num)
+            VALUES(#{account},#{lastIp},#{updateIp},#{lastTime},#{updateTime},#{num})
+        </insert>
+        
+        <update id="update" parameterType="userLoginLog" >
+        	update t_user_login_log set account=#{account} ,last_ip=#{lastIp},update_ip=#{updateIp},
+        	last_time=#{lastTime} ,update_time=#{updateTime},num=#{num} where id=#{id}
+        </update>
+        <delete id="delete" parameterType="int">
+        	delete from t_user_login_log where id = #{id}
+        </delete>
+        
+        <select id="queryListByPage" resultMap="userLoginLogDaoMapperResultMap" parameterType="java.util.Map">
+             select * from t_user_login_log 
+             <trim prefix="where" prefixOverrides="and"> 
+	             <if test="account!=null and account!=''">
+	             	and account =#{account}
+	             </if>
+	             <if test="startTime !=null and startTime !=''">   
+		          	 <![CDATA[      
+		                AND update_time >= #{startTime}   
+					 ]]>
+				 </if>
+				 <if test="endTime !=null and endTime !=''"> 
+				     <![CDATA[   
+				        	AND update_time <= #{endTime} 
+					 ]]>
+			 	 </if> 
+             </trim>
+				order by update_time desc
+        </select>
+    </mapper>    

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+        
+    <!DOCTYPE mapper PUBLIC     
+        "-//mybatis.org//DTD Mapper 3.0//EN"    
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+    <mapper namespace="com.hxx.erp.dao.FundsProcessDao">    	
+    	<resultMap id="fundsProcessDaoMapperResultMap" type="fundsProcess">  
+	        <id property="id" column="id" />  
+	        <result property="type" column="type" />  
+	        <result property="amount" column="amount" /> 
+	        <result property="mark" column="mark" />
+	        <result property="fundsName" column="funds_name" />
+	         <result property="providerName" column="provider_name" />
+	        <result property="createTime" column="create_time" />
+	        <result property="userId" column="user_id" />
+    	</resultMap>  
+       
+         <select id="get" parameterType="int" resultMap="fundsProcessDaoMapperResultMap">    
+            select * from t_funds_process where id = #{id}   
+        </select>  
+        
+        <insert id="add" parameterType="fundsProcess" >
+            INSERT INTO t_funds_process (type,amount,mark,funds_name,create_time,user_id,provider_name)
+            VALUES(#{type},#{amount},#{mark},#{fundsName},#{createTime},#{userId},#{providerName})
+        </insert>
+        
+        <update id="update" parameterType="fundsProcess" >
+        	update t_funds_process set type=#{type} ,amount=#{amount},mark=#{mark},funds_name=#{fundsName},
+        	create_time=#{createTime},user_id=#{userId},provider_name=#{providerName} where id=#{id}
+        </update>
+        <delete id="delete" parameterType="int">
+        	delete from t_funds_process where id = #{id}
+        </delete>
+        <select id="query" parameterType="fundsProcess" resultMap="fundsProcessDaoMapperResultMap">    
+            select * from t_funds_process where funds_name = #{fundsName}   
+        </select>
+        <select id="queryList" resultMap="fundsProcessDaoMapperResultMap" parameterType="java.util.Map">
+             select * from t_funds_process 
+             <trim prefix="where" prefixOverrides="and"> 
+                 <if test="type!=null and type!=''">
+	             	and type =#{type}
+	             </if>
+	             <if test="fundsName!=null and fundsName !=''">
+	             	and funds_name =#{fundsName}
+	             </if>
+	             <if test="providerName!=null and providerName !=''">
+	             	and provider_name =#{providerName}
+	             </if>
+	             <if test="startTime!=null and startTime !=''">
+	             	<![CDATA[and date_format(create_time,'%Y-%m-%d') >=#{startTime}]]>
+	             </if> 
+	             <if test="endTime!=null and endTime !=''">
+	             	 <![CDATA[  and date_format(create_time,'%Y-%m-%d') <=#{endTime} ]]>
+	             </if> 
+             </trim>
+				order by create_time desc
+        </select>
+    </mapper>    

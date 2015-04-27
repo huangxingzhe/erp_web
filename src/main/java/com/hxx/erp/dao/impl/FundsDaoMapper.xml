@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+    <!DOCTYPE mapper PUBLIC     
+        "-//mybatis.org//DTD Mapper 3.0//EN"    
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+    <mapper namespace="com.hxx.erp.dao.FundsDao">    	
+    	<resultMap id="fundsDaoMapperResultMap" type="funds">  
+	        <id property="id" column="id" />  
+	        <result property="name" column="name" />  
+	        <result property="account" column="account" /> 
+	        <result property="status" column="status" />
+	        <result property="address" column="address" />
+	        <result property="income" column="income" />
+	        <result property="outcome" column="outcome" />
+	        <result property="overMoney" column="over_money" />
+    	</resultMap>  
+       
+         <select id="get" parameterType="int" resultMap="fundsDaoMapperResultMap">    
+            select * from t_funds where id = #{id}   
+        </select>  
+        
+        <insert id="add" parameterType="funds" >
+            INSERT INTO t_funds (name, account,status,address,income,outcome,over_money)
+            VALUES(#{name},#{account},#{status},#{address},#{income},#{outcome},#{overMoney})
+        </insert>
+        
+        <update id="update" parameterType="funds" >
+        	update t_funds set name=#{name} ,account=#{account},status=#{status},address=#{address},
+        	income=#{income},outcome=#{outcome},over_money=#{overMoney}  where id=#{id}
+        </update>
+        <delete id="delete" parameterType="int">
+        	delete from t_funds where id = #{id}
+        </delete>
+        <select id="query" parameterType="funds" resultMap="fundsDaoMapperResultMap">    
+            select * from t_funds where account = #{account}   
+        </select>
+        <select id="queryList" resultMap="fundsDaoMapperResultMap" parameterType="java.util.Map">
+             select * from t_funds 
+             <trim prefix="where" prefixOverrides="and"> 
+	             <if test="status!=null">
+	             	and status =#{status}
+	             </if>
+	              <if test="account!=null and account !=''">
+	             	and account=#{account} 
+	             </if>
+	             <if test="name!=null and name !=''">
+	             	and name like CONCAT('%','${name}','%' ) 
+	             </if>
+             </trim>
+				order by id 
+        </select>
+    </mapper>    

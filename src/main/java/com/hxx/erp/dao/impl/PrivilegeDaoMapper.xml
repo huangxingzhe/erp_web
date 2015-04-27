@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+          
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+<mapper namespace="com.hxx.erp.dao.PrivilegeDao">    	
+ 	<resultMap id="privilegeResultMap" type="privilege">  
+	     <id property="id" column="id" />         
+	     <result property="name" column="name" />  
+	     <result property="value" column="value" />
+	     <result property="menuPrivilegeId" column="menuPrivilegeId" />
+	</resultMap>    
+	
+	<resultMap id="menuPrivilegeMap" type="privilege">
+	     <result property="menuPrivilegeId" column="menuPrivilegeId" />
+	</resultMap>     
+	    
+    <select id="get" parameterType="int" resultMap="privilegeResultMap">    
+	    <![CDATA[   
+			select * from t_privilege where id = #{id}   
+		]]>    
+    </select> 
+     
+     <select id="query" parameterType="java.util.Map" resultMap="privilegeResultMap">    
+        SELECT p.* FROM t_privilege p WHERE p.id IN (SELECT mp.pri_id FROM t_menu_privilege mp,t_role_privilege rp WHERE mp.menu_id = #{menuId} AND
+		rp.menu_pri_id = mp.id AND rp.role_id IN (#{roleId}) )
+     </select>  
+       
+     <insert id="add" parameterType="privilege" >
+    	<![CDATA[   
+			insert into t_privilege(name,value)
+			values(#{name},#{value});
+			]]> 
+	 </insert>
+	 
+	 <update id="update" parameterType="privilege" >
+	 	update t_privilege set name=#{name},value=#{value}
+	 	where id=#{id};
+	 </update>
+
+	 <delete id="delete" parameterType="int">
+	 	delete from t_privilege where id = #{id}
+	 </delete>
+	 
+	 <select id="queryList" resultMap="privilegeResultMap">
+	      select * from t_privilege
+	 </select>
+	 
+	 <select id="check" parameterType="privilege" resultType="java.lang.Integer">
+	    select count(1) from t_privilege 
+	      <trim prefix="where" prefixOverrides="and" >
+	       <if test="id!=0 and id!=null">
+	            and id=#{id}
+	       </if>
+	       <if test="name!='' and name!=null">
+	            and name=#{name}
+	       </if>
+	       <if test="id!=0">
+	            and id=#{id}
+	       </if>             
+	   	 </trim>
+	 </select>
+	 
+	 <!-- 根据菜单id查询菜单下所有菜单菜单权限表id -->
+	 <select id="findMenuPrivilegeMenuId" resultMap="privilegeResultMap" parameterType="java.util.Map">
+	      select id menuPrivilegeId from t_menu_privilege where menu_id = #{menuId}
+	 </select>
+	 
+	 
+	 <!-- 根据菜单id删除菜单的所有权限  -->
+	 <delete id="deleteMenuId" parameterType="int">
+	 	delete from t_menu_privilege where menu_id = #{menuId}
+	 </delete> 
+	 
+	 <!-- 查询权限   -->
+	 <select id="findPrivilege" resultMap="privilegeResultMap" parameterType="java.util.Map">
+	      select * from t_privilege pri
+	      <trim prefix="where" prefixOverrides="and" >
+	      	   <!-- 根据菜单id查询权限  -->
+		       <if test="menuId!=null">
+		           and exists (
+	 					select 1 from t_menu_privilege mpri where pri.id = mpri.pri_id and mpri.menu_id = #{menuId}
+	 				)
+		       </if>         
+	   	  </trim>
+	 </select>
+	 
+	 
+	<!-- 根据菜单id查询拼凑权限   -->
+	 <select id="pcPrivilegeMenuId" parameterType="int" resultMap="privilegeResultMap">
+	 	select mepri.id id,pri.name name from t_privilege pri,t_menu_privilege mepri where  pri.id = mepri.pri_id and mepri.menu_id = #{menuId}
+	 </select>
+</mapper>    

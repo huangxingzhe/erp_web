@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+        
+    <!DOCTYPE mapper PUBLIC     
+        "-//mybatis.org//DTD Mapper 3.0//EN"    
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+    <mapper namespace="com.hxx.erp.dao.OrderInfoDao">    	
+    	<resultMap id="orderInfoDaoMapperResultMap" type="orderInfo">  
+	        <id property="id" column="id" />  
+	        <result property="amount" column="amount" />
+	        <result property="payNo" column="pay_no" />  
+	        <result property="payTime" column="pay_time" /> 
+	        <result property="providerName" column="provider_name" />
+	        <result property="goodsName" column="goods_name" /> 
+	        <result property="num" column="num" /> 
+	        <result property="borderAddr" column="border_addr" />
+	        <result property="goalAddr" column="goal_addr" />
+	        <result property="receiveUser" column="receive_user" />
+	        <result property="status" column="status" /> 
+	        <result property="userId" column="user_id" /> 
+	        <result property="createTime" column="create_time" />  
+	        <result property="updateTime" column="update_time" /> 
+	        <result property="logisticsName" column="logistics_name" /> 
+	        <result property="logisticsOrder" column="logistics_order" />
+	        <result property="statTime" column="statTime" />   
+	        <result property="picUrl" column="pic_url" />   
+	        <result property="borderLogistics" column="border_logistics" /> 
+	        <result property="borderPhone" column="border_phone" /> 
+	        <result property="cnFare" column="cn_fare" />  
+	        <result property="vnFare" column="vn_fare" /> 
+	        <result property="fee" column="fee" /> 
+	        <result property="getGoodsUser" column="get_goods_user" /> 
+	        <result property="cnReceiverPhone" column="cn_receiver_phone" />
+	        <result property="vnReceivePhone" column="vn_receive_phone" />   
+	        <result property="receiveMoney" column="receive_money" />  
+	        <result property="mark" column="mark" />   
+	        <result property="fundsId" column="funds_id" />   
+    	</resultMap>  
+       
+        <select id="get" parameterType="int" resultMap="orderInfoDaoMapperResultMap">    
+            select * from t_order_info where id = #{id}   
+        </select>  
+        
+        <insert id="add" parameterType="orderInfo" useGeneratedKeys="true" keyProperty="id">
+            INSERT INTO t_order_info (amount, pay_no,pay_time, provider_name, 
+            goods_name,num,border_addr,goal_addr,receive_user,status,user_id,create_time,update_time,
+            logistics_name,logistics_order,pic_url,border_logistics,border_phone,cn_fare,vn_fare,fee,get_goods_user,
+            cn_receiver_phone,vn_receiver_phone,receive_money,mark,funds_id)
+            VALUES(#{amount},#{payNo},#{payTime},#{providerName},#{goodsName},#{num},
+            #{borderAddr},#{goalAddr},#{receiveUser},#{status},#{userId},#{createTime},#{updateTime},
+            #{logisticsName},#{logisticsOrder},#{picUrl},#{borderLogistics},#{borderPhone},#{cnFare},#{vnFare},
+            #{fee},#{getGoodsUser},#{cnReceiverPhone},#{vnReceiverPhone},#{receiveMoney},#{mark},#{fundsId})
+        </insert>
+        
+        <update id="update" parameterType="orderInfo" >
+        	update t_order_info set amount=#{amount} ,pay_no=#{payNo},pay_time=#{payTime},
+        	provider_name=#{providerName},goods_name=#{goodsName},
+        	num=#{num},border_addr=#{borderAddr},goal_addr=#{goalAddr},receive_user=#{receiveUser},
+        	status=#{status},user_id=#{userId},update_time=#{updateTime},
+        	logistics_name=#{logisticsName}, logistics_order=#{logisticsOrder},pic_url=#{picUrl},
+        	border_logistics=#{borderLogistics},border_phone=#{borderPhone},cn_fare=#{cnFare},vn_fare=#{vnFare},fee=#{fee},
+            get_goods_user=#{getGoodsUser},cn_receiver_phone=#{cnReceiverPhone},vn_receiver_phone=#{vnReceiverPhone},
+            receive_money= #{receiveMoney},mark=#{mark},funds_id=#{fundsId}
+        	where id=#{id}
+        </update>
+        <update id="updateType" >
+        	update t_order_info set type=#{1} where id=#{0}
+        </update>
+        <delete id="delete" parameterType="int">
+        	delete from t_order_info where id = #{id}
+        </delete>
+        <select id="getMaxPayNo" resultType="java.lang.String" parameterType="java.util.Map">
+            select max(o.pay_no) from t_order_info o where type=0 and o.pay_no like  CONCAT('%','${payType}','%' ) 
+        </select>
+        <select id="queryCount" resultType="java.util.Map">
+			SELECT * FROM ((SELECT COUNT(*) AS s1 FROM t_order_info WHERE type=0 and  STATUS=1)AS s1,(SELECT COUNT(*) s2 FROM t_order_info WHERE type=0 and STATUS=2)AS s2,
+			(SELECT COUNT(*)s3 FROM t_order_info WHERE type=0 and STATUS=3)AS s3,(SELECT COUNT(*)s4 FROM t_order_info WHERE type=0 and STATUS=4)AS s4,(SELECT COUNT(*) s5
+			FROM t_order_info WHERE type=0 and STATUS=5)AS s5,(SELECT COUNT(*) s6 FROM t_order_info WHERE type=0 and STATUS=6)AS s6,
+			(SELECT COUNT(*) s7 FROM t_order_info WHERE type=0 and STATUS=7)AS s7,(SELECT COUNT(*) s8 FROM t_order_info WHERE type=0 and STATUS=8)AS s8,
+			(SELECT COUNT(*) s9 FROM t_order_info WHERE type=0 and STATUS=9)AS s9)
+        </select>
+         <select id="queryCountAndAmount" resultType="java.util.Map">
+			SELECT * FROM ((SELECT COUNT(*) s1 ,SUM(amount) AS n1,SUM(cn_fare) c1,SUM(vn_fare) v1,SUM(fee) f1 FROM t_order_info WHERE TYPE=0 AND STATUS=1)AS s1,(SELECT COUNT(*) s2 ,SUM(amount) AS n2 ,SUM(cn_fare) c2,SUM(vn_fare) v2,SUM(fee) f2 FROM t_order_info WHERE TYPE=0 AND STATUS=2)AS s2,
+			(SELECT COUNT(*)s3 ,SUM(amount) AS n3,SUM(cn_fare) c3,SUM(vn_fare) v3,SUM(fee) f3  FROM t_order_info WHERE TYPE=0 AND STATUS=3)AS s3,(SELECT COUNT(*)s4,SUM(amount) AS n4,SUM(cn_fare) c4,SUM(vn_fare) v4,SUM(fee) f4 FROM t_order_info WHERE TYPE=0 AND STATUS=4)AS s4,(SELECT COUNT(*) s5
+			,SUM(amount) AS n5,SUM(cn_fare) c5,SUM(vn_fare) v5,SUM(fee) f5 FROM t_order_info WHERE TYPE=0 AND STATUS=5)AS s5,(SELECT COUNT(*) s6,SUM(amount) AS n6,SUM(cn_fare) c6,SUM(vn_fare) v6,SUM(fee) f6 FROM t_order_info WHERE TYPE=0 AND STATUS=6)AS s6,
+			(SELECT COUNT(*) s7,SUM(amount) AS n7,SUM(cn_fare) c7,SUM(vn_fare) v7,SUM(fee) f7 FROM t_order_info WHERE TYPE=0 AND STATUS=7)AS s7,(SELECT COUNT(*) s8,SUM(amount) AS n8,SUM(cn_fare) c8,SUM(vn_fare) v8,SUM(fee) f8 FROM t_order_info WHERE TYPE=0 AND STATUS=8)AS s8,
+			(SELECT COUNT(*) s9,SUM(amount) AS n9,SUM(cn_fare) c9,SUM(vn_fare) v9,SUM(fee) f9 FROM t_order_info WHERE TYPE=0 AND STATUS=9)AS s9)
+        </select>
+        <select id="queryListByPage" resultMap="orderInfoDaoMapperResultMap" parameterType="java.util.Map">
+             select * from t_order_info where type=0
+	             <if test="status!=null">
+	             	and status =#{status}
+	             </if>
+	             <if test="payNo!=null and payNo !=''">
+	             	and pay_no =#{payNo}
+	             </if>
+	             <if test="goodsName!=null and goodsName !=''">
+	             	and goods_name =#{goodsName}
+	             </if>
+	             <if test="logisticsOrder!=null and logisticsOrder !=''">
+	             	and logistics_order =#{logisticsOrder}
+	             </if>
+	             <if test="logisticsName!=null and logisticsName !=''">
+	             	and logistics_name like CONCAT('%','${logisticsName}','%' ) 
+	             </if>
+	             <if test="providerName!=null and providerName !=''">
+	             	and provider_name =#{providerName}
+	             </if>
+	             <if test="startPayTime!=null and startPayTime !=''">
+	             	<![CDATA[and date_format(pay_time,'%Y-%m-%d') >=#{startPayTime}]]>
+	             </if> 
+	             <if test="endPayTime!=null and endPayTime !=''">
+	             	 <![CDATA[  and date_format(pay_time,'%Y-%m-%d') <=#{endPayTime} ]]>
+	             </if> 
+	             <if test="cusNo!=null or orderCode !=null">
+	                and id in (
+	                	select order_id from t_order_customer 
+	                	 <trim prefix="where" prefixOverrides="and"> 
+	                	     <if test="cusNo!=null and cusNo !=''">
+				             	and cus_no =#{cusNo}
+				             </if>
+				             <if test="orderCode!=null and orderCode !=''">
+				             	and order_code =#{orderCode}
+				             </if>
+	                	 </trim>
+	                )
+	             </if>
+				order by create_time desc 
+        </select>
+        <select id="queryList" resultMap="orderInfoDaoMapperResultMap" parameterType="java.util.Map">
+             select sum(amount) as amount,sum(num) as num,provider_name,goods_name , date_format(pay_time,'%Y-%m-%d') as statTime from t_order_info 
+	         where type = 0 
+	             <if test="status!=null">
+	             	and status =#{status}
+	             </if>
+	             <if test="goodsName!=null and goodsName !=''">
+	             	and goods_name =#{goodsName}
+	             </if>
+	             <if test="providerName!=null and providerName !=''">
+	             	and provider_name =#{providerName}
+	             </if>
+	             <if test="startPayTime!=null and startPayTime !=''">
+	             	<![CDATA[and date_format(pay_time,'%Y-%m-%d') >=#{startPayTime}]]>
+	             </if> 
+	             <if test="endPayTime!=null and endPayTime !=''">
+	             	 <![CDATA[  and date_format(pay_time,'%Y-%m-%d') <=#{endPayTime} ]]>
+	             </if> 
+             group by statTime
+			 order by statTime desc 
+        </select>
+        <select id="totalStat" resultType="java.util.Map" parameterType="java.util.Map">
+             select sum(amount) as amount,sum(num) as num,sum(receive_money) as receiveMoney from t_order_info 
+	         where type = 0 
+	             <if test="status!=null">
+	             	and status =#{status}
+	             </if>
+	             <if test="goodsName!=null and goodsName !=''">
+	             	and goods_name =#{goodsName}
+	             </if>
+	             <if test="logisticsOrder!=null and logisticsOrder !=''">
+	             	and logistics_order =#{logisticsOrder}
+	             </if>
+	             <if test="providerName!=null and providerName !=''">
+	             	and provider_name =#{providerName}
+	             </if>
+	             <if test="startPayTime!=null and startPayTime !=''">
+	             	<![CDATA[and date_format(pay_time,'%Y-%m-%d') >=#{startPayTime}]]>
+	             </if> 
+	             <if test="endPayTime!=null and endPayTime !=''">
+	             	 <![CDATA[  and date_format(pay_time,'%Y-%m-%d') <=#{endPayTime} ]]>
+	             </if> 
+	             <if test="cusNo!=null or cusName !=null">
+	                and id in (
+	                	select order_id from t_order_customer 
+	                	 <trim prefix="where" prefixOverrides="and"> 
+	                	     <if test="cusNo!=null and cusNo !=''">
+				             	and cus_no =#{cusNo}
+				             </if>
+				             <if test="orderCode!=null and orderCode !=''">
+				             	and order_code =#{orderCode}
+				             </if>
+	                	 </trim>
+	                )
+	             </if>
+        </select>
+    </mapper>    
