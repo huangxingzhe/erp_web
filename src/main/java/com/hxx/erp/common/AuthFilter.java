@@ -26,41 +26,7 @@ import com.hxx.erp.service.PrivilegeService;
 public class AuthFilter implements Filter {
 	Log log = LogFactory.getLog(this.getClass());
 
-	public void afterCompletion(HttpServletRequest arg0,
-			HttpServletResponse arg1, Object arg2, Exception arg3)
-			throws Exception {
-		
-	}
-
-	public void postHandle(HttpServletRequest arg0, HttpServletResponse arg1,
-			Object arg2, ModelAndView arg3) throws Exception {
-		
-	}
-
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-			Object arg2) throws Exception {
-		HttpSession session = request.getSession();
-		Object obj = session.getAttribute(Constant.SESSION_LOGIN_ADMIN_ID);
-		if(obj == null){
-			String uri = request.getRequestURI();
-			String loginUrl = "/login/index.do";
-			if(uri.contains(loginUrl)){
-				return true;
-			}else{
-				String path = request.getContextPath()+loginUrl;
-				response.sendRedirect(path);
-				return true;
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public void destroy() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse rsp,
 			FilterChain chain) throws IOException, ServletException {
@@ -73,24 +39,26 @@ public class AuthFilter implements Filter {
 			 response.sendRedirect(loginUrl);
 			 return;
 		}else{
+			 request.setCharacterEncoding("UTF-8");
 			 String menuId = request.getParameter("menuId");
-			 Integer roleId = (Integer)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_ROLEID);
-//			 if(!StringUtils.isEmpty(menuId)){
-//				PrivilegeService service = (PrivilegeService)AppContextUtil.getBean("privilegeService");
-//				Map<String,Object> params = new HashMap<String,Object>();
-//				params.put("roleId", roleId);
-//				params.put("menuId", Integer.valueOf(menuId));
-//				List<Privilege> pris;
-//				try {
-//					pris = service.query(params);
-//					for(Privilege p : pris){
-//						request.setAttribute(p.getValue(), p.getValue());
-//					}
-//				} catch (Exception e) {
-//					log.error("",e);
-//				}
-//				
-//			 }			
+			 if(!StringUtils.isEmpty(menuId)){
+				Integer roleId = (Integer)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_ROLEID);
+				PrivilegeService service = (PrivilegeService)AppContextUtil.getBean("privilegeService");
+				Map<String,Object> params = new HashMap<String,Object>();
+				params.put("roleId", roleId);
+				params.put("menuId", Integer.valueOf(menuId));
+				List<Privilege> pris;
+				try {
+					pris = service.query(params);
+					for(Privilege p : pris){
+						request.setAttribute(p.getValue(), p.getValue());
+					}
+					request.setAttribute("menuId", menuId);
+				} catch (Exception e) {
+					log.error("",e);
+				}
+				
+			 }	
 			 chain.doFilter(req, rsp);
 	         return;
 		}
@@ -101,7 +69,10 @@ public class AuthFilter implements Filter {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
+
+	@Override
+	public void destroy() {
+		
+	}
 
 }
