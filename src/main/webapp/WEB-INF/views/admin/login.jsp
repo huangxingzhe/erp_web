@@ -140,13 +140,21 @@ a:hover{
 	width: 130px;
 	margin-bottom: 3px;
 }
-
+.contact{
+	width:640px;
+	text-align:center;
+	font-size:10px;
+	margin-top: 150px;
+	margin-right: auto;
+	margin-bottom: 10px;
+	margin-left: auto;
+}
 .copyright{
 	width:640px;
 	text-align:center;
 	font-size:10px;
 	color:#999999;
-	margin-top: 150px;
+	margin-top: 20px;
 	margin-right: auto;
 	margin-bottom: 10px;
 	margin-left: auto;
@@ -244,7 +252,9 @@ function readCookie(name){
         <div style="clear:both"></div>
 	  </div>
 	</div>
-	
+	<div class="contact">
+		Liên hệ：0962634222   &nbsp;&nbsp; EMAIL：thaigiangvietnam@gmail.com
+	</div>
 	<div class="copyright">
 		Copyright © 2010 - 2015 ThaiGiang. All Rights Reserved
 	</div>
