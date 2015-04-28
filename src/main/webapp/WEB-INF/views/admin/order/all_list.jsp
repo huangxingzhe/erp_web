@@ -285,12 +285,14 @@
 						<td height=20 class=total>￥${receiveMoney}</td>
 						<td height=20 class=total>&nbsp;</td>
 						<td height=20 class=total>&nbsp;</td>
+						<td height=20 class=total>&nbsp;</td>
 					</tr>
 					<tr>
 						<td colspan="11" height=20 class=total style="text-align:left;"><spring:message code="admin.label.totalcount"/>：</td>
 						<td height=20 class=total>${totalNums}</td>
 						<td height=20 class=total>￥${totalAmounts}</td>
 						<td height=20 class=total>￥${totalReceiveMoney}</td>
+						<td height=20 class=total>&nbsp;</td>
 						<td height=20 class=total>&nbsp;</td>
 						<td height=20 class=total>&nbsp;</td>
 					</tr>

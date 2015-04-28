@@ -47,7 +47,7 @@
 	<tr>
 	  <td height="30" class="tx-c"><spring:message code="order.customer.cusOrderNo"/></td>
       <td><input name="orderCode" type="text" value="${orderCode}" maxlength="11" id="orderCode" class="dtext" /></td>
-      <c:if test="${sessionScope.session_login_admin_roleid==1|| sessionScope.session_login_admin_roleid==3}">
+      <c:if test="${query!=null}">
 	      <td height="30" class="tx-c"><spring:message code="order.customer.cusNo"/></td>
 	      <td><input name="cusNo" type="text" value="${cusNo}" maxlength="11" id="cusNo" class="dtext" /></td>
 	      <td class="tx-c"><spring:message code="order.customer.cusName"/></td>
@@ -55,7 +55,7 @@
 	      	<input name="cusName" type="text" value="${cusName}" maxlength="11" id="cusName" class="dtext" />
 		  </td>
 	  </c:if>
-	  <c:if test="${sessionScope.session_login_admin_roleid!=1&&sessionScope.session_login_admin_roleid!=3}">
+	  <c:if test="${query==null}">
 	      <td height="30" class="tx-c" colspan="4">&nbsp;</td>
 	  </c:if>
 	  <td colspan="6" style="text-align:center;"><input type="submit" value="<spring:message code="admin.label.query"/> " class="button"></td>

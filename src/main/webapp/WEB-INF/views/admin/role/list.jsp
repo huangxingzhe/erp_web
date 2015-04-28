@@ -35,6 +35,7 @@
 						<td class=biaoti width=50><span class="searchzone">操作</span></td>
 					</tr>
 					<c:forEach items="${roles}" var="role" >
+					<c:if test="${sessionScope.session_login_admin_roleid!=1 && role.name!='超级管理员'}">
 					<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#f2f9fd'" onmouseout="this.bgColor='#FFFFFF'" id="user${role.id}">
 						<td class=content><input type="checkbox"  value="${user.id}" name="ids"></td>
 						<td class=content>${role.name}</td>
@@ -42,6 +43,16 @@
 						&nbsp;&nbsp;<a href="javascript:DelRow(${role.id})">删除</a>
 						&nbsp;&nbsp;<a href="javascript:location.href='initRoleMenu.do?id=${role.id}'">分配菜单</a></td>
 					</tr>
+					</c:if>
+					<c:if test="${sessionScope.session_login_admin_roleid==1}">
+					<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#f2f9fd'" onmouseout="this.bgColor='#FFFFFF'" id="user${role.id}">
+						<td class=content><input type="checkbox"  value="${user.id}" name="ids"></td>
+						<td class=content>${role.name}</td>
+						<td class=content id="opt_${role.id}"><a href="javascript:edit(${role.id})">修改</a>
+						&nbsp;&nbsp;<a href="javascript:DelRow(${role.id})">删除</a>
+						&nbsp;&nbsp;<a href="javascript:location.href='initRoleMenu.do?id=${role.id}'">分配菜单</a></td>
+					</tr>
+					</c:if>
 					</c:forEach>
 				</tbody>
 			</table>

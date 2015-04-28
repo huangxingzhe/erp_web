@@ -58,6 +58,7 @@
     <td align=middle width=100 height=30>权限</td>
     <td height=30>
     	<c:forEach items="${privileges}" var="pri" varStatus="st">
+    		<c:if test="${pri.check==true}"><input type="hidden" name="oldPriIds" value="${pri.id}" id="oldpri"/></c:if>
     		<input type="checkbox" name="priIds" value="${pri.id}" id="pri" <c:if test="${pri.check==true}">checked</c:if>/>
     		${pri.name}&nbsp;&nbsp;
     		<c:if test="${(st.index+1)%5==0}">

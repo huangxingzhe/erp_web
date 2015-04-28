@@ -43,6 +43,18 @@
   </table>
 		</div>
 		</form>
+		<div class=searchzone>
+		<table height=30 cellspacing=0 cellpadding=0 width="100%" border=0>
+			<tbody>
+				<tr>
+					<td align=right colspan=3><input
+						onclick="javascript:location.href='init.do'" type="button" value="添加"
+						class="button"> <input onclick="location.href='list.do'"
+						type="button" value="刷新" class="button" /></td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
 		<div class=listzone>
 			<table cellspacing=0 cellpadding=3 width="100%" align=center border=0>
 				<tbody>
@@ -61,25 +73,48 @@
 						<td class=biaoti width=100><span class="searchzone">操作</span></td>
 					</tr>
 					<c:forEach items="${users}" var="user" >
-					<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#f2f9fd'" onmouseout="this.bgColor='#FFFFFF'" id="user${user.id}">
-						<td class=content><input type="checkbox"  value="${user.id}" name="ids"></td>
-						<td class=content>${user.account}</td>
-						<td class=content>${user.name}</td>
-						<td class=content><c:if test="${user.status==1}">正常</c:if><c:if test="${user.status==0}">冻结</c:if></td>
-						<td class=content>${user.phone}</td>
-						<td class=content><fmt:formatDate value="${user.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-						<td class=content id="opt_${user.id}">
-						<c:if test="${update!=null}">
-						<a href="javascript:edit(${user.id})">修改</a>
+						<c:if test="${sessionScope.session_login_admin_roleid!=1 && user.account!='admin'}">
+						<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#f2f9fd'" onmouseout="this.bgColor='#FFFFFF'" id="user${user.id}">
+							<td class=content><input type="checkbox"  value="${user.id}" name="ids"></td>
+							<td class=content>${user.account}</td>
+							<td class=content>${user.name}</td>
+							<td class=content><c:if test="${user.status==1}">正常</c:if><c:if test="${user.status==0}">冻结</c:if></td>
+							<td class=content>${user.phone}</td>
+							<td class=content><fmt:formatDate value="${user.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+							<td class=content id="opt_${user.id}">
+							<c:if test="${update!=null}">
+							<a href="javascript:edit(${user.id})">修改</a>
+							</c:if>
+							<c:if test="${delete!=null}">
+	 						&nbsp;&nbsp;<a href="javascript:DelRow(${user.id})">删除</a>
+	 						</c:if>
+	 						<c:if test="${bind!=null}">
+							&nbsp;&nbsp;<a href="javascript:bindRole(${user.id})">分配角色</a>
+							</c:if>
+							</td>
+						</tr>
 						</c:if>
-						<c:if test="${delete!=null}">
- 						&nbsp;&nbsp;<a href="javascript:DelRow(${user.id})">删除</a>
- 						</c:if>
- 						<c:if test="${bind!=null}">
-						&nbsp;&nbsp;<a href="javascript:bindRole(${user.id})">分配角色</a>
+						<c:if test="${sessionScope.session_login_admin_roleid==1}">
+						<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#f2f9fd'" onmouseout="this.bgColor='#FFFFFF'" id="user${user.id}">
+							<td class=content><input type="checkbox"  value="${user.id}" name="ids"></td>
+							<td class=content>${user.account}</td>
+							<td class=content>${user.name}</td>
+							<td class=content><c:if test="${user.status==1}">正常</c:if><c:if test="${user.status==0}">冻结</c:if></td>
+							<td class=content>${user.phone}</td>
+							<td class=content><fmt:formatDate value="${user.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+							<td class=content id="opt_${user.id}">
+							<c:if test="${update!=null}">
+							<a href="javascript:edit(${user.id})">修改</a>
+							</c:if>
+							<c:if test="${delete!=null}">
+	 						&nbsp;&nbsp;<a href="javascript:DelRow(${user.id})">删除</a>
+	 						</c:if>
+	 						<c:if test="${bind!=null}">
+							&nbsp;&nbsp;<a href="javascript:bindRole(${user.id})">分配角色</a>
+							</c:if>
+							</td>
+						</tr>
 						</c:if>
-						</td>
-					</tr>
 					</c:forEach>
 				</tbody>
 			</table>

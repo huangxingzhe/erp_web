@@ -42,23 +42,27 @@ public class AuthFilter implements Filter {
 			 request.setCharacterEncoding("UTF-8");
 			 String menuId = request.getParameter("menuId");
 			 if(!StringUtils.isEmpty(menuId)){
-				Integer roleId = (Integer)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_ROLEID);
-				PrivilegeService service = (PrivilegeService)AppContextUtil.getBean("privilegeService");
-				Map<String,Object> params = new HashMap<String,Object>();
-				params.put("roleId", roleId);
-				params.put("menuId", Integer.valueOf(menuId));
-				List<Privilege> pris;
-				try {
+				request.getSession().setAttribute(Constant.SESSION_CURRENT_MENU_ID, menuId);
+			 }else{
+				menuId =(String)request.getSession().getAttribute(Constant.SESSION_CURRENT_MENU_ID);
+			 }
+			 if(!StringUtils.isEmpty(menuId)){
+				 Integer roleId = (Integer)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_ROLEID);
+				 PrivilegeService service = (PrivilegeService)AppContextUtil.getBean("privilegeService");
+				 Map<String,Object> params = new HashMap<String,Object>();
+				 params.put("roleId", roleId);
+				 params.put("menuId", Integer.valueOf(menuId));
+				 List<Privilege> pris;
+				 try {
 					pris = service.query(params);
 					for(Privilege p : pris){
 						request.setAttribute(p.getValue(), p.getValue());
 					}
 					request.setAttribute("menuId", menuId);
-				} catch (Exception e) {
+				 } catch (Exception e) {
 					log.error("",e);
-				}
-				
-			 }	
+				 }
+			 }
 			 chain.doFilter(req, rsp);
 	         return;
 		}

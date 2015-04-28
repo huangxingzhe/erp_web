@@ -33,7 +33,7 @@ function getStatusName(statusName,process,clss){
 </script>
 </head>
 <body>
- <jsp:include page="/WEB-INF/views/admin/order/image_upload.html" />
+<jsp:include page="/WEB-INF/views/admin/order/image_upload.html" />
 <form name="form" id="form" action="add.do" method="post">
 <c:if test="${order.id>0}">
 <input type="hidden" name="id" value="${order.id}" id="orderId">

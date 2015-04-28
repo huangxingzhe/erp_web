@@ -37,7 +37,15 @@
 	
 	<!-- 删除菜单权限  -->
 	<delete id="delete" parameterType="java.util.Map">
-		delete from t_menu_privilege where menu_id=#{menuId}
+		delete from t_menu_privilege 
+		<trim prefix="where" prefixOverrides="and" >
+	       <if test="menuId!=null">
+	            and menu_id=#{menuId}
+	       </if>
+	       <if test="priId!=null">
+	            and pri_id=#{priId}
+	       </if>            
+	   	 </trim>
 	</delete>
 	<select id="getMenuPrivilegeByRole" resultMap="menuPrivilegeRoleMap" >
 		SELECT pp.name,pp.id,pp.menu_id,rp.role_id FROM(SELECT p.name,p.id AS pid,mp.* 

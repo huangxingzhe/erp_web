@@ -60,6 +60,7 @@ public class MenuController extends BaseController{
 					for(MenuPrivilege mp : mps){
 						if(pri.getId()==mp.getPriId()){
 							pri.setCheck(true);
+							pri.setMenuPrivilegeId(mp.getId());
 							break;
 						}
 					}
@@ -75,8 +76,6 @@ public class MenuController extends BaseController{
 	@RequestMapping("/add")
 	@ResponseBody
 	public int add(@ModelAttribute Menu menu,HttpServletRequest request){
-		String[] priIds = request.getParameterValues("priIds");
-		
 		int ret = 0;
 		try {
 			if(menu.getId() == 0){
@@ -87,21 +86,12 @@ public class MenuController extends BaseController{
 				}
 				menu.setStatus(1);
 				service.add(menu);
+				
 			}else{
 				service.update(menu);
-				Map<String,Object> params = new HashMap<String, Object>();
-				params.put("menuId", menu.getId());
-				mpService.delete(params);
 			}
-			if(!StringUtils.isEmpty(priIds)){
-				List<MenuPrivilege> mpList = new ArrayList<MenuPrivilege>();
-				for(String priId :priIds){
-					mpList.add(new MenuPrivilege(menu.getId(), Integer.valueOf(priId)));
-				}
-				mpService.addBatch(mpList);
-			}
-		
-			ret = 1;//操作成功
+			
+			ret = addOrDelPrivilege(request,menu);
 		} catch (Exception e) {
 			log.error("",e);
 		}
@@ -128,6 +118,58 @@ public class MenuController extends BaseController{
 		return "/admin/menu/list";
 	}
 	
+	private int addOrDelPrivilege(HttpServletRequest request,Menu menu){
+		String[] priIds = request.getParameterValues("priIds");
+		if(StringUtils.isEmpty(priIds)){
+			return 1;
+		}
+		String[] oldPriIds = request.getParameterValues("oldPriIds");
+		if(!StringUtils.isEmpty(oldPriIds)){
+			List<String> delList = new ArrayList<String>();
+			List<MenuPrivilege> addList = new ArrayList<MenuPrivilege>();
+			boolean flag = false;
+			for(String id:priIds){
+				for(String oid:oldPriIds){
+					if(oid.equals(id)){
+						flag = true;
+						break;
+					}
+				}
+				if(!flag){
+					addList.add(new MenuPrivilege(menu.getId(), Integer.valueOf(id)));//需要添加的id
+				}
+				flag = false;
+			}
+			if(addList.size()>0){
+				mpService.addBatch(addList);
+			}
+			for(String oid:oldPriIds){
+				for(String id:priIds){
+					if(oid.equals(id)){
+						flag = true;
+						break;
+					}
+				}
+				if(!flag){
+					delList.add(oid);//需要删除的id
+				}
+				flag = false;
+			}
+			Map<String,Object> params = new HashMap<String, Object>();
+			for(String id:delList){
+				params.put("menuId", menu.getId());
+				params.put("priId", id);
+				mpService.delete(params);
+			}
+		}else{
+			List<MenuPrivilege> mpList = new ArrayList<MenuPrivilege>();
+			for(String priId :priIds){
+				mpList.add(new MenuPrivilege(menu.getId(), Integer.valueOf(priId)));
+			}
+			mpService.addBatch(mpList);
+		}
+		return 1;
+	}
 	@RequestMapping("/delete")
 	@ResponseBody
 	public String delete(@RequestParam int id){

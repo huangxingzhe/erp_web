@@ -57,7 +57,7 @@ span.subBtn
 </style>
 </head>
 
-<body>
+<body id="bodyDIV">
 	<div class=searchzone>
 		<table height=35 cellspacing=0 cellpadding=0 width="100%" border=0>
 			<tr>
@@ -68,10 +68,11 @@ span.subBtn
 	</div>
 	<form id="form" action="addRoleMenu.do" method="post">
 		<input name="id" value="${role.id}" type="hidden"/>
-		<div class=listzone id="bodyDIV">
+		<div class=listzone >
 			<table cellspacing=0 cellpadding=3 width="100%" align=center border=0>
 				<tbody>
 					<c:forEach items="${menus}" var="menu" >
+						<c:if test="${sessionScope.session_login_admin_roleid!=1 && menu.name!='菜单管理'}">
 						<tr bgcolor="#FFFFFF" >
 							<td height="40">
 								<div>
@@ -96,14 +97,43 @@ span.subBtn
 								
 							</td>
 						</tr>
+						</c:if>
+						<c:if test="${sessionScope.session_login_admin_roleid==1}">
+						<tr bgcolor="#FFFFFF" >
+							<td height="40">
+								<div>
+									<h4 class="priviTitle">${menu.name}<input id="" type="checkbox" name="menuIds" value="${menu.id}" <c:if test="${menu.checked!=null}">checked</c:if>
+									  onclick="fnCheckItem(this);"><label for="">全选</label></h4>
+									<div class="subItem">
+										<c:forEach items="${menu.childs}" var="child" varStatus="st">
+										<div class="subItem2">
+											<span class="q${child.id}"><input id="" type="checkbox" name="menuIds" value="${child.id}"
+											<c:if test="${child.checked!=null}">checked</c:if> onclick="fnUnCheck(this);"><label for="">${child.name}</label></span>
+											<c:if test="${!empty child.pris}"><span class="subBtn" onclick="showSubDiv(this,'q${child.id}DIV');">&nbsp;&nbsp;子权限</span></c:if>
+										</div>
+										<div class="subPriDiv" id="q${child.id}DIV" onmouseover="delayHide();" onmouseout="hideMe(this)">
+											<c:forEach items="${child.pris}" var="pri">
+											<span><input id="" type="checkbox" name="menuPriIds" value="${pri.menuPrivilegeId}" <c:if test="${pri.checked!=null}">checked</c:if> onclick="setParentCheck(this,'q${child.id}');" />
+											<label for="">${pri.name}</label></span>
+											</c:forEach>
+										</div>
+										</c:forEach>
+									</div>
+								</div>	
+								
+							</td>
+						</tr>
+						</c:if>
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
-		<div class=adminsubmit><input class="button" type="submit" value="提交" />  
+		<div class=adminsubmit style="text-align:center;"><input class="button" type="submit" value="提交" />  
 			<input class="button" type="button" value="返回" onclick="history.go(-1)"/> 
 		</div>
 	</form>
+	<br/>
+	<br/>
 	<script type="text/javascript" src="../../js/jquery.min.js"></script>
 	<script type="text/javascript" src="../../js/jquery.validate.js"></script>
 	<script type="text/javascript" src="../../js/jquery.form.js"></script>
@@ -182,7 +212,7 @@ span.subBtn
     }
     function showSubDiv(obj, id) {
         var xy = getAbsPoint(obj);
-        var top = xy.Y - getScrollTop();
+        var top = xy.Y - getScrollTop()-20;
         document.getElementById(id).style.left = xy.X + "px";
         document.getElementById(id).style.top = top + "px";
         document.getElementById(id).style.display = "block";

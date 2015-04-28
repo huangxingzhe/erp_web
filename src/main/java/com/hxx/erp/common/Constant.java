@@ -7,5 +7,6 @@ public class Constant {
 	public static final String SESSION_LOGIN_ADMIN_NAME = "session_login_admin_name";
 	public static final String SESSION_LOGIN_ADMIN_ROLEID = "session_login_admin_roleid";
 	public static final String SESSION_LOGIN_ADMIN_CUSTOMERID = "session_login_admin_customerid";
+	public static final String SESSION_CURRENT_MENU_ID = "session_current_menu_id";
 
 }
