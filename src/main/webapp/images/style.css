@@ -540,4 +540,34 @@ ul { list-style:none;}
 *html .process .doing{background-position-y:-20px;}
 *html .process .ready{background-position-y:0;}
 *html .process .singular{background-position-y:-60px;}
+/*result*/
+.result-top { width: 608px; height: 43px; background-color: #fbfbfb; border: 1px solid #90bfff; border-bottom: none; }
+.result-top span, .result-top a { display: inline-block; height: 43px; line-height: 43px; vertical-align: middle; font-size: 14px; }
+.result-top a { padding-left: 23px; width: 37px; font-weight: bold; color: #448ef3; }
+.result-top .a-rss { background: url("http://cdn.kuaidi100.com/images/ico_index.png") -15px -303px no-repeat; }
+.result-top .a-share { background: url("http://cdn.kuaidi100.com/images/ico_index.png") -12px -353px no-repeat; }
+.result-top .col1 { width: 184px; text-align: center; font-weight: bold; border-right: 1px solid #ddd; color: #333; }
+.result-top .col2 { width: 303px; text-align: center; font-weight: bold; color: #333; }
+.result-info2 { width: 610px; border-top: 1px solid #ddd; }
+/*²éÑ¯½á¹û¿ò*/
+.result-info2{width:610px;border:1px solid #90bfff}
+.result-info2 td{padding:10px;color:#878787;border-bottom:1px solid #d8d8d8;background-color:#fbfbfb}
+.result-info2 .status{width:30px;background:url("http://cdn.kuaidi100.com/images/ico_status.gif") -50px center no-repeat #fbfbfb}
+.result-info2 .status{width:30px;background:url("http://cdn.kuaidi100.com/images/ico_status.gif") -50px center no-repeat #fbfbfb}
+.result-info2 .status-first{background:url("http://cdn.kuaidi100.com/images/ico_status.gif") 0px center no-repeat #fbfbfb}
+.result-info2 .status-check{background:url("http://cdn.kuaidi100.com/images/ico_status.gif") -150px center no-repeat #fbfbfb}
+.result-info2 .status-wait{background:url("http://cdn.kuaidi100.com/images/ico_status.gif") -100px center no-repeat #fbfbfb}
+.result-info2 .last td{color:#FF8c00;border-bottom:none;background-color:#ffffff}
+.result-info2 .row1{width:140px;text-align:right;}
+/*result-qr*/
+.qr-box { border: 1px solid #90bfff; padding: 10px 0;}
+.qr-box .qr-ad { float: left; margin: 0 9px; width: 350px; }
+.qr-box .qr-content { float: right; width: 240px; height: 120px; }
+.qr-box .qr-l { float: left; width: 110px; text-align: center; word-wrap: break-word; }
+.qr-box .qr-r { float: right; width: 110px; padding: 20px 10px; }
+.qr-box img { border: 3px solid #d9e2f2; }
+.qr-box p { line-height: 20px; font-size: 14px; color: #878787; }
+.qr-box p a { color: #448ef3; }
+.qr-sf { position:absolute; top:0; left:-102px; width:92px; height:122px; background:url("http://cdn.kuaidi100.com/images/qrcode/sf_2.png") 0 0 no-repeat; }
+.ps-box { padding:6px 20px; text-align:center; font-size:14px; color:#aaa;}
 
