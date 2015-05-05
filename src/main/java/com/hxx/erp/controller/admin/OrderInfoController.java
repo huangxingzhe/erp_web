@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.hxx.erp.common.Constant;
 import com.hxx.erp.common.ExportData;
 import com.hxx.erp.common.Page;
@@ -50,6 +52,7 @@ import com.hxx.erp.service.OrderInfoService;
 import com.hxx.erp.service.OrderTimeService;
 import com.hxx.erp.service.ProviderService;
 import com.hxx.erp.util.DateUtil;
+import com.hxx.erp.util.HttpClientUtil;
 
 @Controller
 @RequestMapping("/admin/order")
@@ -671,6 +674,34 @@ Log log = LogFactory.getLog(this.getClass());
 		}
 		return ret;
 	}
+	
+	@RequestMapping("/queryKuaidi")
+	@ResponseBody
+	public String queryKuaiDi(HttpServletRequest request){
+		String no = request.getParameter("no");
+		if(StringUtils.isEmpty(no)){
+			return "";
+		}
+		no = StringUtils.trimWhitespace(no);
+		String url = "http://www.kuaidi100.com/autonumber/autoComNum?text="+no;
+		try {
+			String ret = HttpClientUtil.get(url);
+			log.info("kuaidi result:"+ret);
+			JSONObject obj = JSONObject.parseObject(ret);
+			JSONArray array = (JSONArray)obj.get("auto");
+			JSONObject auto = array.getJSONObject(0);
+			String type = auto.getString("comCode");
+			String temp = System.currentTimeMillis()+"";
+			url = "http://www.kuaidi100.com/query?type="+type+"&postid="+no+"&id=1&valicode=&temp="+temp;
+			log.info("query url:"+url);
+			ret = HttpClientUtil.get(url);
+			return ret;
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		return "";
+	}
+	
 
 	public static final String GOAL_ADDR_HN="1";
 	public static final String GOAL_ADDR_HCM="2";
