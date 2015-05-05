@@ -11,6 +11,7 @@
 <title>home</title>
 <link href="../../images/style.css" type=text/css rel=stylesheet>
 <link href="../../js/getdate/skin/WdatePicker.css" rel="stylesheet" type="text/css">
+<LINK href="http://res.gm.17188.com/oss_files/jquery-ui-1.9.1.custom.css" rel="stylesheet" type="text/css">  
 <script type="text/javascript"src="../../js/jquery-1.8.0.min.js" ></script> 
 <script>
 function getStatusName(statusName,process,clss){
@@ -83,6 +84,7 @@ function getStatusName(statusName,process,clss){
     <td class=title_bg  width=100 height=30><spring:message code="order.label.logisticsOrder"/>：</td>
     <td height=30 style="padding-left:10px;">
     	<input name="logisticsOrder" value="${order.logisticsOrder}" id="logisticsOrder" readonly="readonly" />
+    	&nbsp;&nbsp;<c:if test="${order.id>0}"><a href="javascript:queryKuaidi('logisticsOrder')">查看</a></c:if>
     </td>
    </tr>
    <tr>
@@ -446,12 +448,21 @@ function getStatusName(statusName,process,clss){
 		</c:forEach>
 	</select>
 </div>
-	
+<div id="queryContext" class="mt10px hidden relative" style="z-index: 4; display: none;">
+    <span class="qr-sf hidden" id="sfQr" style="display: none;"></span>
+    <div class="result-top"><span class="col1">时间</span><span class="col2">地点和跟踪进度</span></div>
+    <table id="queryResult2" class="result-info2" cellspacing="0">
+    <tbody>
+    </tbody>
+    </table>
+</div>	
 	
 	<script type="text/javascript" src="../../js/jquery.validate.js"></script>
 	<script type="text/javascript" src="../../js/jquery.form.js"></script>
 	<script type="text/javascript" src="../../js/jquery.i18n.properties-min-1.0.9.js"></script>
 	<script type="text/javascript" src="../../js/language.js"></script>
+	<script type="text/javascript" src="../../js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../../js/kuaidi.js"></script>
 
 	<script type="text/javascript">
 	  $(function(){
