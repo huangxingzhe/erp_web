@@ -274,15 +274,15 @@ Log log = LogFactory.getLog(this.getClass());
 			
 			int nums = 0;
 			double amounts = 0;
-			double receiveMoney =0;
+			double goodsMoney =0;
 			Map<String,Object> orderIdParam = new HashMap<String,Object>();
 			for(OrderInfo o: orderInfos){
 				nums+=o.getNum();
 				amounts+=o.getAmount();
-				receiveMoney+=o.getReceiveMoney();
-				if(o.getReceiveMoney()>0){
+				goodsMoney+=o.getGoodsMoney();
+				if(o.getGoodsMoney()>0){
 					double all = o.getAmount()+o.getCnFare()+o.getVnFare()+o.getFee();
-					o.setProfit((o.getReceiveMoney()-all)/o.getReceiveMoney());
+					o.setProfit((o.getGoodsMoney()-all)/o.getGoodsMoney());
 				}else{
 					o.setProfit(0);
 				}
@@ -311,17 +311,17 @@ Log log = LogFactory.getLog(this.getClass());
 			model.addAttribute("nums", nums);
 			
 			model.addAttribute("amounts", df.format(amounts));
-			model.addAttribute("receiveMoney", df.format(receiveMoney));
+			model.addAttribute("goodsMoney", df.format(goodsMoney));
 			//如果大于1页才去查
 			if(orderInfos!=null && orderInfos.size()>=page.getPageCount()){
 				Map<String,Object> statMap = service.totalStat(params);
 				model.addAttribute("totalNums", statMap.get("num"));
 				model.addAttribute("totalAmounts", df.format(statMap.get("amount")));
-				model.addAttribute("totalReceiveMoney", df.format(statMap.get("receiveMoney")));
+				model.addAttribute("totalGoodsMoney", df.format(statMap.get("goodsMoney")));
 			}else{
 				model.addAttribute("totalNums", nums);
 				model.addAttribute("totalAmounts", df.format(amounts));
-				model.addAttribute("totalReceiveMoney", df.format(receiveMoney));
+				model.addAttribute("totalGoodsMoney", df.format(goodsMoney));
 			}
 			
 			

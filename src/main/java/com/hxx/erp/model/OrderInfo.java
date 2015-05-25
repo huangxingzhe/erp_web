@@ -36,10 +36,15 @@ public class OrderInfo {
 	private String getGoodsUser;//提货人
 	private String cnReceiverPhone;//国内收货人电话
 	private String vnReceiverPhone;//越南收货联系电话
-	private double receiveMoney;//收回货款
+	private double receiveMoney;//已收金额
+	private double exchangeRate;//汇率
+	private double goodsMoney;//应收金额
+	private double vnMoney;//越南盾
+	private double balance;//应收余额
 	private String mark;//备注
 	private int fundsId;//付款账户id
 	private double profit;//利润率
+	private String productUrl;//产品地址
 	private List<OrderTime> times;
 	private List<OrderCustomer> oCusList;
 	
@@ -291,5 +296,37 @@ public class OrderInfo {
 	public void setFundsId(int fundsId) {
 		this.fundsId = fundsId;
 	}
+	public double getExchangeRate() {
+		return exchangeRate;
+	}
+	public void setExchangeRate(double exchangeRate) {
+		this.exchangeRate = exchangeRate;
+	}
+	public double getGoodsMoney() {
+		return goodsMoney;
+	}
+	public void setGoodsMoney(double goodsMoney) {
+		this.goodsMoney = goodsMoney;
+	}
+	
+	public double getVnMoney() {
+		return goodsMoney * exchangeRate;
+	}
+	public void setVnMoney(double vnMoney) {
+		this.vnMoney = vnMoney;
+	}
+	public double getBalance() {
+		return getVnMoney()-receiveMoney;
+	}
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+	public String getProductUrl() {
+		return productUrl;
+	}
+	public void setProductUrl(String productUrl) {
+		this.productUrl = productUrl;
+	}
+	
 
 }

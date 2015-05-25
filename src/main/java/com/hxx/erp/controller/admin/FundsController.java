@@ -103,6 +103,7 @@ public class FundsController {
 	public int updateMoney(@ModelAttribute Funds funds,HttpServletRequest request){
 		int ret = 0;
 		try {
+			String mark = request.getParameter("mark");
 			Funds f = service.get(funds.getId());
 			double money = f.getOverMoney();
 			if(funds.getType()==1||funds.getType()==2){
@@ -119,7 +120,7 @@ public class FundsController {
 			process.setType(funds.getType());
 			process.setCreateTime(new Date());
 			process.setFundsName(f.getName());
-			process.setMark("");
+			process.setMark(mark);
 			process.setProviderName("");
 			String userName = (String)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_NAME);
 			process.setUserId(userName);

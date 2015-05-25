@@ -152,7 +152,7 @@
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.amount"/></span></td>
 						<td width="100" height=28 class=biaoti><span
-							class="searchzone"><spring:message code="order.label.receiveMoney"/></span></td>
+							class="searchzone"><spring:message code="order.label.goodsMoney"/></span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.profit"/></span></td>
 						<td class=biaoti width=150><span class="searchzone">
@@ -202,7 +202,7 @@
 								<fmt:formatNumber type="number" pattern="￥.00" value="${order.amount}" />
 							</td>
 							<td class=content>
-								<fmt:formatNumber type="number" pattern="￥.00" value="${order.receiveMoney}" />
+								<fmt:formatNumber type="number" pattern="￥.00" value="${order.goodsMoney}" />
 							</td>
 							<td class=content>
 								<fmt:formatNumber type="percent" value="${order.profit}" />
@@ -276,7 +276,7 @@
 						<td colspan="11" height=20 class=total style="text-align:left;"><spring:message code="admin.label.pagecount"/>：</td>
 						<td height=20 class=total>${nums}</td>
 						<td height=20 class=total>￥${amounts}</td>
-						<td height=20 class=total>￥${receiveMoney}</td>
+						<td height=20 class=total>￥${goodsMoney}</td>
 						<td height=20 class=total>&nbsp;</td>
 						<td height=20 class=total>&nbsp;</td>
 					</tr>
@@ -284,7 +284,7 @@
 						<td colspan="11" height=20 class=total style="text-align:left;"><spring:message code="admin.label.totalcount"/>：</td>
 						<td height=20 class=total>${totalNums}</td>
 						<td height=20 class=total>￥${totalAmounts}</td>
-						<td height=20 class=total>￥${totalReceiveMoney}</td>
+						<td height=20 class=total>￥${totalGoodsMoney}</td>
 						<td height=20 class=total>&nbsp;</td>
 						<td height=20 class=total>&nbsp;</td>
 					</tr>

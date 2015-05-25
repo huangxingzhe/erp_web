@@ -17,7 +17,7 @@
 
 <div class=formzone>
 <div class=namezone>
-<spring:message code="funds.label.update"/></div>
+<spring:message code="funds.label.updateMoney"/></div>
 <div class=tablezone>
 <div class=noticediv id=notice></div>
 <table cellspacing=0 cellpadding=2 width="100%" align=center border=0>
@@ -62,6 +62,12 @@
     <td align=middle width=100 height=30><spring:message code="funds.label.money"/></td>
     <td height=30>
     	<input name="money" value="" id="money"  onblur="isPriceNumber(this)"/>
+    </td>
+   </tr>
+   <tr>
+    <td align=middle width=100 height=30><spring:message code="funds.label.mark"/></td>
+    <td height=30>
+    	<textarea rows="5" cols="40" name="mark"></textarea>
     </td>
    </tr>
    </tbody>

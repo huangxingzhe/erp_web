@@ -31,8 +31,11 @@
 	        <result property="getGoodsUser" column="get_goods_user" /> 
 	        <result property="cnReceiverPhone" column="cn_receiver_phone" />
 	        <result property="vnReceivePhone" column="vn_receive_phone" />   
+	        <result property="goodsMoney" column="goods_money" />  
 	        <result property="receiveMoney" column="receive_money" />  
+	        <result property="exchangeRate" column="exchange_rate" />  
 	        <result property="mark" column="mark" />   
+	        <result property="product_url" column="productUrl" />   
 	        <result property="fundsId" column="funds_id" />   
     	</resultMap>  
        
@@ -44,11 +47,11 @@
             INSERT INTO t_order_info (amount, pay_no,pay_time, provider_name, 
             goods_name,num,border_addr,goal_addr,receive_user,status,user_id,create_time,update_time,
             logistics_name,logistics_order,pic_url,border_logistics,border_phone,cn_fare,vn_fare,fee,get_goods_user,
-            cn_receiver_phone,vn_receiver_phone,receive_money,mark,funds_id)
+            cn_receiver_phone,vn_receiver_phone,receive_money,mark,funds_id,goods_money,exchange_rate,product_url)
             VALUES(#{amount},#{payNo},#{payTime},#{providerName},#{goodsName},#{num},
             #{borderAddr},#{goalAddr},#{receiveUser},#{status},#{userId},#{createTime},#{updateTime},
             #{logisticsName},#{logisticsOrder},#{picUrl},#{borderLogistics},#{borderPhone},#{cnFare},#{vnFare},
-            #{fee},#{getGoodsUser},#{cnReceiverPhone},#{vnReceiverPhone},#{receiveMoney},#{mark},#{fundsId})
+            #{fee},#{getGoodsUser},#{cnReceiverPhone},#{vnReceiverPhone},#{receiveMoney},#{mark},#{fundsId},#{goodsMoney},#{exchangeRate},#{productUrl})
         </insert>
         
         <update id="update" parameterType="orderInfo" >
@@ -59,8 +62,9 @@
         	logistics_name=#{logisticsName}, logistics_order=#{logisticsOrder},pic_url=#{picUrl},
         	border_logistics=#{borderLogistics},border_phone=#{borderPhone},cn_fare=#{cnFare},vn_fare=#{vnFare},fee=#{fee},
             get_goods_user=#{getGoodsUser},cn_receiver_phone=#{cnReceiverPhone},vn_receiver_phone=#{vnReceiverPhone},
-            receive_money= #{receiveMoney},mark=#{mark},funds_id=#{fundsId}
-        	where id=#{id}
+            receive_money= #{receiveMoney},mark=#{mark},funds_id=#{fundsId},
+            goods_money=#{goodsMoney},exchange_rate=#{exchangeRate},product_url=#{productUrl}
+        	 where id=#{id}
         </update>
         <update id="updateType" >
         	update t_order_info set type=#{1} where id=#{0}
