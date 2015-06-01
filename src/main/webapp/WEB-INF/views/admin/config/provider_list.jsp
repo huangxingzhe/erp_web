@@ -9,9 +9,11 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>home</title>
 <link href="../../images/style.css" type=text/css rel=stylesheet>
+<script type="text/javascript" src="../../js/jquery.min.js"></script>
 </head>
 
 <body>
+   <form action="list.do" method="post">
 	<div class=searchzone>
 	<table height=30 cellspacing=0 cellpadding=0 width="100%" border=0>
 		<tbody>
@@ -27,7 +29,7 @@
 		</tbody>
 		</table>
 	</div>
-	
+	</form>
 		<div class=listzone>
 			<table cellspacing=0 cellpadding=3 width="100%" align=center border=0>
 				<tbody>
@@ -71,13 +73,14 @@
 		</div>
 		<div class=piliang>
 			<div style="float:left;">
-				 
 		    </div> 
+			<div id="pagelist">
+				${page.pageStr}
+			</div>
 		</div>
 	
 	<br/>
 	<br/>
-	<script type="text/javascript" src="../../js/jquery.min.js"></script>
 	<script type="text/javascript" src="../../js/jquery.form.js"></script>
 	<script type="text/javascript" src="../../js/jquery.i18n.properties-min-1.0.9.js"></script>
 	<script type="text/javascript" src="../../js/language.js"></script>

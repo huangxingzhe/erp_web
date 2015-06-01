@@ -112,11 +112,14 @@
 				</tbody>
 			</table>
 		</div>
-		<div class=piliang>
+				<div class=piliang>
 			<div style="float:left;">
-				 
 		    </div> 
+			<div id="pagelist">
+				${page.pageStr}
+			</div>
 		</div>
+
 	
 	<br/>
 	<br/>

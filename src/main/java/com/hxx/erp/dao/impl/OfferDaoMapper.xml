@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+        
+    <!DOCTYPE mapper PUBLIC     
+        "-//mybatis.org//DTD Mapper 3.0//EN"    
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+    <mapper namespace="com.hxx.erp.dao.OfferDao">    	
+    	<resultMap id="offerDaoMapperResultMap" type="offer">  
+	        <id property="id" column="id" />  
+	        <result property="productCN" column="product_cn" />  
+	        <result property="productVN" column="product_vn" /> 
+	        <result property="customerName" column="customer_name" />
+	        <result property="discount" column="discount" />
+	        <result property="createDate" column="create_date" />
+	        <result property="updateDate" column="update_date" />
+	        <result property="userName" column="user_name" />
+	        <result property="customerPhone" column="customer_phone" />
+	        <result property="customerEmail" column="customer_email" />
+	        <result property="providerName" column="provider_name" />
+	        <result property="providerPhone" column="provider_phone" />
+	        <result property="providerUrl" column="provider_url" />
+	        <result property="providerAddr" column="provider_addr" />
+	        <result property="providerUser" column="provider_user" />
+	        <result property="fee" column="fee" />
+	        <result property="price" column="price" />
+			<result property="profit" column="profit" />
+			<result property="format" column="format" />
+	        <result property="mark" column="mark" />
+    	</resultMap>  
+       
+         <select id="get" parameterType="int" resultMap="offerDaoMapperResultMap">    
+            select * from t_offer where id = #{id}   
+        </select>  
+        
+        <insert id="add" parameterType="offer" >
+            INSERT INTO t_offer (product_cn, product_vn,customer_name,discount,create_date,update_date,user_name,
+            customer_phone, customer_email,provider_name,provider_phone,provider_url,provider_addr,provider_user,fee,
+            price,profit,format,mark)
+            VALUES(#{productCN},#{productVN},#{customerName},#{discount},#{createDate},#{updateDate},#{userName},
+            #{customerPhone},#{customerEmail},#{providerName},#{providerPhone},#{providerUrl},#{providerAddr},#{providerUser},#{fee},
+            #{price},#{profit},#{format},#{mark})
+        </insert>
+        
+        <update id="update" parameterType="offer" >
+        	update t_offer set product_cn=#{productCN} ,product_vn=#{productVN}, user_name=#{userName},
+        	customer_name=#{customerName},discount=#{discount},update_date=#{updateDate},
+        	customer_phone=#{customerPhone},customer_email=#{customerEmail},provider_name=#{providerName},
+        	provider_phone=#{providerPhone},provider_url=#{providerUrl},provider_addr=#{providerAddr},
+        	provider_user=#{providerUser},fee=#{fee},price=#{price},profit=#{profit},format=#{format},mark=#{mark}
+	       
+        	where id=#{id}
+        </update>
+        <delete id="delete" parameterType="int">
+        	delete from t_offer where id = #{id}
+        </delete>
+        <select id="queryList" resultMap="offerDaoMapperResultMap" parameterType="java.util.Map">
+             select * from t_offer 
+             <trim prefix="where" prefixOverrides="and"> 
+             	<if test="startDate!=null and startDate !=''">
+	             	and date_format(update_date,'%Y-%m-%d') >=#{startDate}
+	             </if>
+	             <if test="endDate!=null and endDate !=''">
+	             	 <![CDATA[  and date_format(update_date,'%Y-%m-%d') <=#{endDate} ]]>
+	             </if>
+	             <if test="productCN!=null and productCN !=''">
+	             	and product_cn like CONCAT('%','${productCN}','%' ) 
+	             </if>
+	             <if test="productVN!=null and productVN !=''">
+	             	and product_vn like CONCAT('%','${productVN}','%' ) 
+	             </if>
+	             <if test="customerName!=null and customerName !=''">
+	             	and customer_name like CONCAT('%','${customerName}','%' )
+	             </if>
+	             <if test="providerName!=null and providerName !=''">
+	             	and provider_name like CONCAT('%','${providerName}','%' )
+	             </if>
+             </trim>
+				order by update_date desc 
+        </select>
+    </mapper>    

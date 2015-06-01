@@ -47,6 +47,8 @@ public class OrderInfo {
 	private String productUrl;//产品地址
 	private List<OrderTime> times;
 	private List<OrderCustomer> oCusList;
+	private Date offerDate;//采购日期
+	private String offerType;//采购联系方式
 	
 	
 	
@@ -327,6 +329,17 @@ public class OrderInfo {
 	public void setProductUrl(String productUrl) {
 		this.productUrl = productUrl;
 	}
+	public Date getOfferDate() {
+		return offerDate;
+	}
+	public void setOfferDate(Date offerDate) {
+		this.offerDate = offerDate;
+	}
+	public String getOfferType() {
+		return offerType;
+	}
+	public void setOfferType(String offerType) {
+		this.offerType = offerType;
+	}
 	
-
 }

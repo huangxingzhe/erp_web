@@ -20,4 +20,5 @@ public interface BaseService<T> {
 	
 	public List<T> queryList(Map<String,Object> params) throws Exception;
 	
+	
 }

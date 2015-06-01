@@ -20,8 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hxx.erp.common.Constant;
+import com.hxx.erp.common.Page;
+import com.hxx.erp.model.Customer;
 import com.hxx.erp.model.Funds;
 import com.hxx.erp.model.FundsProcess;
+import com.hxx.erp.model.Goods;
 import com.hxx.erp.model.Provider;
 import com.hxx.erp.service.FundsProcessService;
 import com.hxx.erp.service.FundsService;
@@ -162,7 +165,18 @@ public class FundsController {
 			params.put("providerName", providerName);
 			params.put("startTime", startTime);
 			params.put("endTime", endTime);
-			List<FundsProcess> process = processService.queryList(params);
+			String currentPage = request.getParameter("currentPage");
+			String pageCount = request.getParameter("pageCount");
+			Page<FundsProcess> page = new Page<FundsProcess>();
+			if(!StringUtils.isEmpty(pageCount)){
+				page.setPageCount(Integer.valueOf(pageCount));
+			}
+			if(!StringUtils.isEmpty(currentPage)){
+				page.setCurrentPage(Integer.valueOf(currentPage));
+			}
+			params.put("page", page);
+			
+			List<FundsProcess> process = processService.queryListByPage(params);
 			model.addAttribute("process", process);
 			List<Provider> providers = providerService.queryList(null);
 			model.addAttribute("providers", providers);
@@ -171,6 +185,7 @@ public class FundsController {
 			model.addAttribute("providerName", providerName);
 			model.addAttribute("startTime", startTime);
 			model.addAttribute("endTime", endTime);
+			model.addAttribute("page",page);
 		} catch (Exception e) {
 			log.error("",e);
 		}

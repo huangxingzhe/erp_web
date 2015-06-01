@@ -84,9 +84,9 @@ function getStatusName(statusName,process,clss){
     </td>
   </tr>
    <tr>
-  	<td class=title_bg  height=30><spring:message code="order.label.amount"/>：</td>
+  	<td class=title_bg  height=30><spring:message code="order.label.amount"/>(RMB)：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="amount" value="${order.amount}" id="amount" onblur="isPriceNumber(this)" />
+    	<input name="amount" value="<fmt:formatNumber value="${order.amount}" type="currency"  pattern="#,#00.00#"/>" id="amount" onblur="formatMoney(this)"  />
     </td>
     <td class=title_bg  height=30><spring:message code="order.label.fundsName"/>：</td>
     <td height=30 style="padding-left:10px;">
@@ -102,33 +102,33 @@ function getStatusName(statusName,process,clss){
     </td>
   </tr>
    <tr>
-    <td class=title_bg  width=100 height=30><spring:message code="order.label.fee"/>：</td>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.fee"/>(RMB)：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="fee" value="${order.fee}" id="fee" onblur="isPriceNumber(this)"  />
+    	<input name="fee" value="<fmt:formatNumber value="${order.fee}" type="currency"  pattern="#,#00.00#"/>" id="fee"  onblur="formatMoney(this)"   />
     </td>
-    <td class=title_bg  width=100 height=30><spring:message code="order.label.goodsMoney"/>：</td>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.goodsMoney"/>(RMB)：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="goodsMoney" value="${order.goodsMoney}" id="goodsMoney" onblur="isPriceNumber(this)"  />
+    	<input name="goodsMoney" value="<fmt:formatNumber value="${order.goodsMoney}" type="currency"  pattern="#,#00.00#"/> " id="goodsMoney" onblur="calVND(this,'exchangeRate')"  />
     </td>
   </tr>
   <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.exchangeRate"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="exchangeRate" value="${order.exchangeRate}" id="fee" onblur="isPriceNumber(this)"  />
+    	<input name="exchangeRate" value="${order.exchangeRate}" id="exchangeRate" onblur="calVND(this,'goodsMoney')"  />
     </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.vnMoney"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="vnMoney" value="${order.vnMoney}" id="vnMoney" onblur="isPriceNumber(this)"  />
+    	<input name="vnMoney" value="<fmt:formatNumber value="${order.vnMoney}" type="currency"   pattern="#,#00.00#"/>" id="vnMoney" onblur="formatMoney(this)"   />
     </td>
   </tr>
   <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.receiveMoney"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="receiveMoney" value="${order.receiveMoney}" id="receiveMoney" onblur="isPriceNumber(this)"  />
+    	<input name="receiveMoney" value="<fmt:formatNumber value="${order.receiveMoney}" type="currency"  pattern="#,#00.00#"/>" id="receiveMoney" onblur="calBalance(this)"/>
     </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.balance"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="balance" value="${order.balance}" id="balance" onblur="isPriceNumber(this)"  />
+    	<input name="balance" value="<fmt:formatNumber value="${order.balance}" type="currency"   pattern="#,#00.00#"/>" id="balance" onblur="formatMoney(this)"  />
     </td>
   </tr>
    <tr>
@@ -238,7 +238,19 @@ function getStatusName(statusName,process,clss){
     	</div>
     </td>
    </tr>
+   <c:if test="${status<0}">
     <tr>
+     <td class=title_bg  width=100 height=30><spring:message code="order.label.offerDate"/>：</td>
+     <td height=30 style="padding-left:10px;">
+    	<input name="offerDate" type="text" id="offerDate" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'});" value="${order.offerDate}" readonly=true style="width:150px;" />
+    </td>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.offerType"/>：</td>
+     <td height=30 style="padding-left:10px;" >
+    	<input name="offerType" value="${order.offerType}" id="offerType" width="300"/>
+    </td>
+   </tr>
+    </c:if>
+   <tr>
      <td class=title_bg  width=100 height=30><spring:message code="order.label.productUrl"/>：</td>
      <td height=30 style="padding-left:10px;" colspan="3">
     	<input name="productUrl" value="${order.productUrl}" id="productUrl" width="300"/>
@@ -552,30 +564,15 @@ function getStatusName(statusName,process,clss){
 	        			},
 	        			submitHandler: function(form) {
 	        				$("#submit").attr("disabled", true); 
-	        				var cnFare = $.trim($("#cnFare").val());
-	        				if(cnFare==''){
-	        					$("#cnFare").val(0.00);
-	        				}
-	        				var vnFare = $.trim($("#vnFare").val());
-	        				if(vnFare==''){
-	        					$("#vnFare").val(0.00);
-	        				}
-	        				var fee = $.trim($("#fee").val());
-	        				if(fee==''){
-	        					$("#fee").val(0.00);
-	        				}
-	        				var receiveMoney = $.trim($("#receiveMoney").val());
-	        				if(receiveMoney==''){
-	        					$("#receiveMoney").val(0.00);
-	        				}
-	        				var balance = $.trim($("#balance").val());
-	        				if(balance==''){
-	        					$("#balance").val(0.00);
-	        				}
-	        				var vnMoney = $.trim($("#vnMoney").val());
-	        				if(vnMoney==''){
-	        					$("#vnMoney").val(0.00);
-	        				}
+	        				checkMoney('amount');
+	        				checkMoney('cnFare');
+	        				checkMoney('vnFare');
+	        				checkMoney('fee');
+	        				checkMoney('receiveMoney');
+	        				checkMoney('balance');
+	        				checkMoney('vnMoney');
+	        				checkMoney('exchangeRate');
+	        				checkMoney('goodsMoney');
 	        				jQuery(form).ajaxSubmit({  
 	        	                type:"post",  //提交方式  
 	        	                dataType:"json", //数据类型  
@@ -629,6 +626,16 @@ function getStatusName(statusName,process,clss){
 
 	    });  
 		
+	 function checkMoney(id){
+		 var obj = $("#"+id);
+		 var val = $.trim(obj.val());
+			if(val==''){
+				obj.val(0.00);
+			}else{
+				val = val.replace(new RegExp(/(,)/g),'');
+				obj.val(val);
+			}
+	 }
 	 var index = 0;
 	 function addCus(){
 		 var cus = $("#customer").html();
@@ -648,7 +655,43 @@ function getStatusName(statusName,process,clss){
 		 $(obj).parent().parent().remove();
 		 index --;
 	 }
-	 
+	 //计算应收越南盾
+	 function calVND(obj,id){
+		 var re=/(?=(?!\b)(\d{3})+$)/g; //分割数字 1,000
+		 var objVal =$(obj).val();
+		 objVal = objVal.replace(new RegExp(/(,)/g),'');
+		 var flag = isNaN(objVal);
+		 if(!flag){
+			 var val =$("#"+id).val();
+			 val = val.replace(new RegExp(/(,)/g),'');
+			 if(objVal!='' && val!=''){
+				 var vn = objVal * val;
+				 $("#vnMoney").val(vn);
+			 }
+		 }
+		 //obj.value = objVal.replace(re,",");
+		 //$("#vnMoney").val($("#vnMoney").val().replace(re,","));
+		 obj.value = formatCurrency(objVal);
+		 $("#vnMoney").val(formatCurrency($("#vnMoney").val()));
+	 }
+	 function calBalance(obj){
+		 var re=/(?=(?!\b)(\d{3})+$)/g; //分割数字 1,000
+		 var objVal = $(obj).val();//已收定金
+		 objVal = objVal.replace(new RegExp(/(,)/g),'');
+		 var flag = isNaN(objVal);
+		 if(!flag){
+			 var val =$("#vnMoney").val();
+			 val = val.replace(new RegExp(/(,)/g),'');
+			 if(objVal!='' && val!=''){
+				 var vn = val-objVal;
+				 $("#balance").val(vn);
+			 }
+		 }
+		 //obj.value = objVal.replace(re,",");
+		 //$("#balance").val($("#balance").val().replace(re,","));
+		 obj.value = formatCurrency(objVal);
+		 $("#balance").val(formatCurrency($("#balance").val()));
+	 }
 	 function getPayNo(obj){
 		 var payType = $(obj).find("option:selected").attr("id");
 		 var data={

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+        
+    <!DOCTYPE mapper PUBLIC     
+        "-//mybatis.org//DTD Mapper 3.0//EN"    
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+    <mapper namespace="com.hxx.erp.dao.ManageFeeDao">    	
+    	<resultMap id="manageFeeDaoMapperResultMap" type="manageFee">  
+	        <id property="id" column="id" />  
+	        <result property="receiveUser" column="receive_user" />  
+	        <result property="payNo" column="pay_no" /> 
+	        <result property="payTime" column="pay_time" />
+	        <result property="fundsId" column="funds_id" />
+	        <result property="amount" column="amount" />
+	        <result property="mark" column="mark" />
+	        <result property="userName" column="user_name" />
+	        <result property="createTime" column="create_time" />
+	        <result property="payAccount" column="payAccount" />
+    	</resultMap>  
+       
+         <select id="get" parameterType="int" resultMap="manageFeeDaoMapperResultMap">    
+            select * from t_manage_fee where id = #{id}   
+        </select>  
+        
+        <insert id="add" parameterType="manageFee" >
+            INSERT INTO t_manage_fee (receive_user, pay_no,pay_time,funds_id,amount,mark,user_name, create_time)
+            VALUES(#{receiveUser},#{payNo},#{payTime},#{fundsId},#{amount},#{mark},#{userName},#{createTime})
+        </insert>
+        
+        <update id="update" parameterType="manageFee" >
+        	update t_manage_fee set receive_user=#{receiveUser} ,pay_no=#{payNo}, pay_time=#{payTime},
+        	funds_id=#{fundsId},amount=#{amount},mark=#{mark}
+        	where id=#{id}
+        </update>
+        <delete id="delete" parameterType="int">
+        	delete from t_manage_fee where id = #{id}
+        </delete>
+        <select id="query" parameterType="manageFee" resultMap="manageFeeDaoMapperResultMap">    
+            select * from t_manage_fee where pay_no = #{payNo}   
+        </select>  
+        <select id="queryListByPage" resultMap="manageFeeDaoMapperResultMap" parameterType="java.util.Map">
+             select m.*,f.name as payAccount from t_manage_fee m left join t_funds f on m.funds_id = f.id
+             <trim prefix="where" prefixOverrides="and"> 
+             	<if test="startDate!=null and startDate !=''">
+	             	and date_format(m.pay_time,'%Y-%m-%d') >=#{startDate}
+	             </if>
+	             <if test="endDate!=null and endDate !=''">
+	             	 <![CDATA[  and date_format(m.pay_time,'%Y-%m-%d') <=#{endDate} ]]>
+	             </if>
+	             <if test="receiveUser!=null and receiveUser !=''">
+	             	and m.receive_user like CONCAT('%','${receiveUser}','%' ) 
+	             </if>
+	             <if test="payNo!=null and payNo !=''">
+	             	and m.pay_no=#{payNo}
+	             </if>
+	             <if test="fundsId!=null and fundsId !=''">
+	             	and m.funds_id =#{fundsId}
+	             </if>
+             </trim>
+				order by pay_time desc 
+        </select>
+    </mapper>    

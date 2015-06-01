@@ -55,4 +55,25 @@
              </trim>
 				order by create_time desc
         </select>
+        <select id="queryListByPage" resultMap="fundsProcessDaoMapperResultMap" parameterType="java.util.Map">
+             select * from t_funds_process 
+             <trim prefix="where" prefixOverrides="and"> 
+                 <if test="type!=null and type!=''">
+	             	and type =#{type}
+	             </if>
+	             <if test="fundsName!=null and fundsName !=''">
+	             	and funds_name =#{fundsName}
+	             </if>
+	             <if test="providerName!=null and providerName !=''">
+	             	and provider_name =#{providerName}
+	             </if>
+	             <if test="startTime!=null and startTime !=''">
+	             	<![CDATA[and date_format(create_time,'%Y-%m-%d') >=#{startTime}]]>
+	             </if> 
+	             <if test="endTime!=null and endTime !=''">
+	             	 <![CDATA[  and date_format(create_time,'%Y-%m-%d') <=#{endTime} ]]>
+	             </if> 
+             </trim>
+				order by create_time desc
+        </select>
     </mapper>    

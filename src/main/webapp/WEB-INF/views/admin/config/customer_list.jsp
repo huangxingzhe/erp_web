@@ -13,6 +13,7 @@
 </head>
 
 <body>
+<form action="list.do" method="post">
 	<div class=searchzone>
 	<table height=30 cellspacing=0 cellpadding=0 width="100%" border=0>
 		<tbody>
@@ -27,7 +28,7 @@
 		</tbody>
 		</table>
 	</div>
-	
+	</form>
 		<div class=listzone>
 			<table cellspacing=0 cellpadding=3 width="100%" align=center border=0>
 				<tbody>
@@ -77,8 +78,10 @@
 		</div>
 		<div class=piliang>
 			<div style="float:left;">
-				 
 		    </div> 
+			<div id="pagelist">
+				${page.pageStr}
+			</div>
 		</div>
 	
 	<br/>

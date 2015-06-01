@@ -45,4 +45,16 @@
              </trim>
 			 order by id
         </select>
+         <select id="queryListByPage" resultMap="customerDaoMapperResultMap" parameterType="java.util.Map">
+             select * from t_customer 
+             <trim prefix="where" prefixOverrides="and"> 
+	             <if test="status!=null">
+	             	and status =#{status}
+	             </if>
+	             <if test="name!=null and name !=''">
+	             	and name like CONCAT('%','${name}','%' ) 
+	             </if>
+             </trim>
+			 order by id
+        </select>
     </mapper>    

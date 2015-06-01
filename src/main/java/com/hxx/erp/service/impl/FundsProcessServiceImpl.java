@@ -52,6 +52,14 @@ public class FundsProcessServiceImpl implements FundsProcessService{
 			throws Exception {
 		return dao.queryList(params);
 	}
+
+	@Override
+	public List<FundsProcess> queryListByPage(Map<String, Object> params)
+			throws Exception {
+		return dao.queryListByPage(params);
+	}
+	
+	
 	
 
 }

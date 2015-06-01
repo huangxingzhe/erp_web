@@ -1,6 +1,8 @@
 package com.hxx.erp.controller.admin;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hxx.erp.common.Page;
 import com.hxx.erp.model.Customer;
+import com.hxx.erp.model.Goods;
 import com.hxx.erp.service.CustomerService;
 
 @Controller
@@ -42,10 +46,22 @@ public class CustomerController {
 	}
 	
 	@RequestMapping("/list")
-	public String list(Model model){
+	public String list(HttpServletRequest request,Model model){
 		try {
-			List<Customer> customers = service.queryList(null);
+			String currentPage = request.getParameter("currentPage");
+			String pageCount = request.getParameter("pageCount");
+			Page<Goods> page = new Page<Goods>();
+			if(!StringUtils.isEmpty(pageCount)){
+				page.setPageCount(Integer.valueOf(pageCount));
+			}
+			if(!StringUtils.isEmpty(currentPage)){
+				page.setCurrentPage(Integer.valueOf(currentPage));
+			}
+			Map<String,Object> params = new HashMap<String,Object>();
+			params.put("page", page);
+			List<Customer> customers = service.queryListByPage(params);
 			model.addAttribute("customers", customers);
+			model.addAttribute("page",page);
 		} catch (Exception e) {
 			log.error("",e);
 		}

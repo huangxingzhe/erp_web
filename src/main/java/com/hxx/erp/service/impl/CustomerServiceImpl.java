@@ -53,6 +53,12 @@ public class CustomerServiceImpl implements CustomerService{
 		return dao.queryList(params);
 	}
 
+	@Override
+	public List<Customer> queryListByPage(Map<String, Object> params)
+			throws Exception {
+		return dao.queryListByPage(params);
+	}
+
 	
 	
 }

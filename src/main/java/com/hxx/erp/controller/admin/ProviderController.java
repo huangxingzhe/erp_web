@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.hxx.erp.model.Goods;
+import com.hxx.erp.common.Page;
 import com.hxx.erp.model.Provider;
 import com.hxx.erp.service.ProviderService;
 
@@ -45,11 +45,22 @@ public class ProviderController {
 	}
 	
 	@RequestMapping("/list")
-	public String list(Model model){
+	public String list(HttpServletRequest request,Model model){
 		try {
+			String currentPage = request.getParameter("currentPage");
+			String pageCount = request.getParameter("pageCount");
+			Page<Provider> page = new Page<Provider>();
+			if(!StringUtils.isEmpty(pageCount)){
+				page.setPageCount(Integer.valueOf(pageCount));
+			}
+			if(!StringUtils.isEmpty(currentPage)){
+				page.setCurrentPage(Integer.valueOf(currentPage));
+			}
 			Map<String,Object> params = new HashMap<String,Object>();
-			List<Provider> providers = service.queryList(params);
+			params.put("page", page);
+			List<Provider> providers = service.queryListByPage(params);
 			model.addAttribute("providers", providers);
+			model.addAttribute("page",page);
 		} catch (Exception e) {
 			log.error("",e);
 		}

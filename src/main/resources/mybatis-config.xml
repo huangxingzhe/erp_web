@@ -30,6 +30,8 @@
 		<typeAlias alias="privilege" type="com.hxx.erp.model.Privilege" />
 		<typeAlias alias="menuPrivilege" type="com.hxx.erp.model.MenuPrivilege" />
 		<typeAlias alias="rolePrivilege" type="com.hxx.erp.model.RolePrivilege" />
+		<typeAlias alias="offer" type="com.hxx.erp.model.Offer" />
+		<typeAlias alias="manageFee" type="com.hxx.erp.model.ManageFee" />
 	</typeAliases>
 	
 	<plugins>
@@ -57,5 +59,7 @@
 		<mapper resource="com/hxx/erp/dao/impl/PrivilegeDaoMapper.xml"/>
 		<mapper resource="com/hxx/erp/dao/impl/MenuPrivilegeDaoMapper.xml"/>
 		<mapper resource="com/hxx/erp/dao/impl/RolePrivilegeDaoMapper.xml"/>
+		<mapper resource="com/hxx/erp/dao/impl/OfferDaoMapper.xml"/>
+		<mapper resource="com/hxx/erp/dao/impl/ManageFeeDaoMapper.xml"/>
 	</mappers>
 </configuration>

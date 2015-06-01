@@ -46,52 +46,102 @@ function getStatusName(statusName,process,clss){
 <table cellspacing=0 cellpadding=2 width="100%" align=center border=0>
   <tbody>
   <tr>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.providerName"/>：</td>
+    <td height=30 style="padding-left:12px;">
+    	<select name="providerName" id="providerName" style="width:160px;" disabled="disabled">
+    		<option value=""><spring:message code="admin.label.select"/></option>
+    		<c:forEach items="${providers}" var="provider">
+    			<option label="${provider.name}" value="${provider.name}" 
+    				<c:if test="${provider.name==order.providerName}">selected</c:if>>
+    			</option>
+    		</c:forEach>
+    	</select>
+    </td>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.goodsName"/>：</td>
+    <td height=30 style="padding-left:12px;">
+    	<select name="goodsName" id="goodsName" style="width:160px;" onchange="getPayNo(this)" disabled="disabled">
+    		<option value=""><spring:message code="admin.label.select"/></option>
+	    	<c:forEach items="${goodss}" var="goods">
+	   			<option label="${goods.name}" value="${goods.name}" 
+	   				<c:if test="${goods.name==order.goodsName}">selected</c:if>  id="${goods.type}">
+	   			</option>
+	   		</c:forEach>
+   		</select>
+    </td>
+  </tr>
+  <tr>
   	<td class=title_bg  height=30><spring:message code="order.label.payNo"/>：</td>
     <td height=30 style="padding-left:10px;">
     	<input name="payNo" value="${order.payNo}" id="payNo" readonly="readonly"/>
     </td>
     <td class=title_bg  height=30><spring:message code="order.label.payTime"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="payTime" type="text" id="payTime" class="dtime" readonly="readonly"  value="${order.payTime}" style="width:150px;" />
+    	<input name="payTime" type="text" id="payTime" class="dtime" reonfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'});" value="${order.payTime}" readonly=true style="width:150px;" />
     </td>
   </tr>
-  
    <tr>
-  	<td class=title_bg  height=30><spring:message code="order.label.amount"/>：</td>
+  	<td class=title_bg  height=30><spring:message code="order.label.amount"/>(RMB)：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="amount" value="${order.amount}" id="amount" readonly="readonly" />
+    	<input name="amount" value="<fmt:formatNumber value="${order.amount}" type="currency"  pattern="#,#00.00#"/>" id="amount" readonly="readonly" />
     </td>
-    <td class=title_bg  height=30><spring:message code="order.label.num"/>：</td>
+    <td class=title_bg  height=30><spring:message code="order.label.fundsName"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="num" value="${order.num}" id="num" readonly="readonly" />
+    	<select name="fundsId" id="fundsId" style="width:160px;" onchange="selectAccount()" disabled="disabled">
+    		<option value=""><spring:message code="admin.label.select"/></option>
+   			<c:forEach items="${funds}" var="fund">
+    			<option label="${fund.name}" value="${fund.id}" 
+    				<c:if test="${fund.id==order.fundsId}">selected</c:if>>
+    			</option>
+    		</c:forEach>
+   		</select>
+   		<span id="overMoney"></span>
+    </td>
+  </tr>
+   <tr>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.fee"/>(RMB)：</td>
+    <td height=30 style="padding-left:10px;">
+    	<input name="fee" value="<fmt:formatNumber value="${order.fee}" type="currency"  pattern="#,#00.00#"/>" id="fee" readonly="readonly"/>
+    </td>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.goodsMoney"/>(RMB)：</td>
+    <td height=30 style="padding-left:10px;">
+    	<input name="goodsMoney" value="<fmt:formatNumber value="${order.goodsMoney}" type="currency"  pattern="#,#00.00#"/> " id="goodsMoney" onblur="calVND(this,'exchangeRate')" readonly="readonly" />
     </td>
   </tr>
   <tr>
-    <td class=title_bg  width=100 height=30><spring:message code="order.label.providerName"/>：</td>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.exchangeRate"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="providerName" value="${order.providerName}" id="providerName" readonly="readonly" />
+    	<input name="exchangeRate" value="${order.exchangeRate}" id="exchangeRate" onblur="calVND(this,'goodsMoney')"  readonly="readonly"/>
     </td>
-    <td class=title_bg  width=100 height=30><spring:message code="order.label.goodsName"/>：</td>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.vnMoney"/>：</td>
     <td height=30 style="padding-left:10px;">
-   		<input name="goodsName" value="${order.goodsName}" id="goodsName" readonly="readonly" />
+    	<input name="vnMoney" value="<fmt:formatNumber value="${order.vnMoney}" type="currency"   pattern="#,#00.00#"/>" id="vnMoney" onblur="formatMoney(this)"   readonly="readonly"/>
     </td>
-   </tr>
+  </tr>
+  <tr>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.receiveMoney"/>：</td>
+    <td height=30 style="padding-left:10px;">
+    	<input name="receiveMoney" value="<fmt:formatNumber value="${order.receiveMoney}" type="currency"  pattern="#,#00.00#"/>" id="receiveMoney" onblur="calBalance(this)" readonly="readonly"/>
+    </td>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.balance"/>：</td>
+    <td height=30 style="padding-left:10px;">
+    	<input name="balance" value="<fmt:formatNumber value="${order.balance}" type="currency"   pattern="#,#00.00#"/>" id="balance" onblur="formatMoney(this)"  readonly="readonly"/>
+    </td>
+  </tr>
    <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.logisticsName"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="logisticsName" value="${order.logisticsName}" id="logisticsName" readonly="readonly" />
+    	<input name="logisticsName" value="${order.logisticsName}" id="logisticsName" readonly="readonly"/>
     </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.logisticsOrder"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="logisticsOrder" value="${order.logisticsOrder}" id="logisticsOrder" readonly="readonly" />
+    	<input name="logisticsOrder" value="${order.logisticsOrder}" id="logisticsOrder" readonly="readonly"/>
     	&nbsp;&nbsp;<c:if test="${order.id>0}"><a href="javascript:queryKuaidi('logisticsOrder')">查看</a></c:if>
     </td>
    </tr>
    <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.borderAddr"/>：</td>
     <td height=30 style="padding-left:12px;">
-    	
-    	<select name="borderAddr" id="borderAddr" style="width:153px;" disabled="disabled" >
+    	<select name="borderAddr" id="borderAddr" style="width:160px;" disabled="disabled">
     		<option value=""><spring:message code="admin.label.select"/></option>
    			<option value="1" <c:if test="${order.borderAddr==1}">selected</c:if>>
    			<spring:message code="order.label.border.dongxing"/></option>
@@ -101,7 +151,7 @@ function getStatusName(statusName,process,clss){
     </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.goalAddr"/>：</td>
     <td height=30 style="padding-left:12px;">
-    	<select name="goalAddr" id="goalAddr" style="width:153px;" disabled="disabled">
+    	<select name="goalAddr" id="goalAddr" style="width:160px;" disabled="disabled">
     		<option value=""><spring:message code="admin.label.select"/></option>
 	    	<option value="1" <c:if test="${order.goalAddr==1}">selected</c:if>>
    			<spring:message code="order.label.goal.hn"/></option>
@@ -110,7 +160,7 @@ function getStatusName(statusName,process,clss){
    		</select>
     </td>
    </tr>
-    <tr>
+   <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.receiveUser"/>：</td>
     <td height=30 style="padding-left:10px;">
     	<input name="receiveUser" value="${order.receiveUser}" id="receiveUser" readonly="readonly"/>
@@ -133,33 +183,22 @@ function getStatusName(statusName,process,clss){
    <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.cnFare"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="cnFare" value="${order.cnFare}" id="cnFare" onblur="isPriceNumber(this)"   readonly="readonly"/>
+    	<input name="cnFare" value="${order.cnFare}" id="cnFare"   readonly="readonly" />
     </td>
      <td class=title_bg  width=100 height=30><spring:message code="order.label.vnFare" />：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="vnFare" value="${order.vnFare}" id="vnFare"  onblur="isPriceNumber(this)" readonly="readonly" />
+    	<input name="vnFare" value="${order.vnFare}" id="vnFare"  readonly="readonly"/>
     </td>
    </tr>
    <tr>
-    <td class=title_bg  width=100 height=30><spring:message code="order.label.fee"/>：</td>
+    <td class=title_bg  height=30><spring:message code="order.label.num"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="fee" value="${order.fee}" id="fee" onblur="isPriceNumber(this)"  readonly="readonly"/>
-    </td>
-    <td class=title_bg  width=100 height=30><spring:message code="order.label.receiveMoney"/>：</td>
-    <td height=30 style="padding-left:10px;">
-    	<input name="receiveMoney" value="${order.receiveMoney}" id="receiveMoney" onblur="isPriceNumber(this)" readonly="readonly" />
-    </td>
-    
-   </tr>
-    <tr>
-     <td class=title_bg  width=100 height=30><spring:message code="order.label.getGoodsUser"/>：</td>
-     <td height=30 style="padding-left:10px;">
-    	<input name="getGoodsUser" value="${order.getGoodsUser}" id="getGoodsUser" readonly="readonly"/>
+    	<input name="num" value="${order.num}" id="num" onblur="isPriceNumber(this)"/>
     </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.makeOrderUser"/>：</td>
     <td height=30 style="padding-left:10px;">
      	<c:if test="${order.id>0}">
-    	<input name="userId" value="${order.userId}" id="userId" readonly="readonly"/>
+    	<input name="userId" value="${order.userId}" id="userId" readonly="readonly" />
     	</c:if>
     	<c:if test="${order==null||order.id==0}">
     	<input name="userId" value="${sessionScope.session_login_admin_name}" id="userId" readonly="readonly"/>
@@ -167,8 +206,12 @@ function getStatusName(statusName,process,clss){
     </td>
    </tr>
     <tr>
+     <td class=title_bg  width=100 height=30><spring:message code="order.label.getGoodsUser"/>：</td>
+     <td height=30 style="padding-left:10px;">
+    	<input name="getGoodsUser" value="${order.getGoodsUser}" id="getGoodsUser" readonly="readonly"/>
+    </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.vnReceiverPhone"/>：</td>
-    <td height=30 style="padding-left:10px;" colspan="3">
+    <td height=30 style="padding-left:10px;">
     	<input name="vnReceiverPhone" value="${order.vnReceiverPhone}" id="vnReceiverPhone" readonly="readonly"/>
     </td>
    </tr>

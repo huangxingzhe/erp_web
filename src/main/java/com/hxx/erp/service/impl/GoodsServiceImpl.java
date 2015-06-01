@@ -53,5 +53,12 @@ public class GoodsServiceImpl implements GoodsService{
 		return dao.queryList(params);
 	}
 
+	@Override
+	public List<Goods> queryListByPage(Map<String, Object> params)
+			throws Exception {
+		return dao.queryListByPage(params);
+	}
+
+	
 	
 }

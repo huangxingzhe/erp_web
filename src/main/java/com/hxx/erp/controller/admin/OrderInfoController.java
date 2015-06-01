@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -80,6 +81,7 @@ Log log = LogFactory.getLog(this.getClass());
 	@RequestMapping("/init")
 	public String init(HttpServletRequest request,Model model){
 		String detail = request.getParameter("type");
+		String status = request.getParameter("status");
 		try {
 			String id = request.getParameter("id");
 			
@@ -91,6 +93,7 @@ Log log = LogFactory.getLog(this.getClass());
 			model.addAttribute("providers", providers);
 			model.addAttribute("goodss", goods);
 			model.addAttribute("funds", funds);
+			model.addAttribute("status", status);
 			if(!StringUtils.isEmpty(id)){
 				OrderInfo orderInfo = service.get(Integer.valueOf(id));
 				orderInfo.setTimes(orderTimeService.getByOrderId(Integer.valueOf(id)));
@@ -410,8 +413,8 @@ Log log = LogFactory.getLog(this.getClass());
 			page.setPageCount(1000);
 			params.put("page", page);
 			List<OrderInfo> orderInfos = service.queryListByPage(params);
-			String head[] = {"汇款单号","供应商","产品名称","付款时间","订单时间","交易时长(天)","边界地点","目的地点","件数","付款金额",
-					"国内运费","越南运费","已收货款","利润率"};
+			String head[] = {"汇款单号","供应商","产品名称","付款时间","订单时间","交易时长(天)","边界地点","目的地点","件数","采购金额",
+					"国内运费","越南运费","应收金额","利润率"};
 			String properties[] = {"payNo","providerName","goodsName","payTime","updateTime","days","borderAddrStr","goalAddrStr",
 					"num","amount","cnFare","vnFare","receiveMoney","profit"};
 			String types[] = {"String","String","String","String","Date","Integer","String","String","Integer","Double","Double",
@@ -568,7 +571,14 @@ Log log = LogFactory.getLog(this.getClass());
 	@RequestMapping("/queryCountAndAmount")
 	@ResponseBody
 	public Map<String,Object> queryCountAndAmount(){
+		DecimalFormat df = new DecimalFormat("##,###.00");
 		Map<String,Object> map = service.queryCountAndAmount();
+		for(Map.Entry<String, Object> m :map.entrySet()){
+			String key = m.getKey();
+			if(key.indexOf("s")==-1){
+				m.setValue(df.format(m.getValue()));
+			}
+		}
 		return map;
 		
 	}
@@ -701,7 +711,41 @@ Log log = LogFactory.getLog(this.getClass());
 		}
 		return "";
 	}
-	
+	@RequestMapping("/offerInit")
+	public String offerInit(HttpServletRequest request,Model model){
+		String detail = request.getParameter("type");
+		String status = request.getParameter("status");
+		try {
+			String id = request.getParameter("id");
+			
+//			List<Provider> providers = providerService.queryList(null);
+//			List<Goods> goods = goodsService.queryList(null);
+//			List<Customer> customers = customerService.queryList(null);
+//			List<Funds> funds = fundsService.queryList(null);
+//			model.addAttribute("customers", customers);
+//			model.addAttribute("providers", providers);
+//			model.addAttribute("goodss", goods);
+//			model.addAttribute("funds", funds);
+			model.addAttribute("status", status);
+			if(!StringUtils.isEmpty(id)){
+				OrderInfo orderInfo = service.get(Integer.valueOf(id));
+				orderInfo.setTimes(orderTimeService.getByOrderId(Integer.valueOf(id)));
+				model.addAttribute("order", orderInfo);
+				Map<String,Object> params = new HashMap<String,Object>();
+				params.put("orderId", id);
+				List<OrderCustomer> orderCustomers = oCusService.queryList(params);
+				model.addAttribute("orderCustomers", orderCustomers);
+			}
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		if(StringUtils.isEmpty(detail)){
+			return "/admin/order/add";
+		}else{
+			return "/admin/order/detail";
+		}
+		
+	}
 
 	public static final String GOAL_ADDR_HN="1";
 	public static final String GOAL_ADDR_HCM="2";

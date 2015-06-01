@@ -80,7 +80,7 @@
 			<tr>
 				<td align=right colspan=3>
 				<c:if test="${add!=null}">
-					<input onclick="javascript:location.href='init.do'" type="button" value="<spring:message code="admin.label.add"/>"
+					<input onclick="javascript:location.href='init.do?status=${status}'" type="button" value="<spring:message code="admin.label.add"/>"
 					class="button">
 				</c:if>
 				<input onclick="location.href='list.do?status=${status}'" type="button" value="<spring:message code="admin.label.refresh"/>" class="button" />
@@ -139,8 +139,10 @@
 								<spring:message code="order.label.moneyTime"/>
 							</c:if>
 							</span></td>
+						<c:if test="${status!=9}">
 						<td width="70" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.days"/></span></td>
+						</c:if>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.goodsPic"/></span></td>
 						<td width="100" height=28 class=biaoti><span
@@ -187,7 +189,9 @@
 							<td class=content>${order.goodsName}</td>
 							<td class=content>${fn:substring(order.payTime, 0, 19)}</td>
 							<td class=content title="<spring:message code="order.label.createTime"/>:<fmt:formatDate value="${order.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"><fmt:formatDate value="${order.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+							<c:if test="${status!=9}">
 							<td class=content>${order.days}<spring:message code="order.label.date"/></td>
+							</c:if>
 							<td class=content><img src="showPhoto.do?path=${order.picUrl}" width="26" height="26" border="0" id="preImg" onmouseover="showImg(this,event);" onmouseout="hideImg();"></td>
 							<td class=content>
 								<c:if test="${order.borderAddr==1}"><spring:message code="order.label.border.dongxing"/></c:if>
@@ -199,10 +203,10 @@
 							</td>
 							<td class=content>${order.num}</td>
 							<td class=content title="<spring:message code="order.label.cnFare"/>:${order.cnFare}&nbsp;<spring:message code="order.label.vnFare"/>:${order.vnFare}&nbsp;<spring:message code="order.label.fee"/>:${order.fee}"">
-								<fmt:formatNumber type="number" pattern="￥.00" value="${order.amount}" />
+								<fmt:formatNumber value="${order.amount}" type="currency" pattern="￥#,#00.00#"/>
 							</td>
 							<td class=content>
-								<fmt:formatNumber type="number" pattern="￥.00" value="${order.goodsMoney}" />
+								<fmt:formatNumber value="${order.goodsMoney}" type="currency" pattern="￥#,#00.00#"/>
 							</td>
 							<td class=content>
 								<fmt:formatNumber type="percent" value="${order.profit}" />
@@ -273,18 +277,18 @@
 						</tr>
 					</c:forEach>
 					<tr>
-						<td colspan="11" height=20 class=total style="text-align:left;"><spring:message code="admin.label.pagecount"/>：</td>
+						<td <c:if test="${status!=9}"> colspan="11" </c:if> <c:if test="${status==9}"> colspan="10"</c:if> height=20 class=total style="text-align:left;"><spring:message code="admin.label.pagecount"/>：</td>
 						<td height=20 class=total>${nums}</td>
-						<td height=20 class=total>￥${amounts}</td>
-						<td height=20 class=total>￥${goodsMoney}</td>
+						<td height=20 class=total>￥<fmt:formatNumber value="${amounts}" pattern="#,#00.00#"/></td>
+						<td height=20 class=total>￥<fmt:formatNumber value="${goodsMoney}" pattern="#,#00.00#"/></td>
 						<td height=20 class=total>&nbsp;</td>
 						<td height=20 class=total>&nbsp;</td>
 					</tr>
 					<tr>
-						<td colspan="11" height=20 class=total style="text-align:left;"><spring:message code="admin.label.totalcount"/>：</td>
+						<td <c:if test="${status!=9}"> colspan="11" </c:if> <c:if test="${status==9}"> colspan="10" </c:if> height=20 class=total style="text-align:left;"><spring:message code="admin.label.totalcount"/>：</td>
 						<td height=20 class=total>${totalNums}</td>
-						<td height=20 class=total>￥${totalAmounts}</td>
-						<td height=20 class=total>￥${totalGoodsMoney}</td>
+						<td height=20 class=total>￥<fmt:formatNumber value="${totalAmounts}" pattern="#,#00.00#"/></td>
+						<td height=20 class=total>￥<fmt:formatNumber value="${totalGoodsMoney}" pattern="#,#00.00#"/></td>
 						<td height=20 class=total>&nbsp;</td>
 						<td height=20 class=total>&nbsp;</td>
 					</tr>
