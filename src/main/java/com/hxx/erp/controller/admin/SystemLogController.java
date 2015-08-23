@@ -89,6 +89,7 @@ public class SystemLogController {
 			model.addAttribute("item", item);
 			model.addAttribute("startTime", startTime);
 			model.addAttribute("endTime", endTime);
+			model.addAttribute("page", page);
 		} catch (Exception e) {
 			log.error("",e);
 		}

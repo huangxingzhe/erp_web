@@ -1,5 +1,8 @@
 package com.hxx.erp.controller.admin;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,8 +46,17 @@ public class LoginController {
 	public int login(@ModelAttribute UserInfo userInfo,HttpServletRequest request){
 		int ret = 0;
 		try {
+			String ip = getIpAddr(request);
+			if(userInfo == null || StringUtils.isEmpty(userInfo.getAccount())){
+				return ret = 3;
+			}
 			UserInfo user = service.query(userInfo);
 			if(user != null){
+				//判断IP地址是否被授权
+				if(!checkIp(user.getAuthIp(),ip)){
+					log.info("IP error,so can not access system");
+					return ret = 4;//IP错误
+				}
 				String pass = MD5Util.getHexMD5Str(userInfo.getPassword());
 				if(user.getPassword().equals(pass)){
 					HttpSession session = request.getSession();
@@ -64,15 +77,15 @@ public class LoginController {
 					loginLog.setAccount(user.getAccount());
 					UserLoginLog userLog = logService.query(loginLog);
 					if(userLog==null){
-						loginLog.setLastIp(getIpAddr(request));
-						loginLog.setUpdateIp(getIpAddr(request));
+						loginLog.setLastIp(ip);
+						loginLog.setUpdateIp(ip);
 						loginLog.setLastTime(new Date());
 						loginLog.setUpdateTime(new Date());
 						loginLog.setNum(1);
 						logService.add(loginLog);
 					}else{
 						userLog.setLastIp(userLog.getUpdateIp());
-						userLog.setUpdateIp(getIpAddr(request));
+						userLog.setUpdateIp(ip);
 						userLog.setLastTime(userLog.getUpdateTime());
 						userLog.setUpdateTime(new Date());
 						userLog.setNum(userLog.getNum()+1);
@@ -94,6 +107,16 @@ public class LoginController {
 		}
 		
 		return ret;
+	}
+	
+	private boolean checkIp(String authIp,String loginIp){
+		if(StringUtils.isEmpty(authIp)){
+			return true;
+		}
+		if(authIp.indexOf(loginIp)==-1){
+			return false;
+		}
+		return true;
 	}
 	
 	@RequestMapping("/index")
@@ -123,6 +146,5 @@ public class LoginController {
 	    } 
 	    return ip; 
 	}
-
 	
 }

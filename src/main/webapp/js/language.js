@@ -85,3 +85,134 @@ function checknum(th) {
 		th.focus();
 	} 
 }
+
+
+function checkMoney(id){
+	 var obj = $("#"+id);
+	 var val = $.trim(obj.val());
+		if(val==''){
+			obj.val(0.00);
+		}else{
+			val = val.replace(new RegExp(/(,)/g),'');
+			obj.val(val);
+		}
+}
+
+function showImg(obj, event) {
+	    var pImg = document.getElementById("productImg");
+	    var src = obj.src;
+	    var leftPx = getOffsetLeft(obj) + 38;
+	    var topPx = getOffsetTop(obj) - 40;
+	    if (topPx > 300) {
+	        topPx = 300;
+	    }
+	    event = event || window.event;
+	    pImg.style.display = "block";
+	    pImg.innerHTML = '<img src="' + src + '" />';
+	    pImg.style.top = topPx + "px";
+	    pImg.style.left = leftPx + "px";
+	}
+	function hideImg() {
+	    var pImg = document.getElementById("productImg");
+	    pImg.innerHTML = "";
+	    pImg.style.display = "none";
+	}
+
+	function getOffsetLeft(o) {
+	    var left = 0;
+	    while (o != null && o != document.body) {
+	        left += o.offsetLeft;
+	        o = o.offsetParent;
+	    }
+	    return left;
+	}
+
+	function getOffsetTop(o) {
+	    var top = 0;
+	    while (o != null && o != document.body) {
+	        top += o.offsetTop;
+	        o = o.offsetParent;
+	    }
+	    return top;
+	}
+	
+	
+	var cusObj;
+	//显示客户、员工对话框
+	function showDialog(obj, title, src, top, left, attr) {
+		cusObj = obj
+	    createEmpEntDialog(title, src, top, left, attr)
+	    $('#DialogDIV').Draggable({
+	        zIndex: 20,
+	        ghosting: false,
+	        opacity: 0.5,
+	        handle: '#dialogBar'
+	    });
+
+	    $('#closeDialog').click(function () {
+	        $("#DialogDIV").remove();
+	        //ScreenClean();
+	    });
+	   // ScreenCover();
+	    window.focus();
+	}
+	
+	function createEmpEntDialog(title, src, top, left, attr) {
+	    $("<div  id='DialogDIV' style='z-index: 100;top:" + top + "px; left:" + left + "px;position: absolute;'></div>").append(
+	    "<div class=\"topheader\">"
+	    + "<span class=\"boxTitle\" id=\"dialogBar\">" + title + "</span>"
+	     + "<span class=\"closeBox2\" id=\"closeDialog\"><a href=\"javascript:void(0);\"></a></span>"
+	      + "</div>"
+	       + "<div style=\"padding:0px; \">"
+	        + "<div id='loadImg' style='text-align:center;height:250px;'><img src='"+ "../../images/loading2.gif?id=" + new Date() + "' style='border:none;margin-top:100px;'  /></div>"
+	        + "<iframe frameborder=\"0\" scrolling=\"auto\"  src=\"" + src + "?attr=" + attr + "&id=" + new Date() + "\" id=\"dialogFrame\"  style='display:none;'></iframe>"
+	        + "</div>"
+	    ).appendTo("body")
+	}
+	function selectItem(inputId,id,code,name){
+		$("#"+inputId).val(name);
+		$("#"+inputId).prev().val(id);
+		$("#DialogDIV").remove();
+	}
+	
+	function selectGoodsItem(inputId,id,code,name,type){
+		$("#"+inputId).val(name);
+		$("#"+inputId).prev().val(id);
+		$("#"+inputId).attr("title",type);
+		$("#DialogDIV").remove();
+		
+		if($("#goods_rate").val()=="test"){
+			getGoodsRate(id);
+		}
+		
+		getPayNo($("#"+inputId));
+	}
+	
+	function getGoodsRate(goodsId){
+		 $.ajax({
+             type: "GET",
+             url: "../rate/json.do",
+             data: {goodsId:goodsId},
+             dataType: "json",
+             success: function(data){
+                 $('#rateId').empty();   //清空rateId里面的所有内容
+                 var html = ''; 
+                 $.each(data, function(i, v){
+                       html += '<option value="'+v['id']+'">' + v['discount']+'--'+v['rate']+'</option>'
+                 });
+                 $('#rateId').html(html);
+              }
+         });
+	}
+	
+	function selectCustomerItem(inputId,id,code,name){
+		$(cusObj).val(code+"#"+name);
+		$(cusObj).prev().val(id);
+		$(cusObj).prev().prev().val(id);
+		$("#DialogDIV").remove();
+	}
+	
+	function loadingHide(hideID, showID) {
+	    $("#" + hideID).hide();
+	    $("#" + showID).show();
+	}

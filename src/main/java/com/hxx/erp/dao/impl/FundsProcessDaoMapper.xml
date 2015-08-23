@@ -10,7 +10,7 @@
 	        <result property="amount" column="amount" /> 
 	        <result property="mark" column="mark" />
 	        <result property="fundsName" column="funds_name" />
-	         <result property="providerName" column="provider_name" />
+	         <result property="receiveUser" column="receive_user" />
 	        <result property="createTime" column="create_time" />
 	        <result property="userId" column="user_id" />
     	</resultMap>  
@@ -20,13 +20,13 @@
         </select>  
         
         <insert id="add" parameterType="fundsProcess" >
-            INSERT INTO t_funds_process (type,amount,mark,funds_name,create_time,user_id,provider_name)
-            VALUES(#{type},#{amount},#{mark},#{fundsName},#{createTime},#{userId},#{providerName})
+            INSERT INTO t_funds_process (type,amount,balance,mark,funds_name,create_time,user_id,receive_user)
+            VALUES(#{type},#{amount},#{balance},#{mark},#{fundsName},#{createTime},#{userId},#{receiveUser})
         </insert>
         
         <update id="update" parameterType="fundsProcess" >
-        	update t_funds_process set type=#{type} ,amount=#{amount},mark=#{mark},funds_name=#{fundsName},
-        	create_time=#{createTime},user_id=#{userId},provider_name=#{providerName} where id=#{id}
+        	update t_funds_process set type=#{type} ,amount=#{amount},balance=#{balance},mark=#{mark},funds_name=#{fundsName},
+        	create_time=#{createTime},user_id=#{userId},receive_user=#{receiveUser} where id=#{id}
         </update>
         <delete id="delete" parameterType="int">
         	delete from t_funds_process where id = #{id}
@@ -43,8 +43,8 @@
 	             <if test="fundsName!=null and fundsName !=''">
 	             	and funds_name =#{fundsName}
 	             </if>
-	             <if test="providerName!=null and providerName !=''">
-	             	and provider_name =#{providerName}
+	             <if test="receiveUser!=null and receiveUser !=''">
+	             	and receive_user =#{receiveUser}
 	             </if>
 	             <if test="startTime!=null and startTime !=''">
 	             	<![CDATA[and date_format(create_time,'%Y-%m-%d') >=#{startTime}]]>
@@ -64,8 +64,8 @@
 	             <if test="fundsName!=null and fundsName !=''">
 	             	and funds_name =#{fundsName}
 	             </if>
-	             <if test="providerName!=null and providerName !=''">
-	             	and provider_name =#{providerName}
+	             <if test="receiveUser!=null and receiveUser !=''">
+	             	and receive_user =#{receiveUser}
 	             </if>
 	             <if test="startTime!=null and startTime !=''">
 	             	<![CDATA[and date_format(create_time,'%Y-%m-%d') >=#{startTime}]]>

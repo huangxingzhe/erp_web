@@ -1,5 +1,7 @@
 package com.hxx.erp.model;
 
+import com.hxx.erp.util.Pinyin;
+
 public class Provider {
 	
 	private int id;
@@ -7,6 +9,7 @@ public class Provider {
 	private String name;
 	private String address;
 	private int status;
+	private String pinyin;
 	public int getId() {
 		return id;
 	}
@@ -37,6 +40,15 @@ public class Provider {
 	public void setStatus(int status) {
 		this.status = status;
 	}
+	public String getPinyin() {
+		if(pinyin==null)
+			pinyin =Pinyin.getPinYinHeadChar(name);
+		return pinyin;
+	}
+	public void setPinyin(String pinyin) {
+		if(pinyin==null)
+			pinyin =Pinyin.getPinYinHeadChar(name);
+		this.pinyin = pinyin;
+	}
 	
-
 }

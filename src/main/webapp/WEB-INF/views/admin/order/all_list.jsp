@@ -25,17 +25,17 @@
 	<table height=35 cellspacing=0 cellpadding=0 width="100%" border=0>
 	<tr>
       <td height="30" class="tx-c"><spring:message code="order.customer.cusNo"/></td>
-      <td><input name="cusNo" type="text" value="${cusNo}" maxlength="11" id="cusNo" class="dtext" /></td>
+      <td><input name="cusNo" type="text" value="${cusNo}"  id="cusNo" class="dtext" /></td>
 	  <td height="30" class="tx-c"><spring:message code="order.customer.cusOrderNo"/></td>
-      <td><input name="orderCode" type="text" value="${orderCode}" maxlength="11" id="orderCode" class="dtext" /></td>
+      <td><input name="orderCode" type="text" value="${orderCode}"  id="orderCode" class="dtext" /></td>
        <td  height="30" class="tx-c"><spring:message code="order.label.payNo"/></td>
-      <td><input name="payNo" type="text" value="${payNo}" maxlength="11" id="payNo" class="dtext" /></td>
+      <td><input name="payNo" type="text" value="${payNo}"  id="payNo" class="dtext" /></td>
     </tr>
     <tr>
       <td  height="30" class="tx-c"><spring:message code="order.label.logisticsOrder"/></td>
-      <td><input name="logisticsOrder" type="text" value="${logisticsOrder}" maxlength="11" id="logisticsOrder" class="dtext" /></td>
+      <td><input name="logisticsOrder" type="text" value="${logisticsOrder}" id="logisticsOrder" class="dtext" /></td>
       <td  height="30" class="tx-c"><spring:message code="order.label.logisticsName"/></td>
-      <td><input name="logisticsName" type="text" value="${logisticsName}" maxlength="11" id="logisticsName" class="dtext" /></td>
+      <td><input name="logisticsName" type="text" value="${logisticsName}" id="logisticsName" class="dtext" /></td>
       <td class="tx-c"><spring:message code="order.label.goodsName"/></td>
       <td>
       	<select name="goodsName" id="goodsName" style="width:160px;">
@@ -144,10 +144,10 @@
 								</script>
 								<c:forEach items="${order.oCusList}" var="ocus" varStatus="ot">
 									<script> 
-										name+="${ocus.cusName} | ";
+										name+="${ocus.orderCode}(${ocus.cusName}) | ";
 									</script>
 									<c:if test="${ot.index<3}">
-										${ocus.cusName}<br>
+										${ocus.orderCode}(${ocus.cusName})<br>
 									</c:if>
 									<c:if test="${ot.index>2 && ot.last}">
 										<span title="" id="cusName${order.id}">...</span>
@@ -170,6 +170,7 @@
 							<td class=content>
 								<c:if test="${order.goalAddr==1}"><spring:message code="order.label.goal.hn"/></c:if>
 								<c:if test="${order.goalAddr==2}"><spring:message code="order.label.goal.hcm"/></c:if>
+								<c:if test="${order.goalAddr==3}"><spring:message code="order.label.goal.manjie"/></c:if>
 							</td>
 							<td class=content>${order.num}</td>
 							<td class=content title="<spring:message code="order.label.cnFare"/>:${order.cnFare}&nbsp;<spring:message code="order.label.vnFare"/>:${order.vnFare}&nbsp;<spring:message code="order.label.fee"/>:${order.fee}">

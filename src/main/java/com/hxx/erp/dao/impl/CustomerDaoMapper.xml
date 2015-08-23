@@ -43,7 +43,7 @@
 	             	and name like CONCAT('%','${name}','%' ) 
 	             </if>
              </trim>
-			 order by id
+			 order by id desc
         </select>
          <select id="queryListByPage" resultMap="customerDaoMapperResultMap" parameterType="java.util.Map">
              select * from t_customer 
@@ -51,10 +51,21 @@
 	             <if test="status!=null">
 	             	and status =#{status}
 	             </if>
-	             <if test="name!=null and name !=''">
-	             	and name like CONCAT('%','${name}','%' ) 
-	             </if>
+	             <if test="type!=null and type ==''">
+	              	and name like CONCAT('%','${keyword}','%' )
+	              	or code like CONCAT('%','${keyword}','%' )
+	              	or phone like CONCAT('%','${keyword}','%' )
+	              </if>
+	              <if test="type!=null and type ==1">
+	              	and name like CONCAT('%','${keyword}','%' )
+	              </if>
+	              <if test="type!=null and type ==2">
+	              	and code like CONCAT('%','${keyword}','%' )
+	              </if>
+	              <if test="type!=null and type ==3">
+	              	and phone like CONCAT('%','${keyword}','%' )
+	              </if>
              </trim>
-			 order by id
+			 order by id desc
         </select>
     </mapper>    

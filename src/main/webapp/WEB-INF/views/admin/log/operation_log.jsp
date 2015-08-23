@@ -34,6 +34,7 @@
       		<option value="6" <c:if test="${item==6}">selected</c:if>>操作确认货到库</option>
       		<option value="7" <c:if test="${item==7}">selected</c:if>>操作确认客户已收货</option>
       		<option value="8" <c:if test="${item==8}">selected</c:if>>操作确认已收款</option>
+      		<option value="8" <c:if test="${item==10}">selected</c:if>>操作确认发往芒街</option>
       	</select>
       </td>
        <td  class="tx-c">登录时间:</td>
@@ -77,6 +78,7 @@
 					      		<c:if test="${log.item==6}">操作确认货到库</c:if>
 					      		<c:if test="${log.item==7}">操作确认客户已收货</c:if>
 					      		<c:if test="${log.item==8}">操作确认已收款</c:if>
+					      		<c:if test="${log.item==10}">操作确认发往芒街</c:if>
 						</td>
 						<td class=content><fmt:formatDate value="${log.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 						<td class=content style="text-align:left;padding-left:5px;">${log.content}</td>

@@ -1,6 +1,6 @@
 <script type="text/javascript">
-function upload(oldUrl) {
-	var of = $('#uploadFile');
+function upload(oldUrl,id) {
+	var of = $('#uploadFile'+id);
 	if(of.val()=='') {
 		alert("请选择要上传的图片！");
 		return;
@@ -8,11 +8,11 @@ function upload(oldUrl) {
 	$('#fileContent').empty();
 	$('#fileContent').append(of);
 	//$('#ufc').html('');
-	$('#ufc').append(of.clone());
+	$('#ufc'+id).append(of.clone());
 	$('#oldPicUrl').val(oldUrl);
 	of.attr('id','');
 	of.attr('name','file');
-	$("#uploadForm").attr("action","uploadPhoto.do")
+	$("#uploadForm").attr("action","uploadPhoto.do?id="+id);
 	$('#uploadForm').submit();
    
 }

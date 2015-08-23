@@ -56,6 +56,12 @@ public class ManageFeeServiceImpl implements ManageFeeService{
 			throws Exception {
 		return dao.queryListByPage(params);
 	}
+
+	@Override
+	public Map<String,Object> queryStat(Map<String,Object> params) throws Exception{
+		return dao.queryStat(params);
+	}
 	
 
+	
 }

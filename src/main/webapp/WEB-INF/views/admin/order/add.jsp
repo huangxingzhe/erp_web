@@ -10,10 +10,13 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>home</title>
 <link href="../../images/style.css" type=text/css rel=stylesheet>
+<link href="../../css/dialog.css" type=text/css rel=stylesheet>
 <link href="../../js/getdate/skin/WdatePicker.css" rel="stylesheet" type="text/css">
 <LINK href="http://res.gm.17188.com/oss_files/jquery-ui-1.9.1.custom.css" rel="stylesheet" type="text/css">    
 <script language="javascript" type="text/javascript" src="../../js/getdate/WdatePicker.js"></script>
 <script type="text/javascript"src="../../js/jquery-1.8.0.min.js" ></script> 
+<script type="text/javascript" src="../../js/language.js"></script>
+<script type="text/javascript"src="../../js/interface.js" ></script> 
 <script>
 function getStatusName(statusName,process,clss){
 	var pro='<div class="proce '+clss+'">'+
@@ -40,6 +43,7 @@ function getStatusName(statusName,process,clss){
 <input type="hidden" name="status" value="${order.status}" id="status">
 <input type="hidden" name="createTime" value="${order.createTime}" id="createTime">
 <input type="hidden" name="oldAmount" value="${order.amount}" id="oldAmount">
+<input type="hidden" name="oldFee" value="${order.fee}" id="oldFee">
 <input type="hidden" name="oldFundsId" value="${order.fundsId}" id="oldFundsId">
 </c:if>
 <div class=formzone>
@@ -51,26 +55,14 @@ function getStatusName(statusName,process,clss){
   <tbody>
   <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.providerName"/>：</td>
-    <td height=30 style="padding-left:12px;">
-    	<select name="providerName" id="providerName" style="width:160px;">
-    		<option value=""><spring:message code="admin.label.select"/></option>
-    		<c:forEach items="${providers}" var="provider">
-    			<option label="${provider.name}" value="${provider.name}" 
-    				<c:if test="${provider.name==order.providerName}">selected</c:if>>
-    			</option>
-    		</c:forEach>
-    	</select>
+    <td height=30 style="padding-left:10px;">
+    	<input type="hidden" name="providerId" id="providerId" value="${order.providerId}" />
+    	<input name="providerName" value="${order.providerName}" id="providerName" readonly="readonly" onclick="showDialog(this,'供货商','../provider/dialog.do',25,100,2);"/>
     </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.goodsName"/>：</td>
-    <td height=30 style="padding-left:12px;">
-    	<select name="goodsName" id="goodsName" style="width:160px;" onchange="getPayNo(this)">
-    		<option value=""><spring:message code="admin.label.select"/></option>
-	    	<c:forEach items="${goodss}" var="goods">
-	   			<option label="${goods.name}" value="${goods.name}" 
-	   				<c:if test="${goods.name==order.goodsName}">selected</c:if>  id="${goods.type}">
-	   			</option>
-	   		</c:forEach>
-   		</select>
+    <td height=30 style="padding-left:10px;">
+    	<input type="hidden" name="goodsId" id="goodsId" value="${order.goodsId}" />
+   		<input name="goodsName" value="${order.goodsName}" id="goodsName" title="" readonly="readonly" onclick="showDialog(this,'产品名称','../goods/dialog.do',25,100,2);"/>
     </td>
   </tr>
   <tr>
@@ -98,7 +90,7 @@ function getStatusName(statusName,process,clss){
     			</option>
     		</c:forEach>
    		</select>
-   		<span id="overMoney"></span>
+   		<span id="overMoney" name=""></span>
     </td>
   </tr>
    <tr>
@@ -161,6 +153,8 @@ function getStatusName(statusName,process,clss){
    			<spring:message code="order.label.goal.hn"/></option>
    			<option value="2" <c:if test="${order.goalAddr==2}">selected</c:if>>
    			<spring:message code="order.label.goal.hcm"/></option>
+   			<option value="3" <c:if test="${order.goalAddr==3}">selected</c:if>>
+   			<spring:message code="order.label.goal.manjie"/></option>
    		</select>
     </td>
    </tr>
@@ -196,8 +190,15 @@ function getStatusName(statusName,process,clss){
    </tr>
    <tr>
     <td class=title_bg  height=30><spring:message code="order.label.num"/>：</td>
-    <td height=30 style="padding-left:10px;">
+    <td height=30 style="padding-left:10px;" colspan="3">
     	<input name="num" value="${order.num}" id="num"/>
+    </td>
+   </tr>
+   <tr>
+    <td class=title_bg  height=30><spring:message code="order.label.salesMan"/>：</td>
+    <td height=30 style="padding-left:10px;">
+    	<input type="hidden" name="empId"  value="${order.empId}" id="empId"/>
+    	<input name="salesMan" value="${order.salesMan}" id="salesMan" readonly="readonly" onclick="showEmployee(this)"/>
     </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.makeOrderUser"/>：</td>
     <td height=30 style="padding-left:10px;">
@@ -220,21 +221,30 @@ function getStatusName(statusName,process,clss){
     </td>
    </tr>
    <tr>
-     <td class=title_bg  width=100 height=30><spring:message code="order.label.mark"/>：</td>
-    <td height=30 style="padding-left:10px;">
-    	<textarea rows="5" cols="40" name="mark">${order.mark}</textarea>
-    </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.goodsPic"/>：</td>
     <td height=120 style="padding-left:10px;">
     	<div id="ufc1">
-    		<input type="file" name="file" id="uploadFile" />
-    		<input type="hidden" name="picUrl" id="picUrl" value="${order.picUrl}"/>
+    		<input type="file" name="file" id="uploadFile1" />
+    		<input type="hidden" name="picUrl" id="picUrl1" value="${order.picUrl}"/>
     	</div>
-        <div id="errormess">
+        <div id="errormess1">
         </div>
-    	<input type="button" value="上传" onclick="upload('${order.picUrl}');"  class="button"/>
+    	<input type="button" value="上传" onclick="upload('${order.picUrl}',1);"  class="button"/>
     	<div>
-			<img src="showPhoto.do?path=${order.picUrl}" width="100" height="100" border="0" id="preImg">
+			<img src="showPhoto.do?path=${order.picUrl}" width="100" height="100" border="0" id="preImg1">
+    	</div>
+    </td>
+    <td class=title_bg  width=100 height=30><spring:message code="order.label.packagePic"/>：</td>
+    <td height=120 style="padding-left:10px;">
+    	<div id="ufc2">
+    		<input type="file" name="file" id="uploadFile2" />
+    		<input type="hidden" name="packageUrl" id="picUrl2" value="${order.packageUrl}"/>
+    	</div>
+        <div id="errormess2">
+        </div>
+    	<input type="button" value="上传" onclick="upload('${order.packageUrl}',2);"  class="button"/>
+    	<div>
+			<img src="showPhoto.do?path=${order.packageUrl}" width="100" height="100" border="0" id="preImg2">
     	</div>
     </td>
    </tr>
@@ -252,8 +262,12 @@ function getStatusName(statusName,process,clss){
     </c:if>
    <tr>
      <td class=title_bg  width=100 height=30><spring:message code="order.label.productUrl"/>：</td>
-     <td height=30 style="padding-left:10px;" colspan="3">
+     <td height=30 style="padding-left:10px;" >
     	<input name="productUrl" value="${order.productUrl}" id="productUrl" width="300"/>
+    </td>
+      <td class=title_bg  width=100 height=30><spring:message code="order.label.mark"/>：</td>
+    <td height=30 style="padding-left:10px;">
+    	<textarea rows="5" cols="40" name="mark">${order.mark}</textarea>
     </td>
    </tr>
    <tr>
@@ -270,16 +284,12 @@ function getStatusName(statusName,process,clss){
 		<td width="15%" height=28><spring:message code="order.customer.SendNum"/></td>
 		<td width="15%" height=28><spring:message code="order.customer.ReceiveNum"/></td>
 	  </tr>
-	   <c:forEach items="${orderCustomers}" var="customer" varStatus="status">
+	  <c:forEach items="${orderCustomers}" var="customer" varStatus="status">
 	   		<input type="hidden" name="ocIds" value="${customer.id}">
 	   		<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#CDE6FF'" onmouseout="this.bgColor='#FFFFFF'">
 			    <td height=30>
-			    	<select name="cusNos">
-						<option value=""><spring:message code="admin.label.select"/></option>
-						<c:forEach items="${customers}" var="cus" varStatus="status">
-							<option value="${cus.code}#${cus.name}" <c:if test="${customer.cusNo==cus.code}">selected</c:if> >${cus.code}--${cus.name}</option>
-						</c:forEach>
-					</select>
+			    	<input type="hidden" name="cusIds" value="${customer.cusId}"/>
+			    	<input type="text" name="cuss" value="${customer.cusNo}--${customer.cusName}" readonly="readonly" onclick="showCustomer(this)"/>
 			    </td>
 			    <td height=30><input type="text" name="orderCodes" value="${customer.orderCode}"></td>
 			    <td height=30><input type="text" name="amounts" value="${customer.amount}" style="width:60px;text-align:center;"  onblur="isPriceNumber(this)"></td>
@@ -502,32 +512,34 @@ function getStatusName(statusName,process,clss){
 </div>
 </div>
 </form>
-
 <div id="customer"  style="display: none;">
-	<select name="cusNos">
-		<option value=""><spring:message code="admin.label.select"/></option>
-		<c:forEach items="${customers}" var="customer" varStatus="status">
-			<option value="${customer.code}#${customer.name}">${customer.code}--${customer.name}</option>
-		</c:forEach>
-	</select>
+	<input type="hidden" name="cusIds" value=""/>
+	<input name="cuss" value="" readonly="readonly" onclick="showCustomer(this)"/>
 </div>
-	
 <div id="queryContext" class="mt10px hidden relative" style="z-index: 4; display: none;">
     <span class="qr-sf hidden" id="sfQr" style="display: none;"></span>
     <div class="result-top"><span class="col1">时间</span><span class="col2">地点和跟踪进度</span></div>
     <table id="queryResult2" class="result-info2" cellspacing="0">
     <tbody>
-    </tbody>
+    </tbody>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
     </table>
 </div>
 	<script type="text/javascript" src="../../js/jquery.validate.js"></script>
 	<script type="text/javascript" src="../../js/jquery.form.js"></script>
 	<script type="text/javascript" src="../../js/jquery.i18n.properties-min-1.0.9.js"></script>
-	<script type="text/javascript" src="../../js/language.js"></script>
 	<script type="text/javascript" src="../../js/jquery-ui.min.js"></script> 
 	<script type="text/javascript" src="../../js/kuaidi.js"></script>
 
 	<script type="text/javascript">
+	  function showCustomer(obj){
+		  //var left = getOffsetLeft(obj);
+		  var topPx = getOffsetTop(obj)-300;
+		  showDialog(obj,'产品名称','../customer/dialog.do',topPx,100,2);
+	  }
+	  function showEmployee(obj){
+		  var topPx = getOffsetTop(obj)-300;
+		  showDialog(obj,'业务员','../employee/dialog.do',topPx,100,2);
+	  }
 	  $(function(){
 	        jQuery.i18n.properties({
 	            name : 'strings', //资源文件名称
@@ -547,7 +559,8 @@ function getStatusName(statusName,process,clss){
 	        				receiveUser:"required",
 	        				borderAddr:"required",
 	        				goalAddr:"required",
-	        				fundsId:"required"
+	        				fundsId:"required",
+	        				salesMan:"required"
 	        			},
 	        			messages: {
 	        				payNo: $.i18n.prop('isNotEmpty'),
@@ -560,9 +573,21 @@ function getStatusName(statusName,process,clss){
 	        				receiveUser: $.i18n.prop('isNotEmpty'),
 	        				borderAddr: $.i18n.prop('isNotEmpty'),
 	        				goalAddr: $.i18n.prop('isNotEmpty'),
-	        				fundsId: $.i18n.prop('isNotEmpty')
+	        				fundsId: $.i18n.prop('isNotEmpty'),
+	        				salesMan: $.i18n.prop('isNotEmpty')
 	        			},
 	        			submitHandler: function(form) {
+	        				var orderId = $("#orderId").val();
+							if(orderId==undefined ||orderId ==""){
+								var overMoney = $("#overMoney").attr("name");
+	        					var amount = $("#amount").val().replace(new RegExp(/(,)/g),'');
+	        					if(parseFloat(amount) > parseFloat(overMoney)){
+									alert("账号余额不能小于采购金额！");
+									$("#overMoney").html("");
+									$("#fundsId").val("");
+									return ;
+	        					}
+							}
 	        				$("#submit").attr("disabled", true); 
 	        				checkMoney('amount');
 	        				checkMoney('cnFare');
@@ -693,7 +718,7 @@ function getStatusName(statusName,process,clss){
 		 $("#balance").val(formatCurrency($("#balance").val()));
 	 }
 	 function getPayNo(obj){
-		 var payType = $(obj).find("option:selected").attr("id");
+		 var payType = $(obj).attr("title");
 		 var data={
 				 payType:payType
 			 };
@@ -714,6 +739,14 @@ function getStatusName(statusName,process,clss){
 		 $.getJSON("../funds/getOverMoney.do", data, function(result) {
 				if (result !=""){
 					$("#overMoney").html("￥"+result);
+					$("#overMoney").attr("name",result);
+					var amount = $("#amount").val().replace(new RegExp(/(,)/g),'');;
+					if(parseFloat(amount)>0 && parseFloat(amount) > parseFloat(result)){
+						alert("账号余额不能小于采购金额！");
+						$("#overMoney").html("");
+						$("#fundsId").val("");
+					}
+					
 				}
 		 }); 
 	 }

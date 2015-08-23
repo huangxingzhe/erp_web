@@ -32,7 +32,7 @@
       <td height="30" class="tx-c"><spring:message code="fee.label.startDate"/></td>
       <td>	<input name="startDate" type="text" id="startDate" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'});" value="${startDate}" readonly=true style="width:150px;" />
       </td>
-       <td height="30" class="tx-c"><spring:message code="fee.label.startDate"/></td>
+       <td height="30" class="tx-c"><spring:message code="fee.label.endDate"/></td>
        <td><input name="endDate" type="text" id="endDate" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'});" value="${endDate}" readonly=true style="width:150px;" />
       </td>
 	  <td colspan="2" style="text-align:center;"><input type="submit" value="<spring:message code="admin.label.query"/> " class="button"></td>
@@ -75,6 +75,8 @@
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="fee.label.receiveUser"/></span></td>
 						<td width="100" height=28 class=biaoti><span
+							class="searchzone"><spring:message code="fee.label.type"/></span></td>
+						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="fee.label.userName"/></span></td>
 						<td class=biaoti width=50><span class="searchzone">
 							<spring:message code="admin.label.op"/>
@@ -88,6 +90,14 @@
 							<td class=content>${fee.amount}</td>
 							<td class=content>${fn:substring(fee.payTime, 0, 19)}</td>
 							<td class=content>${fee.receiveUser}</td>
+							<td class=content>
+								<c:if test="${fee.type==1}"><spring:message code="fee.label.fare"/></c:if>
+								<c:if test="${fee.type==2}"><spring:message code="fee.label.tel"/></c:if>
+								<c:if test="${fee.type==3}"><spring:message code="fee.label.fee"/></c:if>
+								<c:if test="${fee.type==4}"><spring:message code="fee.label.sample"/></c:if>
+								<c:if test="${fee.type==5}"><spring:message code="fee.label.cash"/></c:if>
+								<c:if test="${fee.type==6}"><spring:message code="fee.label.other"/></c:if>
+							</td>
 							<td class=content>${fee.userName}</td>
 							<td class=content id="opt_${fee.id}">
 							<c:if test="${update!=null}">

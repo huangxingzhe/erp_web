@@ -8,8 +8,11 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>home</title>
+<script type="text/javascript"src="../../js/jquery-1.8.0.min.js" ></script> 
+<script type="text/javascript"src="../../js/interface.js" ></script> 
+<script type="text/javascript" src="../../js/language.js"></script>
 <link href="../../images/style.css" type=text/css rel=stylesheet>
-
+<link href="../../css/dialog.css" type=text/css rel=stylesheet>
 </head>
 
 <body>
@@ -18,13 +21,17 @@
 	<table height=30 cellspacing=0 cellpadding=0 width="100%" border=0>
 		<tbody>
 			<tr>
-				<td align=right colspan=3>
-				<c:if test="${add!=null}"><input
-					onclick="javascript:location.href='init.do'" type="button" value="<spring:message code="admin.label.add"/>"
-					class="button">
-				</c:if>
-				<input onclick="location.href='list.do'"
-				type="button" value="<spring:message code="admin.label.refresh"/>" class="button" /></td>
+				<td>
+					供应商：
+					<input type="hidden"  name="providerId" value="${providerId}"  />
+					<input type="text" name="providerName" value="${providerName}" id="providerName" readonly="readonly" onclick="showDialog(this,'供应商','../provider/dialog.do',25,100,2);"/>
+					<input type="submit" value="查询" class="button" />
+				</td>
+				<td align="right">
+					<c:if test="${add!=null}">
+					<input onclick="javascript:location.href='init.do'" type="button" value="<spring:message code="admin.label.add"/>" class="button"> 
+					</c:if>	
+				</td>
 			</tr>
 		</tbody>
 		</table>
@@ -37,9 +44,11 @@
 						<td width="10" height=28 class=biaoti><span
 							class="searchzone">&nbsp;</span></td>
 						<td width="100" height=28 class=biaoti><span
+							class="searchzone"><spring:message code="goods.label.code"/></span></td>
+						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="goods.label.name"/></span></td>
 						<td width="100" height=28 class=biaoti><span
-							class="searchzone"><spring:message code="goods.label.code"/></span></td>
+							class="searchzone"><spring:message code="order.label.providerName"/></span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="goods.label.type"/></span></td>
 						<td width="100" height=28 class=biaoti><span
@@ -51,8 +60,9 @@
 					<c:forEach items="${goodss}" var="goods" >
 						<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#f2f9fd'" onmouseout="this.bgColor='#FFFFFF'" id="goods${goods.id}">
 							<td class=content>&nbsp;</td>
-							<td class=content>${goods.name}</td>
 							<td class=content>${goods.code}</td>
+							<td class=content>${goods.name}</td>
+							<td class=content>${goods.providerName}</td>
 							<td class=content>${goods.type}</td>
 							<td class=content>
 								<c:if test="${goods.status==1}"><spring:message code="admin.label.normal"/></c:if>
@@ -81,10 +91,8 @@
 	
 	<br/>
 	<br/>
-	<script type="text/javascript" src="../../js/jquery.min.js"></script>
 	<script type="text/javascript" src="../../js/jquery.form.js"></script>
 	<script type="text/javascript" src="../../js/jquery.i18n.properties-min-1.0.9.js"></script>
-	<script type="text/javascript" src="../../js/language.js"></script>
 	<script language="javascript" type="text/javascript">
 		function edit(id){
 			location.href="init.do?id="+id;

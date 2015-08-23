@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hxx.erp.dao.GoodsGuiMapper" >
+  <resultMap id="BaseResultMap" type="com.hxx.erp.model.GoodsGui" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="provider_id" property="providerId" jdbcType="INTEGER" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="pay_time" property="payTime" jdbcType="VARCHAR" />
+    <result column="gui_no" property="guiNo" jdbcType="VARCHAR" />
+    <result column="pay_no" property="payNo" jdbcType="VARCHAR" />
+    <result column="fee" property="fee" jdbcType="DOUBLE" />
+    <result column="buy_amount" property="buyAmount" jdbcType="DOUBLE" />
+    <result column="sale_amount_cn" property="saleAmountCn" jdbcType="DOUBLE" />
+    <result column="sale_amount_vn" property="saleAmountVn" jdbcType="DOUBLE" />
+    <result column="balance" property="balance" jdbcType="DOUBLE" />
+    <result column="rate" property="rate" jdbcType="DOUBLE" />
+    <result column="deposit" property="deposit" jdbcType="DOUBLE" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="cn_port" property="cnPort" jdbcType="VARCHAR" />
+    <result column="vn_port" property="vnPort" jdbcType="VARCHAR" />
+    <result column="maker" property="maker" jdbcType="VARCHAR" />
+    <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="demo" property="demo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, provider_id, goods_id, create_time, pay_time, gui_no, pay_no, fee, buy_amount, 
+    sale_amount_cn, sale_amount_vn, balance, rate, deposit, num, cn_port, vn_port, maker, 
+    pic_url, status, demo
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hxx.erp.model.GoodsGuiExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_goods_gui
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limit == null" >
+      <if test="limitStart gt 0 and limitEnd gt 0 " >
+        limit ${limitStart} , ${limitEnd}
+      </if>
+      <if test="limitStart lt 1 and limitEnd lt 0 " >
+        limit ${limitEnd}
+      </if>
+    </if>
+    <if test=" limit != null " >
+      limit ${limit.start} , ${limit.size}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_goods_gui
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_goods_gui
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hxx.erp.model.GoodsGuiExample" >
+    delete from t_goods_gui
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hxx.erp.model.GoodsGui" keyProperty="id" useGeneratedKeys="true" >
+    insert into t_goods_gui (id, provider_id, goods_id, 
+      create_time, pay_time, gui_no, 
+      pay_no, fee, buy_amount, 
+      sale_amount_cn, sale_amount_vn, balance, 
+      rate, deposit, num, cn_port, 
+      vn_port, maker, pic_url, 
+      status, demo)
+    values (#{id,jdbcType=INTEGER}, #{providerId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{payTime,jdbcType=VARCHAR}, #{guiNo,jdbcType=VARCHAR}, 
+      #{payNo,jdbcType=VARCHAR}, #{fee,jdbcType=DOUBLE}, #{buyAmount,jdbcType=DOUBLE}, 
+      #{saleAmountCn,jdbcType=DOUBLE}, #{saleAmountVn,jdbcType=DOUBLE}, #{balance,jdbcType=DOUBLE}, 
+      #{rate,jdbcType=DOUBLE}, #{deposit,jdbcType=DOUBLE}, #{num,jdbcType=INTEGER}, #{cnPort,jdbcType=VARCHAR}, 
+      #{vnPort,jdbcType=VARCHAR}, #{maker,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{demo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hxx.erp.model.GoodsGui" keyProperty="id" useGeneratedKeys="true" >
+    insert into t_goods_gui
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="providerId != null" >
+        provider_id,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="payTime != null" >
+        pay_time,
+      </if>
+      <if test="guiNo != null" >
+        gui_no,
+      </if>
+      <if test="payNo != null" >
+        pay_no,
+      </if>
+      <if test="fee != null" >
+        fee,
+      </if>
+      <if test="buyAmount != null" >
+        buy_amount,
+      </if>
+      <if test="saleAmountCn != null" >
+        sale_amount_cn,
+      </if>
+      <if test="saleAmountVn != null" >
+        sale_amount_vn,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="rate != null" >
+        rate,
+      </if>
+      <if test="deposit != null" >
+        deposit,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="cnPort != null" >
+        cn_port,
+      </if>
+      <if test="vnPort != null" >
+        vn_port,
+      </if>
+      <if test="maker != null" >
+        maker,
+      </if>
+      <if test="picUrl != null" >
+        pic_url,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="demo != null" >
+        demo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="providerId != null" >
+        #{providerId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payTime != null" >
+        #{payTime,jdbcType=VARCHAR},
+      </if>
+      <if test="guiNo != null" >
+        #{guiNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payNo != null" >
+        #{payNo,jdbcType=VARCHAR},
+      </if>
+      <if test="fee != null" >
+        #{fee,jdbcType=DOUBLE},
+      </if>
+      <if test="buyAmount != null" >
+        #{buyAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="saleAmountCn != null" >
+        #{saleAmountCn,jdbcType=DOUBLE},
+      </if>
+      <if test="saleAmountVn != null" >
+        #{saleAmountVn,jdbcType=DOUBLE},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DOUBLE},
+      </if>
+      <if test="rate != null" >
+        #{rate,jdbcType=DOUBLE},
+      </if>
+      <if test="deposit != null" >
+        #{deposit,jdbcType=DOUBLE},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="cnPort != null" >
+        #{cnPort,jdbcType=VARCHAR},
+      </if>
+      <if test="vnPort != null" >
+        #{vnPort,jdbcType=VARCHAR},
+      </if>
+      <if test="maker != null" >
+        #{maker,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null" >
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="demo != null" >
+        #{demo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hxx.erp.model.GoodsGuiExample" resultType="java.lang.Integer" >
+    select count(*) from t_goods_gui
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_goods_gui
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.providerId != null" >
+        provider_id = #{record.providerId,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodsId != null" >
+        goods_id = #{record.goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.payTime != null" >
+        pay_time = #{record.payTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.guiNo != null" >
+        gui_no = #{record.guiNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payNo != null" >
+        pay_no = #{record.payNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fee != null" >
+        fee = #{record.fee,jdbcType=DOUBLE},
+      </if>
+      <if test="record.buyAmount != null" >
+        buy_amount = #{record.buyAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.saleAmountCn != null" >
+        sale_amount_cn = #{record.saleAmountCn,jdbcType=DOUBLE},
+      </if>
+      <if test="record.saleAmountVn != null" >
+        sale_amount_vn = #{record.saleAmountVn,jdbcType=DOUBLE},
+      </if>
+      <if test="record.balance != null" >
+        balance = #{record.balance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.rate != null" >
+        rate = #{record.rate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.deposit != null" >
+        deposit = #{record.deposit,jdbcType=DOUBLE},
+      </if>
+      <if test="record.num != null" >
+        num = #{record.num,jdbcType=INTEGER},
+      </if>
+      <if test="record.cnPort != null" >
+        cn_port = #{record.cnPort,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vnPort != null" >
+        vn_port = #{record.vnPort,jdbcType=VARCHAR},
+      </if>
+      <if test="record.maker != null" >
+        maker = #{record.maker,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picUrl != null" >
+        pic_url = #{record.picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.demo != null" >
+        demo = #{record.demo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_goods_gui
+    set id = #{record.id,jdbcType=INTEGER},
+      provider_id = #{record.providerId,jdbcType=INTEGER},
+      goods_id = #{record.goodsId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      pay_time = #{record.payTime,jdbcType=VARCHAR},
+      gui_no = #{record.guiNo,jdbcType=VARCHAR},
+      pay_no = #{record.payNo,jdbcType=VARCHAR},
+      fee = #{record.fee,jdbcType=DOUBLE},
+      buy_amount = #{record.buyAmount,jdbcType=DOUBLE},
+      sale_amount_cn = #{record.saleAmountCn,jdbcType=DOUBLE},
+      sale_amount_vn = #{record.saleAmountVn,jdbcType=DOUBLE},
+      balance = #{record.balance,jdbcType=DOUBLE},
+      rate = #{record.rate,jdbcType=DOUBLE},
+      deposit = #{record.deposit,jdbcType=DOUBLE},
+      num = #{record.num,jdbcType=INTEGER},
+      cn_port = #{record.cnPort,jdbcType=VARCHAR},
+      vn_port = #{record.vnPort,jdbcType=VARCHAR},
+      maker = #{record.maker,jdbcType=VARCHAR},
+      pic_url = #{record.picUrl,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      demo = #{record.demo,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hxx.erp.model.GoodsGui" >
+    update t_goods_gui
+    <set >
+      <if test="providerId != null" >
+        provider_id = #{providerId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payTime != null" >
+        pay_time = #{payTime,jdbcType=VARCHAR},
+      </if>
+      <if test="guiNo != null" >
+        gui_no = #{guiNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payNo != null" >
+        pay_no = #{payNo,jdbcType=VARCHAR},
+      </if>
+      <if test="fee != null" >
+        fee = #{fee,jdbcType=DOUBLE},
+      </if>
+      <if test="buyAmount != null" >
+        buy_amount = #{buyAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="saleAmountCn != null" >
+        sale_amount_cn = #{saleAmountCn,jdbcType=DOUBLE},
+      </if>
+      <if test="saleAmountVn != null" >
+        sale_amount_vn = #{saleAmountVn,jdbcType=DOUBLE},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=DOUBLE},
+      </if>
+      <if test="rate != null" >
+        rate = #{rate,jdbcType=DOUBLE},
+      </if>
+      <if test="deposit != null" >
+        deposit = #{deposit,jdbcType=DOUBLE},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="cnPort != null" >
+        cn_port = #{cnPort,jdbcType=VARCHAR},
+      </if>
+      <if test="vnPort != null" >
+        vn_port = #{vnPort,jdbcType=VARCHAR},
+      </if>
+      <if test="maker != null" >
+        maker = #{maker,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null" >
+        pic_url = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="demo != null" >
+        demo = #{demo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hxx.erp.model.GoodsGui" >
+    update t_goods_gui
+    set provider_id = #{providerId,jdbcType=INTEGER},
+      goods_id = #{goodsId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      pay_time = #{payTime,jdbcType=VARCHAR},
+      gui_no = #{guiNo,jdbcType=VARCHAR},
+      pay_no = #{payNo,jdbcType=VARCHAR},
+      fee = #{fee,jdbcType=DOUBLE},
+      buy_amount = #{buyAmount,jdbcType=DOUBLE},
+      sale_amount_cn = #{saleAmountCn,jdbcType=DOUBLE},
+      sale_amount_vn = #{saleAmountVn,jdbcType=DOUBLE},
+      balance = #{balance,jdbcType=DOUBLE},
+      rate = #{rate,jdbcType=DOUBLE},
+      deposit = #{deposit,jdbcType=DOUBLE},
+      num = #{num,jdbcType=INTEGER},
+      cn_port = #{cnPort,jdbcType=VARCHAR},
+      vn_port = #{vnPort,jdbcType=VARCHAR},
+      maker = #{maker,jdbcType=VARCHAR},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      demo = #{demo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

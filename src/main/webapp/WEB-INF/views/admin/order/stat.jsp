@@ -12,90 +12,102 @@
 <link href="../../images/style.css" type=text/css rel=stylesheet>
 <link href="../../js/getdate/skin/WdatePicker.css" rel="stylesheet" type="text/css">
 <script language="javascript" type="text/javascript" src="../../js/getdate/WdatePicker.js"></script>
-
+<link href="../../css/dialog.css" type=text/css rel=stylesheet>
+<script type="text/javascript"src="../../js/jquery-1.8.0.min.js" ></script> 
+<script type="text/javascript" src="../../js/language.js"></script>
+<script type="text/javascript"src="../../js/interface.js" ></script>
 
 </head>
 
 <body>
-<form id="form2" action="stat.do" method="post">
+<form id="form" action="stat.do" method="post">
+<input type="hidden" name="oname" value="${oname}" id="oname"/>
+<input type="hidden" name="sort" value="${sort}" id="sort"/>
+<input type="hidden" name="type" value="${timeType}" id="type"/>
 	<div class=searchzone>
 	<input type="hidden" name="status" value="${status}">
 	<table height=35 cellspacing=0 cellpadding=0 width="100%" border=0>
 	<tr>
-	  <td class="tx-c"><spring:message code="order.label.goodsName"/></td>
+	 <td class="tx-c"><spring:message code="order.customer.cusName"/></td>
       <td>
-      	<select name="goodsName" id="goodsName" style="width:160px;">
-    		<option value=""><spring:message code="admin.label.select"/></option>
-	    	<c:forEach items="${goodss}" var="goods">
-	   			<option label="${goods.name}" value="${goods.name}" 
-	   				<c:if test="${goods.name==goodsName}">selected</c:if> >
-	   			</option>
-	   		</c:forEach>
-   		</select>
+      	<input type="hidden" name="cusId" value="${cusId}"/>
+    	<input type="hidden" name="cusIdTest" value=""/>
+		<input name="cusName" id="cusName" value="${cusName}" readonly="readonly" onclick="showDialog(this,'产品名称','../customer/dialog.do',25,100,2);"/>
+      	<%-- <select name="cusNo" id="cusNo">
+			<option value=""><spring:message code="admin.label.select"/></option>
+			<c:forEach items="${customers}" var="cus" varStatus="status">
+				<option value="${cus.code}" <c:if test="${cus.code==cusNo}">selected</c:if> >${cus.code}--${cus.name}</option>
+			</c:forEach>
+		</select> --%>
 	  </td> 
-	  <td height="30" class="tx-c"><spring:message code="order.label.providerName"/></td>
-      <td>
-      	<select name="providerName" id="providerName" style="width:160px;">
-    		<option value=""><spring:message code="admin.label.select"/></option>
-    		<c:forEach items="${providers}" var="provider">
-    			<option label="${provider.name}" value="${provider.name}" 
-    				<c:if test="${provider.name==providerName}">selected</c:if> >
-    			</option>
-    		</c:forEach>
-    	</select>
-      </td>
       <td class="tx-c"><spring:message code="order.label.type"/></td>
       <td>
-      	<select name="type" id="type">
-    		<option value="1"><spring:message code="order.label.day"/></option>
-    		<option value="2"><spring:message code="order.label.month"/></option>
-    		<option value="3"><spring:message code="order.label.year"/></option>
+      	<select name="timeType" id="timeType" onchange="selectTimeType()">
+    		<option value="1" <c:if test="${timeType==1}">selected</c:if>><spring:message code="order.label.day"/></option>
+    		<option value="2" <c:if test="${timeType==2}">selected</c:if>><spring:message code="order.label.month"/></option>
+    		<option value="3" <c:if test="${timeType==3}">selected</c:if>><spring:message code="order.label.year"/></option>
    		</select>
 	  </td> 
       <td  class="tx-c"><spring:message code="order.label.payTime"/></td>
-      <td>
+      <td colspan="2">
+      	<span id="time1" style="display:none;">
       	<input name="startPayTime" type="text" id="startPayTime" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'});" value="${startPayTime}" readonly=true style="width:150px;" />
       	TO
       	<input name="endPayTime" type="text" id="endPayTime" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'});" value="${endPayTime}" readonly=true style="width:150px;" />
+	 	</span>
+	 	<span id="time2" style="display:none;">
+      	<input name="yearMonth" type="text" id="yearMonth" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM'});" value="${yearMonth}" readonly=true style="width:150px;" />
+	 	</span>
+	 	<span id="time3" style="display:none;">
+      	<input name="year" type="text" id="year" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy'});" value="${year}" readonly=true style="width:150px;" />
+	 	</span>
 	  </td>
 	   <td><input type="submit" value="<spring:message code="admin.label.query"/> " class="button"></td>
     </tr>
   </table>
 		</div>
 	</form>
-	<div class=listzone style="display:none;" id="chart">
-	     	 <div id="container" style="min-width:700px;height:305px"></div>
-	</div>
 	<div class=listzone>
 		<table cellspacing=0 cellpadding=3 width="100%" align=center border=0>
 			<tbody>
 				<tr class=list>
-					<td width="100" height=28 class=biaoti><span
-						class="searchzone"><spring:message code="order.label.providerName"/></span></td>
-					<td width="100" height=28 class=biaoti><span
-						class="searchzone"><spring:message code="order.label.goodsName"/></span></td>
-					<td width="100" height=28 class=biaoti><span
-						class="searchzone"><spring:message code="order.label.payTime"/></span></td>
-					<td width="100" height=28 class=biaoti><span
-						class="searchzone"><spring:message code="order.label.num"/></span></td>
-					<td width="100" height=28 class=biaoti><span
-						class="searchzone"><spring:message code="order.label.amount"/></span></td>
+					<td width="100" height=28 class=biaoti ><span
+						class="searchzone"><spring:message code="order.customer.cusName"/></span></td>
+					<td width="100" height=28 class=biaoti onclick="orderBy('amount')" ><span
+						class="searchzone" style="cursor:pointer;"><spring:message code="order.label.amount" /></span></td>
+					<td width="100" height=28 class=biaoti onclick="orderBy('cn_fare')"  ><span
+						class="searchzone" style="cursor:pointer;"><spring:message code="order.label.cnFare" /></span></td>
+					<td width="100" height=28 class=biaoti  onclick="orderBy('vn_fare')" ><span
+						class="searchzone" style="cursor:pointer;"><spring:message code="order.label.vnFare"/></span></td>
+					<td width="100" height=28 class=biaoti onclick="orderBy('goods_money')" ><span
+						class="searchzone" style="cursor:pointer;"><spring:message code="order.label.goodsMoney" /></span></td>
 				</tr>
 				<c:forEach items="${orders}" var="order" varStatus="st">
 					<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#f2f9fd'" onmouseout="this.bgColor='#FFFFFF'" id="order${order.id}">
-						<td height=25 class=content>${order.providerName}</td>
-						<td class=content>${order.goodsName}</td>
-						<td class=content>${order.statTime}</td>
-						<td class=content>${order.num}</td>
+						<td height=25 class=content>${order.customerName}</td>
 						<td class=content>
-							<fmt:formatNumber type="number" pattern="￥.00" value="${order.amount}" />
+							<fmt:formatNumber pattern="￥#,##0.00#" value="${order.amount}" />
 						</td>
+						<td height=25 class=content><fmt:formatNumber pattern="￥#,##0.00#" value="${order.cnFare}" /></td>
+						<td height=25 class=content><fmt:formatNumber pattern="￥#,##0.00#" value="${order.vnFare}" /></td>
+						<td class=content><fmt:formatNumber pattern="￥#,##0.00#" value="${order.goodsMoney}" /></td>
 					</tr>
 				</c:forEach>
+				<tr bgcolor="#f2f9fd">
+					<td height=25 colspan="3" class="total">&nbsp;</td>
+					<td class="total">${allAmount}</td>
+					<td class="total">${allGoodsMoney}</td>
+				</tr>
 			</tbody>
 		</table>
 	</div>
-	
+	<div class=piliang>
+			<div style="float:left;">
+		    </div> 
+			<div id="pagelist">
+				${page.pageStr}
+			</div>
+	</div>
 	<br/>
 	<br/>
 	<script type="text/javascript"  src="../../js/jquery-1.8.0.min.js"></script>
@@ -105,6 +117,34 @@
 	<script type="text/javascript"  src="../../js/jquery.i18n.properties-min-1.0.9.js"></script>
 	<script type="text/javascript"  src="../../js/language.js"></script>
 	<script language="javascript" type="text/javascript">
+		function selectTimeType(){
+			var type = $("#timeType").val();
+			$("#time1").hide();
+			$("#time2").hide();
+			$("#time3").hide();
+			$("#time"+type).show();
+		}
+		function selectType(){
+			var type = $("#type").val();
+			if(type==undefined||type==''||type==null){
+				type = 1;
+			}
+			$("#time"+type).show();
+		}
+		selectType();
+		function orderBy(name){
+			var oname = $("#oname").val();
+			$("#oname").val(name);
+			if(name==oname){
+				var sort = $("#sort").val();
+				if(sort=="desc"){
+					$("#sort").val("asc");
+				}else{
+					$("#sort").val("desc");
+				}
+			}
+			$("#form").submit();
+		}
 		 $(function(){
 		        jQuery.i18n.properties({
 		            name : 'strings', //资源文件名称
@@ -115,9 +155,9 @@
 		            }
 		        });
 		 });
-		var amount=${amount}; 
-		var num=${num};
-		var d1=${date};
+		var amount='${amount}'; 
+		var num='${num}';
+		var d1='${date}';
 		if(amount!=undefined && amount !=''){
 			$("#chart").show();
 			show();
@@ -172,8 +212,6 @@
 			      }]
 			  });
 		}
-		
-	
 	</script>
 
 

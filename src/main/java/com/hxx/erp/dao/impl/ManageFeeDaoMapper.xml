@@ -15,6 +15,7 @@
 	        <result property="userName" column="user_name" />
 	        <result property="createTime" column="create_time" />
 	        <result property="payAccount" column="payAccount" />
+	        <result property="type" column="type" />
     	</resultMap>  
        
          <select id="get" parameterType="int" resultMap="manageFeeDaoMapperResultMap">    
@@ -22,13 +23,13 @@
         </select>  
         
         <insert id="add" parameterType="manageFee" >
-            INSERT INTO t_manage_fee (receive_user, pay_no,pay_time,funds_id,amount,mark,user_name, create_time)
-            VALUES(#{receiveUser},#{payNo},#{payTime},#{fundsId},#{amount},#{mark},#{userName},#{createTime})
+            INSERT INTO t_manage_fee (receive_user, pay_no,pay_time,funds_id,amount,mark,user_name, create_time,type)
+            VALUES(#{receiveUser},#{payNo},#{payTime},#{fundsId},#{amount},#{mark},#{userName},#{createTime},#{type})
         </insert>
         
         <update id="update" parameterType="manageFee" >
         	update t_manage_fee set receive_user=#{receiveUser} ,pay_no=#{payNo}, pay_time=#{payTime},
-        	funds_id=#{fundsId},amount=#{amount},mark=#{mark}
+        	funds_id=#{fundsId},amount=#{amount},mark=#{mark},type=#{type}
         	where id=#{id}
         </update>
         <delete id="delete" parameterType="int">
@@ -40,7 +41,10 @@
         <select id="queryListByPage" resultMap="manageFeeDaoMapperResultMap" parameterType="java.util.Map">
              select m.*,f.name as payAccount from t_manage_fee m left join t_funds f on m.funds_id = f.id
              <trim prefix="where" prefixOverrides="and"> 
-             	<if test="startDate!=null and startDate !=''">
+             	 <if test="type!=null and type !=''">
+	             	and m.type =#{type}
+	             </if>
+             	 <if test="startDate!=null and startDate !=''">
 	             	and date_format(m.pay_time,'%Y-%m-%d') >=#{startDate}
 	             </if>
 	             <if test="endDate!=null and endDate !=''">
@@ -57,5 +61,19 @@
 	             </if>
              </trim>
 				order by pay_time desc 
+        </select>
+         <select id="queryStat" resultType="java.util.Map" parameterType="java.util.Map">
+             select sum(m.amount) as amount from t_manage_fee m
+             <trim prefix="where" prefixOverrides="and"> 
+             	 <if test="types!=null and types !=''">
+	             	and m.type in
+	             	<foreach item="item" index="index" collection="types" open="(" separator="," close=")">  
+					  #{item}  
+					</foreach> 
+	             </if>
+             	 <if test="yearMonth!=null and yearMonth !=''">
+	             	and date_format(m.pay_time,'%Y-%m') =#{yearMonth}
+	             </if>
+             </trim>
         </select>
     </mapper>    

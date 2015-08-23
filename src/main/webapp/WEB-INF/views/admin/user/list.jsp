@@ -65,6 +65,8 @@
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone">姓名</span></td>
 						<td width="100" height=28 class=biaoti><span
+							class="searchzone">授权IP</span></td>
+						<td width="100" height=28 class=biaoti><span
 							class="searchzone">状态</span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone">手机</span></td>
@@ -78,6 +80,7 @@
 							<td class=content><input type="checkbox"  value="${user.id}" name="ids"></td>
 							<td class=content>${user.account}</td>
 							<td class=content>${user.name}</td>
+							<td class=content>${user.authIp}</td>
 							<td class=content><c:if test="${user.status==1}">正常</c:if><c:if test="${user.status==0}">冻结</c:if></td>
 							<td class=content>${user.phone}</td>
 							<td class=content><fmt:formatDate value="${user.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
@@ -99,6 +102,7 @@
 							<td class=content><input type="checkbox"  value="${user.id}" name="ids"></td>
 							<td class=content>${user.account}</td>
 							<td class=content>${user.name}</td>
+							<td class=content>${user.authIp}</td>
 							<td class=content><c:if test="${user.status==1}">正常</c:if><c:if test="${user.status==0}">冻结</c:if></td>
 							<td class=content>${user.phone}</td>
 							<td class=content><fmt:formatDate value="${user.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>

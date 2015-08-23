@@ -113,6 +113,49 @@
   </tr>
    </tbody>
 </table>
+<br>
+<table cellspacing=0 cellpadding=3 width="100%" align=center border=0>
+  <tbody>
+   <tr>
+    <td width="150" class="content">包含交易完成总计：</td>
+    <td width=150 class="content">金额：<span id="amount1">0</span></td>
+    <td width=150 class="content">订单数：<span id="num1">0</span></td>
+    <td width=150 class="content">不含交易完成总计</td>
+    <td width=150 class="content">金额：<span id="amount2">0</span></td>
+    <td width=150 class="content">订单数：<span id="num2">0</span></td>
+  </tr>
+   </tbody>
+</table>
+</div>
+<div class=tablezone>
+<table cellspacing=0 cellpadding=3 width="100%" align=center border=0>
+  <tbody>
+  	<tr class=list>
+		<td width="150" height=28 class=biaoti><span class="searchzone">上月采购额</span></td>
+		<td width="150" height=28 class=content><span class="searchzone">待实现</span></td>
+		<td width="150" height=28 class=biaoti><span class="searchzone">上月销售额</span></td>
+		<td width="150" height=28 class=content><span class="searchzone">待实现</span></td>
+	</tr>
+	<tr class=list>
+		<td width="150" height=28 class=biaoti><span class="searchzone">本月采购额</span></td>
+		<td width="150" height=28 class=content><span class="searchzone"></span></td>
+		<td width="150" height=28 class=biaoti><span class="searchzone">本月销售额</span></td>
+		<td width="150" height=28 class=content><span class="searchzone"></span></td>
+	</tr>
+	<tr class=list>
+		<td width="150" height=28 class=biaoti><span class="searchzone">本月/上月百分比</span></td>
+		<td width="150" height=28 class=content><span class="searchzone"></span></td>
+		<td width="150" height=28 class=biaoti><span class="searchzone">本月/上月百分比</span></td>
+		<td width="150" height=28 class=content><span class="searchzone"></span></td>
+	</tr>
+	<tr class=list>
+		<td width="150" height=28 class=biaoti><span class="searchzone">历史最高采购额</span></td>
+		<td width="150" height=28 class=content><span class="searchzone"></span></td>
+		<td width="150" height=28 class=biaoti><span class="searchzone">历史最高销售额</span></td>
+		<td width="150" height=28 class=content><span class="searchzone"></span></td>
+	</tr>
+	</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -144,6 +187,15 @@
 			}else{
 				$("#"+key).text(data[key]);
 			}
+		}
+	});
+	$.getJSON("countAllNumAndAmount.do",function(data){
+		for(var key in data){
+			var val = data[key] ;
+			if(val==undefined || val ==null){
+				val =0;
+			}
+			$("#"+key).text(data[key]);
 		}
 	});
 	function gotoUrl(id){

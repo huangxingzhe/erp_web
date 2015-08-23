@@ -48,7 +48,7 @@ public class Page<T> {
 	                sb.append(" <li class=\"pageinfo\">首页</li>\n");  
 	                sb.append(" <li class=\"pageinfo\">上页</li>\n");  
 	            }else{    
-	                sb.append(" <li><a href=\"#@\" onclick=\"nextPage(1,pageCount)\">首页</a></li>\n");  
+	                sb.append(" <li><a href=\"#@\" onclick=\"nextPage(1,"+pageCount+")\">首页</a></li>\n");  
 	                sb.append(" <li><a href=\"#@\" onclick=\"nextPage("+(currentPage-1)+","+pageCount+")\">上页</a></li>\n");  
 	            }  
 	            int showTag = 3;    //分页标签显示数量  

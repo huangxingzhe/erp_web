@@ -56,6 +56,12 @@
     	<input name="name" value="${user.name}"/>
     </td>
   </tr>
+   <tr>
+    <td align=middle width=100 height=30>授权IP</td>
+    <td height=30>
+    	<input name="authIp" value="${user.authIp}"/>
+    </td>
+  </tr>
   <tr>
     <td align=middle width=100 height=30>手机号码</td>
     <td height=30>

@@ -283,6 +283,9 @@ function readCookie(name){
 	                    }else if(data==2 || data==3){
 	                    	$("#submit").attr("disabled", false); 
 	                    	alert("登录账号或密码不正确!");
+	                    }else if(data ==4){
+	                    	alert("IP地址错误，请联系管理员!");
+	                    	$("#submit").attr("disabled", false); 
 	                    }else{
 	                    	$("#submit").attr("disabled", false); 
 	                    	alert("系统错误，请尝试再登录!");

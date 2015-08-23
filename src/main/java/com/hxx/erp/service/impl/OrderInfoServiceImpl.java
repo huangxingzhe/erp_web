@@ -85,6 +85,24 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 		return dao.getMaxPayNo(params);
 	}
 
+	@Override
+	public Map<String, Object> countAllNumAndAmount() {
+		return dao.countAllNumAndAmount();
+	}
+
+	@Override
+	public Map<String, Object> moneyStat(Map<String, Object> params)
+			throws Exception {
+		return dao.moneyStat(params);
+	}
+
+	@Override
+	public List<OrderInfo> queryStatByPage(Map<String, Object> params)
+			throws Exception {
+		return dao.queryStatByPage(params);
+	}
+	
+
 	
 	
 }

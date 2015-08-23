@@ -45,20 +45,26 @@
 	<div class=searchzone>
 	<table height=35 cellspacing=0 cellpadding=0 width="100%" border=0>
 	<tr>
+	  <td height="30" class="tx-c"><spring:message code="order.label.payNo"/></td>
+      <td><input name="payNo" type="text" value="${payNo}"  id="payNo" class="dtext" /></td>
 	  <td height="30" class="tx-c"><spring:message code="order.customer.cusOrderNo"/></td>
-      <td><input name="orderCode" type="text" value="${orderCode}" maxlength="11" id="orderCode" class="dtext" /></td>
-      <c:if test="${query!=null}">
+      <td><input name="orderCode" type="text" value="${orderCode}"  id="orderCode" class="dtext" /></td>
+      <td height="30" class="tx-c"><spring:message code="order.label.logisticsOrder"/></td>
+      <td><input name="logisticsOrder" type="text" value="${logisticsOrder}"  id="logisticsOrder" class="dtext" /></td>
+    </tr>
+    <tr>
+     <c:if test="${query!=null}">
 	      <td height="30" class="tx-c"><spring:message code="order.customer.cusNo"/></td>
-	      <td><input name="cusNo" type="text" value="${cusNo}" maxlength="11" id="cusNo" class="dtext" /></td>
+	      <td><input name="cusNo" type="text" value="${cusNo}"  id="cusNo" class="dtext" /></td>
 	      <td class="tx-c"><spring:message code="order.customer.cusName"/></td>
 	      <td>
-	      	<input name="cusName" type="text" value="${cusName}" maxlength="11" id="cusName" class="dtext" />
+	      	<input name="cusName" type="text" value="${cusName}"  id="cusName" class="dtext" />
 		  </td>
 	  </c:if>
 	  <c:if test="${query==null}">
 	      <td height="30" class="tx-c" colspan="4">&nbsp;</td>
 	  </c:if>
-	  <td colspan="6" style="text-align:center;"><input type="submit" value="<spring:message code="admin.label.query"/> " class="button"></td>
+	  <td colspan="2" style="text-align:center;"><input type="submit" value="<spring:message code="admin.label.query"/> " class="button"></td>
     </tr>
   </table>
 		</div>
@@ -70,15 +76,19 @@
 						<td width="25" height=28 class=biaoti><span
 							class="searchzone">&nbsp;</span></td>
 						<td width="100" height=28 class=biaoti><span
+							class="searchzone"><spring:message code="order.label.payNo"/></span></td>
+						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.customer.cusOrderNo"/></span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.customer.cusNo"/></span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.customer.cusName"/></span></td>
+						<td width="120" height=28 class=biaoti><span
+							class="searchzone"><spring:message code="order.label.goodsPic"/></span></td>
+						<td width="120" height=28 class=biaoti><span
+							class="searchzone"><spring:message code="order.label.packagePic"/></span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.createTime"/></span></td>
-						<td width="100" height=28 class=biaoti><span
-							class="searchzone"><spring:message code="order.label.goodsName"/></span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.num"/></span></td>
 						<td class=biaoti width=150><span class="searchzone">
@@ -88,11 +98,19 @@
 					<c:forEach items="${orderCustomers}" var="customer" varStatus="st">
 						<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#f2f9fd'" onmouseout="this.bgColor='#FFFFFF'" id="order${order.id}">
 							<td height=25 class=content>${st.index+1}</td>
+							<td class=content>${customer.order.payNo}</td>
 							<td class=content>${customer.orderCode}</td>
 							<td class=content>${customer.cusNo}</td>
 							<td class=content>${customer.cusName}</td>
+							<td class=content>
+							 <img src="showPhoto.do?path=${customer.order.picUrl}" width="26" height="26"
+							 border="0" id="preImg" onmouseover="showImg(this,event);" onmouseout="hideImg();">
+							</td>
+							<td class=content>
+							 <img src="showPhoto.do?path=${customer.order.packageUrl}" width="26" height="26"
+							 border="0" id="preImg" onmouseover="showImg(this,event);" onmouseout="hideImg();">
+							</td>
 							<td class=content><fmt:formatDate value="${customer.order.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-							<td class=content>${customer.order.goodsName}</td>
 							<td class=content>${customer.sendNum}</td>
 							<td class=content>
 								<c:if test="${detail!=null}">
@@ -105,7 +123,7 @@
 							</td>
 						</tr>
 						<tr style="display:none" id="cus${customer.id}">
-							<td class=content colspan="8">
+							<td class=content colspan="10">
 							<div id="process${customer.id}" class="process">
 								<script> 
 									var status="";

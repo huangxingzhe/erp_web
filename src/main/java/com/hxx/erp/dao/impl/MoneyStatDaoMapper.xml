@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+    <!DOCTYPE mapper PUBLIC     
+        "-//mybatis.org//DTD Mapper 3.0//EN"    
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+    <mapper namespace="com.hxx.erp.dao.MoneyStatDao">    	
+    	<resultMap id="moneyStatDaoMapperResultMap" type="moneyStat">  
+	        <id property="id" column="id" />  
+	        <result property="month" column="month" />  
+	        <result property="buyMoney" column="buy_money" /> 
+	        <result property="receiveMoney" column="receive_money" />
+	        <result property="fee" column="fee" />
+	        <result property="cnFee" column="cn_fee" />
+	        <result property="vnFee" column="vn_fee" />
+	        <result property="rent" column="rent" /> 
+	        <result property="salary" column="salary" />
+	        <result property="safe" column="safe" />
+	        <result property="water" column="water" />
+	        <result property="tel" column="tel" />
+	        <result property="ext" column="ext" />
+	        <result property="manageFee" column="manage_fee"/>
+	        <result property="mark" column="mark" />
+    	</resultMap>  
+       
+         <select id="get" parameterType="int" resultMap="moneyStatDaoMapperResultMap">    
+            select * from t_money_stat where id = #{id}   
+        </select>  
+        
+        <insert id="add" parameterType="moneyStat" >
+            INSERT INTO t_money_stat (month, buy_money,receive_money,fee,cn_fee,vn_fee,
+            rent,salary,safe,water,tel,ext,manage_fee,mark)
+            VALUES(#{month},#{buyMoney},#{receiveMoney},#{fee},#{cnFee},#{vnFee},
+            #{rent},#{salary},#{safe},#{water},#{tel},#{ext},#{manageFee},#{mark})
+        </insert>
+        
+        <update id="update" parameterType="moneyStat" >
+        	update t_money_stat set month=#{month} ,buy_money=#{buyMoney},receive_money=#{receiveMoney},
+        	fee=#{fee},cn_fee=#{cnFee},vn_fee=#{vnFee},rent=#{rent},salary=#{salary},safe=#{safe},
+        	water=#{water},tel=#{tel},ext=#{ext},manage_fee=#{manageFee} ,mark=#{mark} 
+        	where id=#{id}
+        </update>
+        <delete id="delete" parameterType="int">
+        	delete from t_money_stat where id = #{id}
+        </delete>
+        <select id="query" resultMap="moneyStatDaoMapperResultMap" parameterType="moneyStat">
+             select * from t_money_stat where <![CDATA[date_format(month,'%Y-%m') =#{yearMonth}]]>
+        </select>
+        <select id="queryListByPage" resultMap="moneyStatDaoMapperResultMap" parameterType="java.util.Map">
+             select * from t_money_stat 
+             <trim prefix="where" prefixOverrides="and"> 
+	             <if test="startTime!=null and startTime !=''">
+	             	<![CDATA[and date_format(month,'%Y-%m') >=#{startTime}]]>
+	             </if> 
+	             <if test="endTime!=null and endTime !=''">
+	             	<![CDATA[and date_format(month,'%Y-%m') >=#{endTime}]]>
+	             </if>
+	             <if test="year!=null and year !=''">
+	             	<![CDATA[and date_format(month,'%Y')=#{year}]]>
+	             </if> 
+             </trim>
+				order by month desc 
+        </select>
+        <select id="queryAllForStat" resultMap="moneyStatDaoMapperResultMap" parameterType="java.util.Map">
+             select * from t_money_stat 
+             <trim prefix="where" prefixOverrides="and"> 
+	             <if test="year!=null and year !=''">
+	             	<![CDATA[and date_format(month,'%Y')=#{year}]]>
+	             </if> 
+	             <if test="month!=null and month !=''">
+	             	<![CDATA[and date_format(month,'%Y-%m')=#{month}]]>
+	             </if> 
+             </trim>
+				order by month
+        </select>
+    </mapper>    

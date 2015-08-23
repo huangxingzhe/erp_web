@@ -30,7 +30,7 @@
 	</filter-mapping>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/erp-common-context.xml</param-value>
+		<param-value>classpath*:spring/erp-common-context.xml</param-value>
 	</context-param>
 	<listener>        
             <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>    
@@ -41,7 +41,7 @@
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>
-				/WEB-INF/erp-controllers-context.xml		
+				classpath:spring/erp-controllers-context.xml
 			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
@@ -77,20 +77,8 @@
 	    </taglib>  
 	</jsp-config>
 	<error-page>
-		<exception-type>java.lang.Throwable</exception-type>
-		<location>/error500.jsp</location>
-	</error-page>
-	<error-page>
 		<error-code>404</error-code>
 		<location>/error404.jsp</location>
-	</error-page>
-	<error-page>
-		<error-code>500</error-code>
-		<location>/error500.jsp</location>
-	</error-page>
-	<error-page>
-		<exception-type>java.lang.Exception</exception-type>
-		<location>/error500.jsp</location>
 	</error-page>
 	<listener>        
             <listener-class>com.hxx.erp.common.AppContextUtil</listener-class>    

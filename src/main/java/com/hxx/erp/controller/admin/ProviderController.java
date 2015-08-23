@@ -67,6 +67,38 @@ public class ProviderController {
 		return "/admin/config/provider_list";
 	}
 	
+	@RequestMapping("/dialog")
+	public String dialog(HttpServletRequest request,Model model){
+		try {
+			String type = request.getParameter("type");
+			String keyword = request.getParameter("keyword");
+			String currentPage = request.getParameter("currentPage");
+			String pageCount = "5";
+			Page<Provider> page = new Page<Provider>();
+			if(!StringUtils.isEmpty(pageCount)){
+				page.setPageCount(Integer.valueOf(pageCount));
+			}
+			if(!StringUtils.isEmpty(currentPage)){
+				page.setCurrentPage(Integer.valueOf(currentPage));
+			}
+			Map<String,Object> params = new HashMap<String,Object>();
+			params.put("page", page);
+			params.put("type", type);
+			params.put("keyword", keyword);
+			params.put("status", 1);
+			List<Provider> providers = service.queryListByPage(params);
+			model.addAttribute("providers", providers);
+			if(page.getTotalPage()>1){
+				model.addAttribute("page",page);
+			}
+			model.addAttribute("type",type);
+			model.addAttribute("keyword",keyword);
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		return "/admin/config/dialog_provider_list";
+	}
+	
 	@RequestMapping("/add")
 	@ResponseBody
 	public int add(@ModelAttribute Provider provider){

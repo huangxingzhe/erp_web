@@ -79,36 +79,42 @@
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="funds.label.name"/></span></td>
 						<td width="100" height=28 class=biaoti><span
+							class="searchzone"><spring:message code="funds.label.receiveUser"/></span></td>
+						<td width="100" height=28 class=biaoti><span
+							class="searchzone"><spring:message code="funds.label.transAmount"/></span></td>
+						<td width="100" height=28 class=biaoti><span
+							class="searchzone"><spring:message code="funds.label.overMoney"/></span></td>
+						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="funds.label.mark"/></span></td>
-						<td width="100" height=28 class=biaoti><span
-							class="searchzone"><spring:message code="order.label.providerName"/></span></td>
-						<td width="100" height=28 class=biaoti><span
-							class="searchzone"><spring:message code="funds.label.income"/></span></td>
-						<td width="100" height=28 class=biaoti><span
-							class="searchzone"><spring:message code="funds.label.outcome"/></span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="funds.label.userId"/></span></td>
 					</tr>
 					<c:forEach items="${process}" var="pro" >
 						<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#f2f9fd'" onmouseout="this.bgColor='#FFFFFF'" id="fund${fund.id}">
 							<td class=content>&nbsp;</td>
-							<td class=content><fmt:formatDate value="${pro.createTime}" pattern="yyyy-MM-dd"/></td>
+							<td class=content><fmt:formatDate value="${pro.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 							<td class=content>${pro.fundsName}</td>
-							<td class=content>${pro.mark}</td>
-							<td class=content>${pro.providerName}</td>
+							<td class=content>${pro.receiveUser}</td>
 							<td class=content>
 				    			<c:if test="${pro.type==1||pro.type==2}">
-				    				<fmt:formatNumber type="number" pattern="￥.00" value="${pro.amount}" />
+				    				+<fmt:formatNumber pattern="#,##0.00#" value="${pro.amount}" />
+				    			</c:if>
+				    			<c:if test="${pro.type==3||pro.type==4}">
+				    				-<fmt:formatNumber pattern="#,##0.00#" value="${pro.amount}" />
 				    			</c:if>
 							</td>
-							<td class=content>
-								<c:if test="${pro.type==3||pro.type==4}">
-				    				<fmt:formatNumber type="number" pattern="￥.00" value="${pro.amount}" />
-				    			</c:if>
-							</td>
+							<td class=content><fmt:formatNumber pattern="#,##0.00#" value="${pro.balance}" /></td>
+							<td class=content>${pro.mark}</td>
 							<td class=content>${pro.userId}</td>
 						</tr>
 					</c:forEach>
+					<tr>
+						<td height=20 class=total style="text-align:left;" colspan="4"><spring:message code="admin.label.pagecount"/>：</td>
+						<td height=20 class=total><fmt:formatNumber value="${money}" pattern="#,#00.00#"/></td>
+						<td height=20 class=total>&nbsp;</td>
+						<td height=20 class=total>&nbsp;</td>
+						<td height=20 class=total>&nbsp;</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>

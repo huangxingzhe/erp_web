@@ -10,10 +10,12 @@
 </head>
 <body>
 <input type="hidden" name="photo" id="pid" value="${picUrl}"/>
+<input type="hidden" id="id" value="${id}"/>
 <script type="text/javascript">
 var imgPath = $("#pid").val();
-var imgSrc = parent.document.getElementById('preImg');
-var phoObj = parent.document.getElementById('picUrl');
+var id = $("#id").val();
+var imgSrc = parent.document.getElementById('preImg'+id);
+var phoObj = parent.document.getElementById('picUrl'+id);
 $(phoObj).val(imgPath);
 $(imgSrc).attr("src",'showPhoto.do?path='+imgPath);
 </script>

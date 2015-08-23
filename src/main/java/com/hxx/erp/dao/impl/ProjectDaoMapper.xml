@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+        
+    <!DOCTYPE mapper PUBLIC     
+        "-//mybatis.org//DTD Mapper 3.0//EN"    
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+    <mapper namespace="com.hxx.erp.dao.ProjectDao">    	
+    	<resultMap id="projectDaoMapperResultMap" type="project">  
+	        <id property="id" column="id" />  
+	        <result property="name" column="name" /> 
+	        <result property="status" column="status" />  
+    	</resultMap>  
+       
+         <select id="get" parameterType="int" resultMap="projectDaoMapperResultMap">    
+            select * from t_project where id = #{id}   
+        </select>  
+        
+        <insert id="add" parameterType="project" >
+            INSERT INTO t_project (name,status)
+            VALUES(#{name},#{status})
+        </insert>
+        
+        <update id="update" parameterType="project" >
+        	update t_project set name=#{name},status=#{status}  where id=#{id}
+        </update>
+        <delete id="delete" parameterType="int">
+        	delete from t_project where id = #{id}
+        </delete>
+        <select id="query" parameterType="project" resultMap="projectDaoMapperResultMap">    
+            select * from t_project  
+        </select>  
+        <select id="queryList" resultMap="projectDaoMapperResultMap" parameterType="java.util.Map">
+             select * from t_project 
+             <trim prefix="where" prefixOverrides="and"> 
+	             <if test="status!=null">
+	             	and status =#{status}
+	             </if>
+	             <if test="name!=null and name !=''">
+	             	and name = #{name}
+	             </if>
+             </trim>
+			 order by id
+        </select>
+         <select id="queryListByPage" resultMap="projectDaoMapperResultMap" parameterType="java.util.Map">
+             select * from t_project 
+             <trim prefix="where" prefixOverrides="and"> 
+	             <if test="status!=null">
+	             	and status =#{status}
+	             </if>
+	             <if test="name!=null and name !=''">
+	             and name = #{name}
+	             </if>
+             </trim>
+			 order by id
+        </select>
+    </mapper>    

@@ -1,0 +1,134 @@
+/*大的弹出DIV开始*/
+#contentTop
+{
+    width: 1052px;
+    height: 37px;
+    margin: 10px auto 0px auto;
+    background: url(../images/menu.gif) repeat -1px -170px;
+    color: White;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+#openDivTitle
+{
+    width: 400px;
+    background: url('../images/menuIcon.gif') no-repeat 15px -756px;
+    text-indent: 40px;
+    height: 37px;
+    line-height: 37px;
+}
+#contentMiddle
+{
+    width: 1050px;
+    margin: 0px auto;
+    border-left: solid 1px #3D3B3E; /*黑色*/
+    border-right: solid 1px #3D3B3E; /*黑色*/
+    background-color: White;
+    overflow: hidden;
+    position: relative;
+}
+#contentBottom
+{
+    width: 1052px;
+    height: 5px;
+    margin: 0px auto;
+    background: url(../images/menu.gif) repeat -1px -226px;
+}
+/*对话框开始*/
+#productDialogDIV, #DialogDIV, #DialogDIV8, #DialogDIVType, #DialogPayPay, #DialogPayRec, #DialogSubDIV, #productDialogDIV
+{
+    background-color: #F2F2F2;
+    border: solid 1px #3D3B3E;
+    width: 800px;
+    height: 310px;
+}
+.topheader
+{
+    background-color: #3D3B3E;
+    height: 30px;
+    line-height: 30px;
+    overflow: hidden;
+    zoom: 1;
+}
+.boxTitle
+{
+    display: block;
+    float: left;
+    color: #fff;
+    font-size: 13px;
+    cursor: move;
+    font-weight: bold;
+    margin-left: 10px;
+    width: 720px;
+}
+.closeBox
+{
+    display: inline-block;
+    width: 65px;
+    height: 25px;
+    overflow: hidden;
+    zoom: 1;
+}
+.closeBox a
+{
+    float: right;
+    margin: 0px;
+    padding: 0px;
+    width: 30px;
+    height: 19px;
+    cursor: pointer;
+    display: inline-block;
+}
+.closeBox a
+{
+    background: url(../images/closeBox.gif) no-repeat 5px 5px;
+}
+.closeBox a:hover
+{
+    background: url(../images/closeBox.gif) no-repeat 5px 5px;
+}
+
+.closeBox2 a
+{
+    float: right;
+    margin: 0px 8px 0px 0px;
+    width: 34px;
+    height: 19px;
+    cursor: pointer;
+}
+.closeBox2 a
+{
+    background: url(../images/closeBox.gif) no-repeat 15px 5px;
+}
+.closeBox2 a:hover
+{
+    background: url(../images/closeBox.gif) no-repeat 15px 5px;
+}
+
+.dialogSubTitle
+{
+    background-color: #D8DBDC;
+    border-bottom: solid 1px #BBB;
+}
+#dialogFrame, #dialogFrameProduct
+{
+    width: 798px;
+    height: 270px;
+}
+.tipDIV
+{
+    color: Red;
+    border: solid 1px #DDDDDD;
+    height: 30px;
+    line-height: 30px;
+    font-weight: bold;
+    background-color: #FFFF70;
+    margin: 5px auto;
+    text-indent: 10px;
+}
+/*对话框结束*/
+/*弹出小对话框搜索栏底色*/
+#searctTable td
+{
+    background-color: #D8DBDC;
+}

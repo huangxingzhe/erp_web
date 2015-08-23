@@ -19,6 +19,10 @@ import java.util.GregorianCalendar;
  * @Date  2014/6/6日
  */
 public class DateUtil {
+	static final SimpleDateFormat yyyyMM = new SimpleDateFormat("yyyy-MM");
+	static final SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
+	static final SimpleDateFormat yyyyMMddHHmmss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
 	private DateUtil(){}
 	
     
@@ -29,13 +33,39 @@ public class DateUtil {
      * @return 日期 Date对象
      */
     public static java.util.Date formatDayTime(String day){
-    	SimpleDateFormat daydf = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            return daydf.parse(day);
+            return yyyyMMdd.parse(day);
         } catch (ParseException ex) {
             ex.printStackTrace();
             return new java.util.Date();
         }
+    }
+    
+    public static String formatDate(String day){
+        try {
+            return yyyyMM.format(formatYearMonth(day));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
+    public static Date formatYearMonth(String day){
+        try {
+            return yyyyMM.parse(day);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+            return new java.util.Date();
+        }
+    }
+    
+    public static String formatYearMonth(Date date){
+        try {
+            return yyyyMM.format(date);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -44,9 +74,8 @@ public class DateUtil {
      * @return 某年某月的第一天
      */
     public static java.util.Date formatMonthTime(String yearmonth){
-    	SimpleDateFormat daydf = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            return daydf.parse(yearmonth + "-01");
+            return yyyyMM.parse(yearmonth + "-01");
         } catch (ParseException ex) {
             ex.printStackTrace();
             return new java.util.Date();
@@ -58,9 +87,8 @@ public class DateUtil {
      *@param str 格式为yyyy-MM-dd
      */
     public static long parseDayByYYYYMMDD(String str){
-    	SimpleDateFormat daydf = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            return daydf.parse(str).getTime();
+            return yyyyMMdd.parse(str).getTime();
         } catch (Exception ex) {
             return 0L;
         }
@@ -70,10 +98,9 @@ public class DateUtil {
      *@param str 格式为yyyy-MM-dd HH:mm:ss
      */
     public static int parseTimeByYYYYMMDDHHMMSS(String str){
-    	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if(str == null || str.length() != 19) return 0;
         try {
-            return (int)(df.parse(str).getTime()/1000L);
+            return (int)(yyyyMMddHHmmss.parse(str).getTime()/1000L);
         } catch (Exception ex) {
             return 0;
         }
@@ -90,18 +117,16 @@ public class DateUtil {
      * 得到 yyyy-MM-dd 格式的指定日期的前一天
      */ 
     public static String foreDay(String day){
-    	SimpleDateFormat daydf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(parseDayByYYYYMMDD(day));
         cal.add(Calendar.DAY_OF_MONTH, -1);
-        return daydf.format(cal.getTime());
+        return yyyyMMdd.format(cal.getTime());
     }
     /**
      * 根据时间值构造日期
      */
     public static String parseDay(int time){
-    	SimpleDateFormat daydf = new SimpleDateFormat("yyyy-MM-dd");
-        return daydf.format(new java.util.Date(time*1000L));
+        return yyyyMMdd.format(new java.util.Date(time*1000L));
     }
     /**
      * 显示时间
@@ -124,24 +149,21 @@ public class DateUtil {
      * @param d Date对象
      */
     public static String formatDay(java.util.Date d){
-    	SimpleDateFormat daydf = new SimpleDateFormat("yyyy-MM-dd");
-        return daydf.format(d);
+        return yyyyMMdd.format(d);
     }
     /**
      * 转换成yyyy-MM-dd格式的日期字符串
      * @param d Calendar对象
      */
     public static String formatDay(java.util.Calendar d){
-    	SimpleDateFormat daydf = new SimpleDateFormat("yyyy-MM-dd");
-        return daydf.format(d.getTime());
+        return yyyyMMdd.format(d.getTime());
     }
     /**
      * 转换成yyyy-MM-dd HH:mm:ss格式的时间
      * @param time 毫秒数
      */
     public static String formatyyyyMMddHHmmss(long time){
-    	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return df.format(new java.util.Date(time));
+        return yyyyMMddHHmmss.format(new java.util.Date(time));
     }
 
     /**
@@ -150,12 +172,11 @@ public class DateUtil {
      * @return 格式化后的字符串,当输入为null时输出为""
      */
     public static String formatyyyyMMddHHmmss(Date time){
-    	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if(time==null){
             return "";
         }
         try{
-            return df.format(time);
+            return yyyyMMddHHmmss.format(time);
         }
         catch(Exception ex){
             return "";
@@ -167,8 +188,7 @@ public class DateUtil {
      * @return yyyy-MM-dd格式的当前日期
      */
     public static String today() {
-    	SimpleDateFormat daydf = new SimpleDateFormat("yyyy-MM-dd");
-        return daydf.format(new java.util.Date());
+        return yyyyMMdd.format(new java.util.Date());
     }
     /**
 	 * 返回yyyyMMdd格式的当前日期
@@ -183,10 +203,9 @@ public class DateUtil {
      * @return 当前日期的前一天
      */
     public static String yesterday(){
-    	SimpleDateFormat daydf = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Calendar cal =java.util.Calendar.getInstance();
         cal.add(java.util.Calendar.DAY_OF_MONTH, -1);
-        return daydf.format(cal.getTime());
+        return yyyyMMdd.format(cal.getTime());
     }
     
 
@@ -196,9 +215,8 @@ public class DateUtil {
      */
     public static String tomorrow(){
         java.util.Calendar cal =java.util.Calendar.getInstance();
-        SimpleDateFormat daydf = new SimpleDateFormat("yyyy-MM-dd");
         cal.add(java.util.Calendar.DAY_OF_MONTH, 1);
-        return daydf.format(cal.getTime());
+        return yyyyMMdd.format(cal.getTime());
     }
         
     /**
@@ -206,24 +224,32 @@ public class DateUtil {
      * @return 返回本月1号
      */
     public static String currmonth1day(){
-    	SimpleDateFormat daydf = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Calendar cal =java.util.Calendar.getInstance();
         cal.set(java.util.Calendar.DAY_OF_MONTH, 1);
-        return daydf.format(cal.getTime());
+        return yyyyMMdd.format(cal.getTime());
     }
     
     /**
 	 * 返回本月最后一天
 	 */
 	public static String lastdayofmonth(){
-		SimpleDateFormat daydf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar calendar=Calendar.getInstance();   
         Calendar cpcalendar=(Calendar)calendar.clone();   
         cpcalendar.set(Calendar.DAY_OF_MONTH,1); 
         cpcalendar.add(Calendar.MONTH, 1);   
         cpcalendar.add(Calendar.DATE, -1);   
-        String date = daydf.format( new Date(cpcalendar.getTimeInMillis()));   
+        String date = yyyyMMdd.format( new Date(cpcalendar.getTimeInMillis()));   
         return date;
+	}
+	
+	public static String lastdayofmonth(String date){
+		Calendar calendar=Calendar.getInstance();   
+		calendar.setTime(formatYearMonth(date));
+        Calendar cpcalendar=(Calendar)calendar.clone();   
+        cpcalendar.set(Calendar.DAY_OF_MONTH,1); 
+        cpcalendar.add(Calendar.MONTH, 1);   
+        cpcalendar.add(Calendar.DATE, -1);   
+        return yyyyMMdd.format( new Date(cpcalendar.getTimeInMillis()));   
 	}
 	
 	/**
@@ -244,11 +270,10 @@ public class DateUtil {
         return year+"-12-31";
 	}
 	public static String addDays(int days){
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(new Date());
 		cal.add(Calendar.DATE,days);
-		return df.format(cal.getTime());
+		return yyyyMMdd.format(cal.getTime());
 	}
 	/**
 	 * 给指定时间加上一个数值
@@ -259,14 +284,13 @@ public class DateUtil {
 	 */
 	public static String addTime(String time1,String addpart,int num){
 		try{
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String now = df.format(new Date());
+			String now = yyyyMMddHHmmss.format(new Date());
 			time1 = (time1 == null) ? now : time1;
 			if (time1.length() < 19){
 				time1 += " 00:00:00";
 			}
 			GregorianCalendar cal = new GregorianCalendar();
-			cal.setTime(df.parse(time1));
+			cal.setTime(yyyyMMddHHmmss.parse(time1));
 			if (addpart.equalsIgnoreCase("Y")){
 				cal.add(Calendar.YEAR,num);
 			}
@@ -285,7 +309,7 @@ public class DateUtil {
 			else if (addpart.equalsIgnoreCase("S")){
 				cal.add(Calendar.SECOND,num);
 			}
-			return df.format(cal.getTime());
+			return yyyyMMddHHmmss.format(cal.getTime());
 		}
 		catch(Exception e){
 			throw new RuntimeException(e);
@@ -308,16 +332,14 @@ public class DateUtil {
      * @return yyyy-MM-dd HH:mm:ss格式的当前日期
      */
     public static String now() {
-    	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return df.format(new java.util.Date());
+        return yyyyMMddHHmmss.format(new java.util.Date());
     }
     /**
 	 * 返回当前时间
 	 */
 	public static String timeofnow(){
 		Calendar curcal = Calendar.getInstance();
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		return df.format(curcal.getTime());
+		return yyyyMMddHHmmss.format(curcal.getTime());
 	}
 	/**
 	 * 返回yyyyMMddHHmmss格式的当前时间
@@ -335,9 +357,8 @@ public class DateUtil {
      */
     public static String dateofSepcial(int step) {
         java.util.Calendar cal = java.util.Calendar.getInstance();
-        SimpleDateFormat daydf = new SimpleDateFormat("yyyy-MM-dd");
         cal.add(java.util.Calendar.DAY_OF_MONTH, step);
-        return daydf.format(cal.getTime());
+        return yyyyMMdd.format(cal.getTime());
     }
     
     /**
@@ -347,7 +368,7 @@ public class DateUtil {
     public static  String getCurrUnixtimestamp(){
 		String ret = "";
 		try {
-			Date date = new  SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("1970-01-01 00:00:00");
+			Date date = yyyyMMddHHmmss.parse("1970-01-01 00:00:00");
 			long l = (new Date().getTime() - date.getTime())/1000;
 			ret = String.valueOf(l);
 		} catch (Exception e) {
@@ -361,10 +382,9 @@ public class DateUtil {
     public static String getWeek(String pTime){  
         String[] weeks = {"星期日","星期一","星期二","星期三","星期四","星期五","星期六"};  
         int week_index = 0;
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");  
         Calendar cal = Calendar.getInstance();  
    	 	try {
-			cal.setTime(format.parse(pTime));
+			cal.setTime(yyyyMMdd.parse(pTime));
 			week_index = cal.get(Calendar.DAY_OF_WEEK) - 1;  
 		    if(week_index<0){  
 		        week_index = 0;  
@@ -378,10 +398,9 @@ public class DateUtil {
     public static String getWeekForWedding(String pTime){  
         String[] weeks = {"星期日","星期一","星期二","星期三","星期四","星期五","星期六"};  
         int week_index = 0;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
         Calendar cal = Calendar.getInstance();  
    	 	try {
-			cal.setTime(sdf.parse(pTime));
+			cal.setTime(yyyyMMddHHmmss.parse(pTime));
 			int year = cal.get(Calendar.YEAR);
 			int month = cal.get(Calendar.MONTH)+1;
 			int day = cal.get(Calendar.DAY_OF_MONTH);

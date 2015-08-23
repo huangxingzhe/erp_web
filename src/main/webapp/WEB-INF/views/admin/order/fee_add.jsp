@@ -39,9 +39,18 @@
     </td>
    </tr>
    <tr>
-   	<td align=middle width=100 height=30><spring:message code="fee.label.receiveUser"/></td>
+   	<td align=middle width=100 height=30><spring:message code="fee.label.type"/></td>
     <td height=30>
-    	<input name="receiveUser" value="${fee.receiveUser}" id="receiveUser" />
+    	<select name="type" id="type" style="width:160px;">
+    		<option value=""><spring:message code="admin.label.select"/></option>
+    		<option value="1" <c:if test="${fee.type==1}">selected</c:if>><spring:message code="fee.label.fare"/></option><!-- 运费费 -->
+    		<option value="2" <c:if test="${fee.type==2}">selected</c:if>><spring:message code="fee.label.tel"/></option><!-- 话费 -->
+    		<option value="3" <c:if test="${fee.type==3}">selected</c:if>><spring:message code="fee.label.fee"/></option><!-- 手续费 -->
+    		<option value="4" <c:if test="${fee.type==4}">selected</c:if>><spring:message code="fee.label.sample"/></option><!-- 样品 -->
+    		<option value="5" <c:if test="${fee.type==5}">selected</c:if>><spring:message code="fee.label.cash"/></option><!-- 取现 -->
+    		<option value="7" <c:if test="${fee.type==7}">selected</c:if>><spring:message code="fee.label.travel"/></option><!-- 差旅费 -->
+    		<option value="6" <c:if test="${fee.type==6}">selected</c:if>><spring:message code="fee.label.other"/></option><!-- 其他 -->
+   		</select>
     </td>
     <td align=middle width=100 height=30><spring:message code="fee.label.payAccount"/></td>
     <td height=30>
@@ -57,16 +66,21 @@
     </td>
    </tr>
    <tr>
+   	<td align=middle width=100 height=30><spring:message code="fee.label.receiveUser"/></td>
+    <td height=30>
+    	<input name="receiveUser" value="${fee.receiveUser}" id="receiveUser" />
+    </td>
    	<td align=middle width=100 height=30><spring:message code="fee.label.amount" /></td>
     <td height=30>
     	<input name="amount" value="${fee.amount}" id="amount"  onblur="isPriceNumber(this)"/>
     </td>
+   </tr>
+     <tr>
     <td align=middle width=100 height=30><spring:message code="fee.label.mark"/></td>
-    <td height=30>
+    <td height=30 colspan="3">
     	<textarea rows="5" cols="40" name="mark">${fee.mark}</textarea>
     </td>
    </tr>
-  
    </tbody>
 </table>
 </div>
@@ -92,11 +106,13 @@
 	        			rules: {
 	        				payNo:"required",
 	        				amount:"required",
+	        				type:"required",
 	        				payAccount:"required"
 	        			},
 	        			messages: {
 	        				payNo: $.i18n.prop('付款单号不能为空'),
 	        				amount: $.i18n.prop('金额不能为空'),
+	        				type: $.i18n.prop('付款类型不能为空'),
 	        				payAccount: $.i18n.prop('付款账号不能为空')
 	        			},
 	        			submitHandler: function(form) {

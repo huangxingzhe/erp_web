@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+        
+    <!DOCTYPE mapper PUBLIC     
+        "-//mybatis.org//DTD Mapper 3.0//EN"    
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+    <mapper namespace="com.hxx.erp.dao.EmployeeProjectDao">    	
+    	<resultMap id="empProDaoMapperResultMap" type="empPro">  
+	        <id property="id" column="id" />  
+	        <result property="employeeId" column="employee_id" />  
+	        <result property="projectId" column="project_id" /> 
+	        <result property="cut" column="cut" /> 
+	        <result property="employeeName" column="employeeName" /> 
+	        <result property="projectName" column="projectName" /> 
+    	</resultMap>  
+       
+         <select id="get" parameterType="int" resultMap="empProDaoMapperResultMap">    
+            select * from t_employee_project where id = #{id}   
+        </select>  
+        
+        <insert id="add" parameterType="empPro" >
+            INSERT INTO t_employee_project (employee_id, project_id,cut,times)
+            VALUES(#{employeeId},#{projectId}, #{cut},#{times})
+        </insert>
+        
+        <update id="update" parameterType="empPro" >
+        	update t_employee_project set employee_id=#{employeeId} ,project_id=#{projectId},cut=#{cut},times=#{times}
+            where id=#{id}
+        </update>
+        <delete id="delete" parameterType="int">
+        	delete from t_employee_project where id = #{id}
+        </delete>
+        <select id="query" parameterType="empPro" resultMap="empProDaoMapperResultMap">    
+            select * from t_employee_project    
+            <trim prefix="where" prefixOverrides="and"> 
+	             <if test="employeeId!=null">
+	             	and employee_id =#{employeeId}
+	             </if>
+	             <if test="projectId!=null and projectId !=''">
+	             	and project_id =#{projectId} 
+	             </if>
+             </trim>
+        </select>  
+        <select id="queryList" resultMap="empProDaoMapperResultMap" parameterType="java.util.Map">
+            select * from t_employee_project    
+            <trim prefix="where" prefixOverrides="and"> 
+	             <if test="employeeId!=null">
+	             	and employee_id =#{employeeId}
+	             </if>
+	             <if test="projectId!=null and projectId !=''">
+	             	and project_id =#{projectId} 
+	             </if>
+             </trim>
+        </select>
+         <select id="queryListByPage" resultMap="empProDaoMapperResultMap" parameterType="java.util.Map">
+             select ep.*,e.name as employeeName,p.name as projectName from t_employee_project ep 
+             left join t_employee e on ep.employee_id = e.id
+             left join t_project p on ep.project_id = p.id
+              <trim prefix="where" prefixOverrides="and"> 
+	             <if test="employeeId!=null">
+	             	and ep.employee_id =#{employeeId}
+	             </if>
+	             <if test="projectId!=null and projectId !=''">
+	             	and ep.project_id =#{projectId} 
+	             </if>
+             </trim>
+			 order by ep.id
+        </select>
+    </mapper>    

@@ -21,10 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hxx.erp.common.Constant;
 import com.hxx.erp.common.Page;
-import com.hxx.erp.model.Customer;
 import com.hxx.erp.model.Funds;
 import com.hxx.erp.model.FundsProcess;
-import com.hxx.erp.model.Goods;
 import com.hxx.erp.model.Provider;
 import com.hxx.erp.service.FundsProcessService;
 import com.hxx.erp.service.FundsService;
@@ -80,7 +78,11 @@ public class FundsController {
 			if(funds.getId() == 0){
 				service.add(funds);
 			}else{
-				service.update(funds);
+				f.setAccount(funds.getAccount());
+				f.setAddress(funds.getAddress());
+				f.setName(funds.getName());
+				f.setStatus(funds.getStatus());
+				service.update(f);
 			}
 			ret = 1;//操作成功
 		} catch (Exception e) {
@@ -118,22 +120,101 @@ public class FundsController {
 			}
 			f.setOverMoney(money);
 			service.update(f);
-			FundsProcess process = new FundsProcess();
-			process.setAmount(funds.getMoney());
-			process.setType(funds.getType());
-			process.setCreateTime(new Date());
-			process.setFundsName(f.getName());
-			process.setMark(mark);
-			process.setProviderName("");
-			String userName = (String)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_NAME);
-			process.setUserId(userName);
-			processService.add(process);
+			if(funds.getMoney()!=0){
+				FundsProcess process = new FundsProcess();
+				process.setAmount(funds.getMoney());
+				process.setBalance(f.getOverMoney());
+				process.setType(funds.getType());
+				process.setCreateTime(new Date());
+				process.setFundsName(f.getName());
+				process.setMark(mark);
+				process.setReceiveUser(f.getName());
+				String userName = (String)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_NAME);
+				process.setUserId(userName);
+				processService.add(process);
+			}
+			
 			ret = 1;//操作成功
 		} catch (Exception e) {
 			log.error("",e);
 		}
 		return ret;
 	}
+	
+	@RequestMapping("/transferInit")
+	public String transferInit(HttpServletRequest request,Model model){
+		String id = request.getParameter("id");
+		if(!StringUtils.isEmpty(id)){
+			try {
+				List<Funds> funds = service.queryList(null);
+				Funds fund = service.get(Integer.valueOf(id));
+				model.addAttribute("funds", funds);
+				model.addAttribute("fund", fund);
+			} catch (Exception e) {
+				log.error("",e);
+			}
+		}
+		return "/admin/funds/transfer";
+	}
+	@RequestMapping("/transferMoney")
+	@ResponseBody
+	public int transferMoney(HttpServletRequest request,Model model){
+		int ret = 0;
+		String outFundsId = request.getParameter("outFundsId");
+		String inFundsId = request.getParameter("inFundsId");
+		String money = request.getParameter("money");
+		double outMoney = Double.valueOf(money);
+		Funds out = null;
+		Funds in = null;
+		try{
+			try {//todo 失败事物回滚
+				out = service.get(Integer.valueOf(outFundsId));
+				out.setOutcome(out.getOutcome()+outMoney);
+				out.setOverMoney(out.getOverMoney()-outMoney);
+				service.update(out);//转出
+				
+				in = service.get(Integer.valueOf(inFundsId));
+				in.setIncome(in.getIncome()+outMoney);
+				in.setOverMoney(in.getOverMoney()+outMoney);
+				service.update(in);//转入
+				ret = 1;//操作成功
+			} catch (Exception e) {
+				log.error("相互转账失败...",e);
+			}
+			if(outMoney !=0){
+				//转出日志
+				FundsProcess process = new FundsProcess();
+				process.setAmount(outMoney);
+				process.setBalance(out.getOverMoney());
+				process.setType(4);//借出
+				process.setCreateTime(new Date());
+				process.setFundsName(out.getName());//转出账号
+				process.setMark("从"+out.getName()+"向"+in.getName()+",转入:"+outMoney+"元");
+				process.setReceiveUser(in.getName());//转入账号
+				String userName = (String)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_NAME);
+				process.setUserId(userName);
+				processService.add(process);
+				
+				//转入日志
+				FundsProcess inProcess = new FundsProcess();
+				inProcess.setAmount(outMoney);
+				inProcess.setBalance(in.getOverMoney());
+				inProcess.setType(2);//借入
+				inProcess.setCreateTime(new Date());
+				inProcess.setFundsName(in.getName());//转入账号
+				inProcess.setMark("从"+out.getName()+"向"+in.getName()+",转入:"+outMoney+"元");
+				inProcess.setReceiveUser(out.getName());//转出账号
+				inProcess.setUserId(userName);
+				processService.add(inProcess);
+			}
+			
+		}catch(Exception ex){
+			log.error("",ex);
+		}
+		return ret;
+	}
+	
+	
 	
 	@RequestMapping("/delete")
 	@ResponseBody
@@ -177,6 +258,14 @@ public class FundsController {
 			params.put("page", page);
 			
 			List<FundsProcess> process = processService.queryListByPage(params);
+			double money = 0;
+			for(FundsProcess fund: process){
+				if(fund.getType()==1 || fund.getType()==2){
+					money +=fund.getAmount();
+				}else{
+					money-=fund.getAmount();
+				}
+			}
 			model.addAttribute("process", process);
 			List<Provider> providers = providerService.queryList(null);
 			model.addAttribute("providers", providers);
@@ -186,6 +275,7 @@ public class FundsController {
 			model.addAttribute("startTime", startTime);
 			model.addAttribute("endTime", endTime);
 			model.addAttribute("page",page);
+			model.addAttribute("money",money);
 		} catch (Exception e) {
 			log.error("",e);
 		}
@@ -210,4 +300,5 @@ public class FundsController {
 		}
 		return "";
 	}
+	
 }

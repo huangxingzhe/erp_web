@@ -49,6 +49,8 @@ public class GoodsController {
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request,Model model){
 		try {
+			String providerId = request.getParameter("providerId");
+			String providerName = request.getParameter("providerName");
 			String currentPage = request.getParameter("currentPage");
 			String pageCount = request.getParameter("pageCount");
 			Page<Goods> page = new Page<Goods>();
@@ -60,9 +62,12 @@ public class GoodsController {
 			}
 			Map<String,Object> params = new HashMap<String,Object>();
 			params.put("page", page);
+			params.put("providerId", providerId);
 			List<Goods> goods = service.queryListByPage(params);
 			model.addAttribute("goodss", goods);
 			model.addAttribute("page",page);
+			model.addAttribute("providerId",providerId);
+			model.addAttribute("providerName",providerName);
 		} catch (Exception e) {
 			log.error("",e);
 		}
@@ -90,6 +95,39 @@ public class GoodsController {
 		}
 		return ret;
 	}
+	
+	@RequestMapping("/dialog")
+	public String dialog(HttpServletRequest request,Model model){
+		try {
+			String type = request.getParameter("type");
+			String keyword = request.getParameter("keyword");
+			String currentPage = request.getParameter("currentPage");
+			String pageCount = "5";
+			Page<Provider> page = new Page<Provider>();
+			if(!StringUtils.isEmpty(pageCount)){
+				page.setPageCount(Integer.valueOf(pageCount));
+			}
+			if(!StringUtils.isEmpty(currentPage)){
+				page.setCurrentPage(Integer.valueOf(currentPage));
+			}
+			Map<String,Object> params = new HashMap<String,Object>();
+			params.put("page", page);
+			params.put("type", type);
+			params.put("keyword", keyword);
+			params.put("status", 1);
+			List<Goods> goods = service.queryListByPage(params);
+			model.addAttribute("goods", goods);
+			if(page.getTotalPage()>1){
+				model.addAttribute("page",page);
+			}
+			model.addAttribute("type",type);
+			model.addAttribute("keyword",keyword);
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		return "/admin/config/dialog_goods_list";
+	}
+	
 	
 	@RequestMapping("/delete")
 	@ResponseBody

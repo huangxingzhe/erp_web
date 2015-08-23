@@ -10,7 +10,8 @@ public class FundsProcess {
 	private Date createTime;
 	private String userId;
 	private String fundsName;
-	private String providerName;
+	private String receiveUser;
+	private double balance;//余额
 	public int getId() {
 		return id;
 	}
@@ -53,11 +54,18 @@ public class FundsProcess {
 	public void setFundsName(String fundsName) {
 		this.fundsName = fundsName;
 	}
-	public String getProviderName() {
-		return providerName;
+	public String getReceiveUser() {
+		return receiveUser;
 	}
-	public void setProviderName(String providerName) {
-		this.providerName = providerName;
+	public void setReceiveUser(String receiveUser) {
+		this.receiveUser = receiveUser;
 	}
+	public double getBalance() {
+		return balance;
+	}
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+	
 
 }

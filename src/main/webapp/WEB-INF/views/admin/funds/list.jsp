@@ -50,7 +50,7 @@
 							class="searchzone"><spring:message code="funds.label.outcome"/></span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="funds.label.overMoney"/></span></td>
-						<td class=biaoti width=50><span class="searchzone">
+						<td class=biaoti width=150><span class="searchzone">
 							<spring:message code="admin.label.op"/>
 						</span></td>
 					</tr>
@@ -72,6 +72,9 @@
 							<td class=content id="opt_${fund.id}">
 							<c:if test="${update!=null}">
 							<a href="javascript:edit(${fund.id})"><spring:message code="admin.label.edit"/></a>
+							</c:if>
+							<c:if test="${updateMoney!=null}">
+							&nbsp;&nbsp;<a href="transferInit.do?id=${fund.id}"><spring:message code="funds.label.transfer"/></a>
 							</c:if>
 							<c:if test="${updateMoney!=null}">
 							&nbsp;&nbsp;<a href="addMoney.do?id=${fund.id}"><spring:message code="funds.label.addMoney"/></a>

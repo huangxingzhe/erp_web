@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+        
+    <!DOCTYPE mapper PUBLIC     
+        "-//mybatis.org//DTD Mapper 3.0//EN"    
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+    <mapper namespace="com.hxx.erp.dao.EmpCutSettingDao">    	
+    	<resultMap id="empDaoMapperResultMap" type="empCutSetting">  
+	        <id property="id" column="id" />  
+	        <result property="empId" column="emp_id" />  
+	        <result property="cusId" column="cus_id" /> 
+	        <result property="rateId" column="rate_id" /> 
+	        <result property="mark" column="mark" /> 
+	        <result property="createTime" column="create_time" />
+	        <result property="empName" column="empName" />
+	        <result property="cusName" column="cusName" />
+	        <result property="goodsId" column="goods_id" />
+	        <result property="goodsName" column="goodsName" />
+	        <result property="type" column="type" /> 
+	        <result property="discount" column="discount" /> 
+	        <result property="rate" column="rate" /> 
+    	</resultMap>  
+       
+         <select id="get" parameterType="int" resultMap="empDaoMapperResultMap">    
+            select s.*,e.name empName,c.name cusName,gg.* from t_emp_cut_setting s left join t_employee e on s.emp_id =e.id 
+             left join t_customer c on c.id=s.cus_id 
+             left join (select gr.id rateId,gr.type,gr.discount,gr.rate,gr.goods_id,g.name as goodsName from t_goods_rate gr left join t_goods g on
+             gr.goods_id=g.id)gg on gg.rateId = s.rate_id 
+             where s.id=#{id}
+        </select>  
+        
+        <insert id="add" parameterType="empCutSetting" >
+            INSERT INTO t_emp_cut_setting (emp_id,cus_id,rate_id,mark,create_time)
+            VALUES(#{empId},#{cusId}, #{rateId}, #{mark},#{createTime})
+        </insert>
+        
+        <update id="update" parameterType="empCutSetting" >
+        	update t_emp_cut_setting set emp_id=#{empId} ,cus_id=#{cusId},rate_id=#{rateId},
+        	mark=#{mark} where id=#{id}
+        </update>
+        <delete id="delete" parameterType="int">
+        	delete from t_emp_cut_setting where id = #{id}
+        </delete>
+        <select id="query" parameterType="empCutSetting" resultMap="empDaoMapperResultMap">    
+            select * from t_emp_cut_setting  e
+             <if test="goodsId!=null">
+	             	left join t_goods_rate g on e.rate_id = g.id
+	         </if> 
+             <trim prefix="where" prefixOverrides="and"> 
+	             <if test="empId!=null">
+	             	and emp_id = #{empId}
+	             </if>
+	             <if test="cusId!=null">
+	             	and cus_id = #{cusId}
+	             </if>
+	             <if test="rateId!=null">
+	             	and rate_id = #{rateId}
+	             </if>
+	             <if test="goodsId!=null">
+	             	and g.goods_id= #{goodsId}
+	             </if>
+             </trim>
+        </select>  
+        <select id="queryList" resultMap="empDaoMapperResultMap" parameterType="java.util.Map">
+             select s.*,e.name empName,c.name cusName,gg.* from t_emp_cut_setting s left join t_employee e on s.emp_id =e.id 
+             left join t_customer c on c.id=s.cus_id 
+             left join (select gr.id rateId,gr.type,gr.discount,gr.rate,gr.goods_id,g.name as goodsName from t_goods_rate gr left join t_goods g on
+             gr.goods_id=g.id)gg on gg.rateId = s.rate_id 
+             <trim prefix="where" prefixOverrides="and"> 
+             	 <if test="rateId!=null">
+	             	and s.rate_id = #{rateId}
+	             </if>
+	              <if test="empId!=null">
+	             	and s.emp_id = #{empId}
+	             </if>
+	             <if test="cusId!=null">
+	             	and s.cus_id = #{cusId}
+	             </if>
+	             <if test="goodsId!=null">
+	             	and gg.goods_id = #{goodsId}
+	             </if>
+             </trim>
+			 order by s.id desc
+        </select>
+        <select id="queryListByPage" resultMap="empDaoMapperResultMap" parameterType="java.util.Map">
+             select s.*,e.name empName,c.name cusName,gg.* from t_emp_cut_setting s left join t_employee e on s.emp_id =e.id 
+             left join t_customer c on c.id=s.cus_id 
+             left join (select gr.id rateId,gr.type,gr.discount,gr.rate,gr.goods_id,g.name as goodsName from t_goods_rate gr left join t_goods g on
+             gr.goods_id=g.id)gg on gg.rateId = s.rate_id 
+             <trim prefix="where" prefixOverrides="and"> 
+             	 <if test="rateId!=null">
+	             	and s.rate_id = #{rateId}
+	             </if>
+	             <if test="empId!=null">
+	             	and s.emp_id = #{empId}
+	             </if>
+	             <if test="cusId!=null">
+	             	and s.cus_id = #{cusId}
+	             </if>
+	              <if test="goodsId!=null">
+	             	and gg.goods_id = #{goodsId}
+	             </if>
+             </trim>
+			 order by s.id desc
+        </select>
+    </mapper>    

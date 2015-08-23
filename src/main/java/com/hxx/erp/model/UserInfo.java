@@ -13,6 +13,7 @@ public class UserInfo {
 	private String email;
 	private int type;
 	private int status;
+	private String authIp;
 	
 	public UserInfo(String account){
 		this.account = account;
@@ -76,7 +77,14 @@ public class UserInfo {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
+
+	public String getAuthIp() {
+		return authIp;
+	}
+
+	public void setAuthIp(String authIp) {
+		this.authIp = authIp;
+	}
 	
 
 }

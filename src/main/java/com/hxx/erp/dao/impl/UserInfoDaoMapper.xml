@@ -13,6 +13,7 @@
 		<result property="email" column="email" />
 		<result property="type" column="type" />
 		<result property="status" column="status" />
+		<result property="authIp" column="authip" />
 	</resultMap>
 	<select id="get" parameterType="int" resultMap="userInfoResultMap">    
         <![CDATA[   
@@ -21,14 +22,14 @@
 	</select>
 	<insert id="add" parameterType="userInfo">
        	<![CDATA[   
-           insert into t_user_info(account,password,name,create_time,phone,email,type,status)
-            values(#{account},#{password},#{name},#{createTime},#{phone},#{email},#{type},#{status})
+           insert into t_user_info(account,password,name,create_time,phone,email,type,status,authip)
+            values(#{account},#{password},#{name},#{createTime},#{phone},#{email},#{type},#{status},#{authIp})
       	]]>
 	</insert>
 	<update id="update" parameterType="userInfo">
 		update t_user_info set account=#{account}
 		,password=#{password},name=#{name},
-		phone=#{phone} ,email=#{email},type=#{type},status=#{status}
+		phone=#{phone} ,email=#{email},type=#{type},status=#{status},authip=#{authIp}
 		where id=#{id}
 	</update>
 
@@ -39,9 +40,9 @@
 		select * from t_user_info 
 	</select>
 	<select id="query" parameterType="userInfo" resultType="userInfo">
-		select * from t_user_info where status = 1
+		select u.* from t_user_info u where status = 1
 		<if test="account!=null">
-			and account = #{account}
+			and u.account = #{account}
 		</if>
 	</select>
 	<select id="queryListByPage" parameterType="java.util.Map" resultMap="userInfoResultMap">
@@ -52,7 +53,6 @@
 		<if test="name!=null and name!=''">
 			and u.name = #{name}
 		</if>
-		
 		<if test="status!=null and status!=''">
 			and u.status = #{status}
 		</if>

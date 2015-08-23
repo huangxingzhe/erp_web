@@ -9,7 +9,9 @@
 	        <result property="amount" column="amount" />
 	        <result property="payNo" column="pay_no" />  
 	        <result property="payTime" column="pay_time" /> 
+	        <result property="providerId" column="provider_id" />
 	        <result property="providerName" column="provider_name" />
+	        <result property="goodsId" column="goods_id" />
 	        <result property="goodsName" column="goods_name" /> 
 	        <result property="num" column="num" /> 
 	        <result property="borderAddr" column="border_addr" />
@@ -23,6 +25,7 @@
 	        <result property="logisticsOrder" column="logistics_order" />
 	        <result property="statTime" column="statTime" />   
 	        <result property="picUrl" column="pic_url" />   
+	        <result property="packageUrl" column="package_url" />   
 	        <result property="borderLogistics" column="border_logistics" /> 
 	        <result property="borderPhone" column="border_phone" /> 
 	        <result property="cnFare" column="cn_fare" />  
@@ -39,35 +42,47 @@
 	        <result property="fundsId" column="funds_id" />
 	        <result property="offerDate" column="offer_date" />   
 	        <result property="offerType" column="offer_type" />   
+	        <result property="empId" column="emp_id" />   
+	        <result property="salesMan" column="sales_man" />   
+	        <result property="customerName" column="customerName" />   
+	        <result property="cusId" column="cus_id" />   
+	        <result property="guiNo" column="gui_no" />   
+	        <result property="cnPort" column="cn_port" />   
+	        <result property="vnPort" column="vn_port" />   
+	        <result property="orderType" column="order_type" />   
     	</resultMap>  
        
         <select id="get" parameterType="int" resultMap="orderInfoDaoMapperResultMap">    
-            select * from t_order_info where id = #{id}   
+            select o.*,p.name provider_name,g.name goods_name,e.name sales_man from t_order_info o
+            left join t_provider p on o.provider_id =p.id
+            left join t_goods g on o.goods_id = g.id left join t_employee e on o.emp_id = e.id
+            where o.id = #{id}   
         </select>  
         
         <insert id="add" parameterType="orderInfo" useGeneratedKeys="true" keyProperty="id">
-            INSERT INTO t_order_info (amount, pay_no,pay_time, provider_name, 
-            goods_name,num,border_addr,goal_addr,receive_user,status,user_id,create_time,update_time,
+            INSERT INTO t_order_info (amount, pay_no,pay_time, 
+            num,border_addr,goal_addr,receive_user,status,user_id,create_time,update_time,
             logistics_name,logistics_order,pic_url,border_logistics,border_phone,cn_fare,vn_fare,fee,get_goods_user,
-            cn_receiver_phone,vn_receiver_phone,receive_money,mark,funds_id,goods_money,exchange_rate,product_url,offer_date,offer_type)
-            VALUES(#{amount},#{payNo},#{payTime},#{providerName},#{goodsName},#{num},
+            cn_receiver_phone,vn_receiver_phone,receive_money,mark,funds_id,goods_money,exchange_rate,product_url,
+            package_url,offer_date,offer_type,emp_id,provider_id,goods_id,gui_no,cn_port,vn_port,order_type)
+            VALUES(#{amount},#{payNo},#{payTime},#{num},
             #{borderAddr},#{goalAddr},#{receiveUser},#{status},#{userId},#{createTime},#{updateTime},
             #{logisticsName},#{logisticsOrder},#{picUrl},#{borderLogistics},#{borderPhone},#{cnFare},#{vnFare},
             #{fee},#{getGoodsUser},#{cnReceiverPhone},#{vnReceiverPhone},#{receiveMoney},#{mark},#{fundsId},#{goodsMoney},#{exchangeRate},#{productUrl},
-            #{offerDate},#{offerType})
+            #{packageUrl},#{offerDate},#{offerType},#{empId},#{providerId},#{goodsId},#{guiNo},#{cnPort},#{vnPort},#{orderType})
         </insert>
         
         <update id="update" parameterType="orderInfo" >
         	update t_order_info set amount=#{amount} ,pay_no=#{payNo},pay_time=#{payTime},
-        	provider_name=#{providerName},goods_name=#{goodsName},
         	num=#{num},border_addr=#{borderAddr},goal_addr=#{goalAddr},receive_user=#{receiveUser},
         	status=#{status},user_id=#{userId},update_time=#{updateTime},
-        	logistics_name=#{logisticsName}, logistics_order=#{logisticsOrder},pic_url=#{picUrl},
+        	logistics_name=#{logisticsName}, logistics_order=#{logisticsOrder},pic_url=#{picUrl},package_url=#{packageUrl},
         	border_logistics=#{borderLogistics},border_phone=#{borderPhone},cn_fare=#{cnFare},vn_fare=#{vnFare},fee=#{fee},
             get_goods_user=#{getGoodsUser},cn_receiver_phone=#{cnReceiverPhone},vn_receiver_phone=#{vnReceiverPhone},
-            receive_money= #{receiveMoney},mark=#{mark},funds_id=#{fundsId},
-            goods_money=#{goodsMoney},exchange_rate=#{exchangeRate},product_url=#{productUrl},offer_date=#{offerDate},offer_type=#{offerType}
-        	 where id=#{id}
+            receive_money= #{receiveMoney},mark=#{mark},funds_id=#{fundsId},provider_id=#{providerId},goods_id=#{goodsId},emp_id=#{empId},
+            goods_money=#{goodsMoney},exchange_rate=#{exchangeRate},product_url=#{productUrl},offer_date=#{offerDate},offer_type=#{offerType},
+            gui_no=#{guiNo},cn_port=#{cnPort},vn_port=#{vnPort}
+        	where id=#{id}
         </update>
         <update id="updateType" >
         	update t_order_info set type=#{1} where id=#{0}
@@ -82,44 +97,59 @@
 			SELECT * FROM ((SELECT COUNT(*) AS s1 FROM t_order_info WHERE type=0 and  STATUS=1)AS s1,(SELECT COUNT(*) s2 FROM t_order_info WHERE type=0 and STATUS=2)AS s2,
 			(SELECT COUNT(*)s3 FROM t_order_info WHERE type=0 and STATUS=3)AS s3,(SELECT COUNT(*)s4 FROM t_order_info WHERE type=0 and STATUS=4)AS s4,(SELECT COUNT(*) s5
 			FROM t_order_info WHERE type=0 and STATUS=5)AS s5,(SELECT COUNT(*) s6 FROM t_order_info WHERE type=0 and STATUS=6)AS s6,
-			(SELECT COUNT(*) s7 FROM t_order_info WHERE type=0 and STATUS=7)AS s7,(SELECT COUNT(*) s8 FROM t_order_info WHERE type=0 and STATUS=8)AS s8,
-			(SELECT COUNT(*) s9 FROM t_order_info WHERE type=0 and STATUS=9)AS s9)
+			(SELECT COUNT(*) s7 FROM t_order_info WHERE type=0 and STATUS=10)AS s7,(SELECT COUNT(*) s8 FROM t_order_info WHERE type=0 and STATUS=7)AS s8,
+			(SELECT COUNT(*) s9 FROM t_order_info WHERE type=0 and STATUS=8)AS s9,(SELECT COUNT(*) s10 FROM t_order_info WHERE type=0 and STATUS=9)AS s10)
         </select>
          <select id="queryCountAndAmount" resultType="java.util.Map">
 			SELECT * FROM ((SELECT COUNT(*) s1 ,SUM(amount) AS n1,SUM(cn_fare) c1,SUM(vn_fare) v1,SUM(fee) f1 FROM t_order_info WHERE TYPE=0 AND STATUS=1)AS s1,(SELECT COUNT(*) s2 ,SUM(amount) AS n2 ,SUM(cn_fare) c2,SUM(vn_fare) v2,SUM(fee) f2 FROM t_order_info WHERE TYPE=0 AND STATUS=2)AS s2,
 			(SELECT COUNT(*)s3 ,SUM(amount) AS n3,SUM(cn_fare) c3,SUM(vn_fare) v3,SUM(fee) f3  FROM t_order_info WHERE TYPE=0 AND STATUS=3)AS s3,(SELECT COUNT(*)s4,SUM(amount) AS n4,SUM(cn_fare) c4,SUM(vn_fare) v4,SUM(fee) f4 FROM t_order_info WHERE TYPE=0 AND STATUS=4)AS s4,(SELECT COUNT(*) s5
 			,SUM(amount) AS n5,SUM(cn_fare) c5,SUM(vn_fare) v5,SUM(fee) f5 FROM t_order_info WHERE TYPE=0 AND STATUS=5)AS s5,(SELECT COUNT(*) s6,SUM(amount) AS n6,SUM(cn_fare) c6,SUM(vn_fare) v6,SUM(fee) f6 FROM t_order_info WHERE TYPE=0 AND STATUS=6)AS s6,
 			(SELECT COUNT(*) s7,SUM(amount) AS n7,SUM(cn_fare) c7,SUM(vn_fare) v7,SUM(fee) f7 FROM t_order_info WHERE TYPE=0 AND STATUS=7)AS s7,(SELECT COUNT(*) s8,SUM(amount) AS n8,SUM(cn_fare) c8,SUM(vn_fare) v8,SUM(fee) f8 FROM t_order_info WHERE TYPE=0 AND STATUS=8)AS s8,
-			(SELECT COUNT(*) s9,SUM(amount) AS n9,SUM(cn_fare) c9,SUM(vn_fare) v9,SUM(fee) f9 FROM t_order_info WHERE TYPE=0 AND STATUS=9)AS s9)
+			(SELECT COUNT(*) s9,SUM(amount) AS n9,SUM(cn_fare) c9,SUM(vn_fare) v9,SUM(fee) f9 FROM t_order_info WHERE TYPE=0 AND STATUS=9)AS s9)        </select>
+         <select id="countAllNumAndAmount" resultType="java.util.Map">
+			SELECT * FROM ((SELECT COUNT(*) num1 ,SUM(amount) AS amount1 from t_order_info WHERE TYPE=0)AS s1,
+			(SELECT COUNT(*) num2 ,SUM(amount) AS amount2 from t_order_info WHERE TYPE=0 AND STATUS!=9)AS s2 )
         </select>
         <select id="queryListByPage" resultMap="orderInfoDaoMapperResultMap" parameterType="java.util.Map">
-             select * from t_order_info where type=0
+             select o.*,p.name provider_name,g.name goods_name,e.name sales_man
+             from t_order_info o left join t_provider p on o.provider_id =p.id
+             left join t_goods g on o.goods_id = g.id left join t_employee e on o.emp_id = e.id
+             where o.type=0
 	             <if test="status!=null">
-	             	and status =#{status}
+	             	and o.status =#{status}
 	             </if>
 	             <if test="payNo!=null and payNo !=''">
-	             	and pay_no =#{payNo}
+	             	and o.pay_no =#{payNo}
+	             </if>
+	             <if test="guiNo!=null and guiNo !=''">
+	             	and o.gui_no=#{guiNo}
+	             </if>
+	              <if test="orderType!=null and orderType !=''">
+	             	and o.order_type=#{orderType}
+	             </if>
+	             <if test="salesMan!=null and salesMan !=''">
+	             	and e.name like CONCAT('%','${salesMan}','%' ) 
 	             </if>
 	             <if test="goodsName!=null and goodsName !=''">
-	             	and goods_name =#{goodsName}
-	             </if>
-	             <if test="logisticsOrder!=null and logisticsOrder !=''">
-	             	and logistics_order =#{logisticsOrder}
-	             </if>
-	             <if test="logisticsName!=null and logisticsName !=''">
-	             	and logistics_name like CONCAT('%','${logisticsName}','%' ) 
+	             	and g.name like CONCAT('%','${goodsName}','%' )
 	             </if>
 	             <if test="providerName!=null and providerName !=''">
-	             	and provider_name =#{providerName}
+	             	and p.name like CONCAT('%','${providerName}','%' )
+	             </if>
+	             <if test="logisticsOrder!=null and logisticsOrder !=''">
+	             	and o.logistics_order like CONCAT('%','${logisticsOrder}','%' ) 
+	             </if>
+	             <if test="logisticsName!=null and logisticsName !=''">
+	             	and o.logistics_name like CONCAT('%','${logisticsName}','%' ) 
 	             </if>
 	             <if test="startPayTime!=null and startPayTime !=''">
-	             	<![CDATA[and date_format(pay_time,'%Y-%m-%d') >=#{startPayTime}]]>
+	             	<![CDATA[and date_format(o.pay_time,'%Y-%m-%d') >=#{startPayTime}]]>
 	             </if> 
 	             <if test="endPayTime!=null and endPayTime !=''">
-	             	 <![CDATA[  and date_format(pay_time,'%Y-%m-%d') <=#{endPayTime} ]]>
+	             	 <![CDATA[  and date_format(o.pay_time,'%Y-%m-%d') <=#{endPayTime} ]]>
 	             </if> 
 	             <if test="cusNo!=null or orderCode !=null">
-	                and id in (
+	                and o.id in (
 	                	select order_id from t_order_customer 
 	                	 <trim prefix="where" prefixOverrides="and"> 
 	                	     <if test="cusNo!=null and cusNo !=''">
@@ -131,32 +161,66 @@
 	                	 </trim>
 	                )
 	             </if>
-				order by create_time desc 
+				order by o.create_time desc 
         </select>
-        <select id="queryList" resultMap="orderInfoDaoMapperResultMap" parameterType="java.util.Map">
-             select sum(amount) as amount,sum(num) as num,provider_name,goods_name , date_format(pay_time,'%Y-%m-%d') as statTime from t_order_info 
-	         where type = 0 
-	             <if test="status!=null">
-	             	and status =#{status}
-	             </if>
-	             <if test="goodsName!=null and goodsName !=''">
-	             	and goods_name =#{goodsName}
-	             </if>
-	             <if test="providerName!=null and providerName !=''">
-	             	and provider_name =#{providerName}
-	             </if>
-	             <if test="startPayTime!=null and startPayTime !=''">
-	             	<![CDATA[and date_format(pay_time,'%Y-%m-%d') >=#{startPayTime}]]>
+        <select id="queryStatByPage" resultMap="orderInfoDaoMapperResultMap" parameterType="java.util.Map">
+        	<if test="cusNo!=null and cusNo !=''">
+				select c.cus_name customerName,sum(o.amount) amount,sum(o.num) num,sum(o.goods_money) goods_money,
+				sum(o.cn_fare) cn_fare,sum(o.vn_fare) vn_fare,c.cus_no from t_order_customer c
+				left join t_order_info o on c.order_id = o.id left join t_customer cu on cu.id = c.cus_id
+				where type=0 and o.id = c.order_id 
+				 <if test="cusId!=null and cusId !=''">
+					and c.cus_id = #{cusId}
+				 </if>
+				 <if test="startPayTime!=null and startPayTime !=''">
+		             	<![CDATA[and date_format(o.pay_time,'%Y-%m-%d') >=#{startPayTime}]]>
 	             </if> 
 	             <if test="endPayTime!=null and endPayTime !=''">
-	             	 <![CDATA[  and date_format(pay_time,'%Y-%m-%d') <=#{endPayTime} ]]>
+	             	 <![CDATA[  and date_format(o.pay_time,'%Y-%m-%d') <=#{endPayTime} ]]>
 	             </if> 
-             group by statTime
-			 order by statTime desc 
+				group by c.cus_name
+				order by o.${oname} ${sort}
+			</if>
+			<if test="cusNo==null or cusNo ==''">
+				 select distinct t.name customerName,oc.amount,num,goods_money,cn_fare,vn_fare from t_customer t left JOIN 
+				(select sum(o.amount) amount,sum(o.num) num,sum(o.goods_money) goods_money, sum(o.cn_fare) cn_fare,sum(o.vn_fare) vn_fare,
+				c.cus_no from t_order_customer c,t_order_info o 
+				where type=0 and o.id = c.order_id 
+				 <if test="startPayTime!=null and startPayTime !=''">
+		             	<![CDATA[and date_format(o.pay_time,'%Y-%m-%d') >=#{startPayTime}]]>
+	             </if> 
+	             <if test="endPayTime!=null and endPayTime !=''">
+	             	 <![CDATA[  and date_format(o.pay_time,'%Y-%m-%d') <=#{endPayTime} ]]>
+	             </if> 
+				group by c.cus_name
+				) as oc on t.code = oc.cus_no
+				order by ${oname} ${sort}
+			</if>
+	       
         </select>
+        
+         <select id="queryList" resultMap="orderInfoDaoMapperResultMap" parameterType="java.util.Map">
+			select o.id,o.pay_no,o.pay_time,o.goods_id,o.amount,o.goods_money,o.cn_fare,o.vn_fare,c.cus_id,o.emp_id
+			from t_order_customer c,t_order_info o 
+			where type=0 and o.id = c.order_id 
+			 <if test="empId!=null and empId !=''">
+				and o.emp_id = #{empId}
+			 </if>
+			 <if test="goodsId!=null and goodsId !=''">
+				and o.goods_id = #{goodsId}
+			 </if>
+			 <if test="startTime!=null and startTime !=''">
+	             	<![CDATA[and date_format(o.pay_time,'%Y-%m-%d') >=#{startTime}]]>
+             </if> 
+             <if test="endTime!=null and endTime !=''">
+             	 <![CDATA[  and date_format(o.pay_time,'%Y-%m-%d') <=#{endTime} ]]>
+             </if> 
+			order by o.pay_time desc
+        </select>
+        
         <select id="totalStat" resultType="java.util.Map" parameterType="java.util.Map">
-             select sum(amount) as amount,sum(num) as num,sum(receive_money) as receiveMoney from t_order_info 
-	         where type = 0 
+             select sum(o.amount) as amount,sum(num) as num,sum(goods_money) as goodsMoney from t_order_info o
+	         where type = 0
 	             <if test="status!=null">
 	             	and status =#{status}
 	             </if>
@@ -189,4 +253,16 @@
 	                )
 	             </if>
         </select>
+        <select id="moneyStat" resultType="java.util.Map" parameterType="java.util.Map">
+             select sum(amount) as amount,sum(num) as num,sum(goods_money) as goodsMoney,
+             sum(fee) as fee,sum(cn_fare) as cnFare,sum(vn_fare) as vnFare from t_order_info 
+	         where type = 0 
+             <if test="status!=null">
+             	and status =#{status}
+             </if>
+             <if test="startTime!=null and startTime !=''">
+             	<![CDATA[and date_format(pay_time,'%Y-%m') =#{startTime}]]>
+             </if> 
+        </select>
+        
     </mapper>    

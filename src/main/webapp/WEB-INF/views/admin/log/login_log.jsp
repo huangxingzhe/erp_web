@@ -51,15 +51,17 @@
 						class="searchzone">登录次数</span></td>
 					</tr>
 					<c:forEach items="${logs}" var="log" varStatus="st">
-					<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#f2f9fd'" onmouseout="this.bgColor='#FFFFFF'" id="user${user.id}">
-						<td class=content>${st.index+1}</td>
-						<td class=content>${log.account}</td>
-						<td class=content>${log.lastIp}</td>
-						<td class=content>${log.updateIp}</td>
-						<td class=content><fmt:formatDate value="${log.lastTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-						<td class=content><fmt:formatDate value="${log.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-						<td class=content>${log.num}</td>
-					</tr>
+					<c:if test="${log.account!='admin'}">
+						<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#f2f9fd'" onmouseout="this.bgColor='#FFFFFF'" id="user${user.id}">
+							<td class=content>${st.index}</td>
+							<td class=content>${log.account}</td>
+							<td class=content>${log.lastIp}</td>
+							<td class=content>${log.updateIp}</td>
+							<td class=content><fmt:formatDate value="${log.lastTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+							<td class=content><fmt:formatDate value="${log.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+							<td class=content>${log.num}</td>
+						</tr>
+					</c:if>
 					</c:forEach>
 				</tbody>
 			</table>

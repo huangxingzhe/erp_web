@@ -13,6 +13,7 @@ public class ManageFee {
 	private String userName;//操作人
 	private Date createTime;
 	private String payAccount;
+	private int type;//类型 1运费 2杂费
 	
 	public int getId() {
 		return id;
@@ -75,5 +76,13 @@ public class ManageFee {
 	public void setPayAccount(String payAccount) {
 		this.payAccount = payAccount;
 	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
+	
+	
 	
 }

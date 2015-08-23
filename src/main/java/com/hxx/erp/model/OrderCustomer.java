@@ -7,6 +7,7 @@ import java.util.List;
 //客户订单信息
 public class OrderCustomer {
 	private int id;
+	private int cusId;
 	private String cusNo;
 	private String cusName;
 	private String orderCode;//客户每次下订单生成的订单编号
@@ -17,6 +18,8 @@ public class OrderCustomer {
 	private OrderInfo order;
 	private Date createTime;//订单创建时间
 	private List<OrderTime> times;
+	private int empId;//业务员
+	
 	public int getId() {
 		return id;
 	}
@@ -82,6 +85,18 @@ public class OrderCustomer {
 	}
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+	public int getCusId() {
+		return cusId;
+	}
+	public void setCusId(int cusId) {
+		this.cusId = cusId;
+	}
+	public int getEmpId() {
+		return empId;
+	}
+	public void setEmpId(int empId) {
+		this.empId = empId;
 	}
 
 }

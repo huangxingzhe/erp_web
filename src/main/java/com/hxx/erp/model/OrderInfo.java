@@ -26,6 +26,7 @@ public class OrderInfo {
 	private String statTime;
 	private int days;
 	private String picUrl;//图片路径
+	private String packageUrl;//包装图片
 	private String borderAddrStr;//边界地址 ,只针对导出
 	private String goalAddrStr;//目的地址 只针对导出
 	private String borderLogistics;//边界货运名称
@@ -49,9 +50,14 @@ public class OrderInfo {
 	private List<OrderCustomer> oCusList;
 	private Date offerDate;//采购日期
 	private String offerType;//采购联系方式
-	
-	
-	
+	private String salesMan;//业务员
+	private String customerName;//客户名称
+	private int cusId;//客户ID
+	private int empId;
+	private String guiNo;//货柜编号
+	private String cnPort;//中国港口
+	private String vnPort;//越南港口
+	private int orderType;//0默认订单 1货柜订单
 	public int getId() {
 		return id;
 	}
@@ -341,5 +347,59 @@ public class OrderInfo {
 	public void setOfferType(String offerType) {
 		this.offerType = offerType;
 	}
-	
+	public String getPackageUrl() {
+		return packageUrl;
+	}
+	public void setPackageUrl(String packageUrl) {
+		this.packageUrl = packageUrl;
+	}
+	public String getSalesMan() {
+		return salesMan;
+	}
+	public void setSalesMan(String salesMan) {
+		this.salesMan = salesMan;
+	}
+	public String getCustomerName() {
+		return customerName;
+	}
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+	public int getEmpId() {
+		return empId;
+	}
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
+	public int getCusId() {
+		return cusId;
+	}
+	public void setCusId(int cusId) {
+		this.cusId = cusId;
+	}
+	public String getGuiNo() {
+		return guiNo;
+	}
+	public void setGuiNo(String guiNo) {
+		this.guiNo = guiNo;
+	}
+	public String getCnPort() {
+		return cnPort;
+	}
+	public void setCnPort(String cnPort) {
+		this.cnPort = cnPort;
+	}
+	public String getVnPort() {
+		return vnPort;
+	}
+	public void setVnPort(String vnPort) {
+		this.vnPort = vnPort;
+	}
+	public int getOrderType() {
+		return orderType;
+	}
+	public void setOrderType(int orderType) {
+		this.orderType = orderType;
+	}
+
 }

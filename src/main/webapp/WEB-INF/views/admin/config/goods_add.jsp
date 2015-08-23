@@ -7,8 +7,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<script type="text/javascript"src="../../js/jquery-1.8.0.min.js" ></script> 
+<script type="text/javascript"src="../../js/interface.js" ></script> 
+<script type="text/javascript" src="../../js/language.js"></script>
 <title>home</title>
 <link href="../../images/style.css" type=text/css rel=stylesheet>
+<link href="../../css/dialog.css" type=text/css rel=stylesheet>
 </head>
 <body>
 
@@ -20,9 +24,15 @@
 <div class=namezone><c:if test="${goods==null||goods.id==0}"><spring:message code="goods.label.add"/></c:if>
 <c:if test="${goods.id>0}"><spring:message code="goods.label.update"/></c:if></div>
 <div class=tablezone>
-<div class=noticediv id=notice></div>
 <table cellspacing=0 cellpadding=2 width="100%" align=center border=0>
   <tbody>
+   <tr>
+    <td align=middle height=30><spring:message code="order.label.providerName"/></td>
+    <td height=30>
+    	<input type="hidden"  name="providerId" value="${goods.providerId}"  />
+    	<input  value="${goods.providerName}" id="providerName" readonly="readonly" onclick="showDialog(this,'供货商','../provider/dialog.do',25,100,2);"/>
+    </td>
+  </tr>
   <tr>
     <td align=middle height=30><spring:message code="goods.label.name"/></td>
     <td height=30>
@@ -59,11 +69,9 @@
 </div>
 </div>
 </form>
-	<script type="text/javascript" src="../../js/jquery.min.js"></script>
 	<script type="text/javascript" src="../../js/jquery.validate.js"></script>
 	<script type="text/javascript" src="../../js/jquery.form.js"></script>
 	<script type="text/javascript" src="../../js/jquery.i18n.properties-min-1.0.9.js"></script>
-	<script type="text/javascript" src="../../js/language.js"></script>
 	<script type="text/javascript">
 	  $(function(){
 	        jQuery.i18n.properties({
