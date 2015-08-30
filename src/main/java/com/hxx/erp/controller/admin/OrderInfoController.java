@@ -95,9 +95,11 @@ Log log = LogFactory.getLog(this.getClass());
 			
 			List<Funds> funds = fundsService.queryList(null);
 			List<Employee> employees = employeeService.queryList(null);
+			List<Goods> goodss = goodsService.queryList(null);
 			model.addAttribute("funds", funds);
 			model.addAttribute("status", status);
 			model.addAttribute("employees", employees);
+			model.addAttribute("goodss", goodss);
 			if(!StringUtils.isEmpty(id)){
 				OrderInfo orderInfo = service.get(Integer.valueOf(id));
 				orderInfo.setTimes(orderTimeService.getByOrderId(Integer.valueOf(id)));
@@ -130,13 +132,14 @@ Log log = LogFactory.getLog(this.getClass());
 	@ResponseBody
 	public int add(@ModelAttribute OrderInfo order,HttpServletRequest request){
 		int ret = 0;
-		try {
 			String[] cusIds = request.getParameterValues("cusIds");
 			String[] sendNums = request.getParameterValues("sendNums");
 			String[] realNums = request.getParameterValues("realNums");
 			String[] orderCodes = request.getParameterValues("orderCodes");
 			String[] empIds = request.getParameterValues("empIds");
 			String[] amounts = request.getParameterValues("amounts");
+			String[] payNos = request.getParameterValues("payNos");
+			String[] goodsNos = request.getParameterValues("goodsNos");
 			String oldAmount = request.getParameter("oldAmount");
 			String oldFee = request.getParameter("oldFee");
 			String oldFundsId = request.getParameter("oldFundsId");
@@ -149,8 +152,12 @@ Log log = LogFactory.getLog(this.getClass());
 				ret = 2;
 				return ret;
 			}
-			
 			String account = (String)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_ACCOUNT);
+			String userName = (String)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_NAME);
+			ret = service.addOrUpdate(order, userName, account,cusIds,sendNums,realNums,orderCodes,empIds,amounts
+					,payNos,goodsNos,oldAmount,oldFee,oldFundsId);
+			
+			/*String account = (String)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_ACCOUNT);
 			String userName = (String)request.getSession().getAttribute(Constant.SESSION_LOGIN_ADMIN_NAME);
 			Funds funds = fundsService.get(order.getFundsId());
 			if(order.getId() == 0){//添加
@@ -188,7 +195,9 @@ Log log = LogFactory.getLog(this.getClass());
 				}
 				for(int i=0;i<cusIds.length;i++){
 					String empId = StringUtils.isEmpty(empIds)?null:empIds[i];
-					addOrderCustomer(order,cusIds[i],orderCodes[i],amounts[i],sendNums[i],realNums[i],new Date(),empId);
+					String cusPayNo = StringUtils.isEmpty(payNos)?null:payNos[i];
+					String goodsNo = StringUtils.isEmpty(goodsNos)?null:goodsNos[i];
+					addOrderCustomer(order,cusIds[i],orderCodes[i],amounts[i],sendNums[i],realNums[i],new Date(),empId,cusPayNo,goodsNo);
 				}
 				addOperationLog(order,account,9);//8新增订单类型
 			}else{ //更新
@@ -267,24 +276,25 @@ Log log = LogFactory.getLog(this.getClass());
 				oCusService.delete(order.getId());
 				for(int i=0;i<cusIds.length;i++){
 					String empId = StringUtils.isEmpty(empIds)?null:empIds[i];
-					addOrderCustomer(order,cusIds[i],orderCodes[i],amounts[i],sendNums[i],realNums[i],order.getCreateTime(),empId);
+					String cusPayNo = StringUtils.isEmpty(payNos)?null:payNos[i];
+					String goodsNo = StringUtils.isEmpty(goodsNos)?null:goodsNos[i];
+					addOrderCustomer(order,cusIds[i],orderCodes[i],amounts[i],sendNums[i],realNums[i],order.getCreateTime(),empId,cusPayNo,goodsNo);
 				}
 				updateMoneyStat(order);
 				addOperationLog(order,account,10);//9编辑订单类型
 			}
-			ret = 1;//操作成功
-		} catch (Exception e) {
-			log.error("",e);
-		}
+			ret = 1;//操作成功*/
 		return ret;
 	}
 	
 	private void addOrderCustomer(OrderInfo order,String cusId,String orderCode,
-			String amount,String sendNum,String realNum,Date createTime,String empId) throws Exception{
+			String amount,String sendNum,String realNum,Date createTime,String empId,String cusPayNo,String goodsNo) throws Exception{
 		OrderCustomer oc = new OrderCustomer();
 		oc.setCusId(Integer.valueOf(cusId));
 		oc.setOrderId(order.getId());
 		oc.setOrderCode(orderCode);
+		oc.setPayNo(cusPayNo);
+		oc.setGoodsNo(goodsNo);
 		if(!StringUtils.isEmpty(empId)){
 			oc.setEmpId(Integer.valueOf(empId));
 		}
@@ -331,7 +341,11 @@ Log log = LogFactory.getLog(this.getClass());
 			if(!"11".equals(status)){
 				params.put("status", status);
 			}
-			params.put("payNo", payNo);
+			if("1".equals(orderType)){
+				params.put("cusPayNo", payNo);//货柜客户合同号
+			}else if("0".equals(orderType)){
+				params.put("payNo", payNo);
+			}
 			params.put("goodsName", goodsName);
 			params.put("salesMan", salesMan);
 			params.put("logisticsOrder", logisticsOrder);
@@ -417,7 +431,7 @@ Log log = LogFactory.getLog(this.getClass());
 		} catch (Exception e) {
 			log.error("",e);
 		}
-		if(!StringUtils.isEmpty(orderType)){
+		if("1".equals(orderType)){
 			return "/admin/order/gui_list"; 
 		}
 		if("11".equals(status)){ //订单查询页面

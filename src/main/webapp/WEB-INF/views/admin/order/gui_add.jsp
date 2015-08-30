@@ -66,24 +66,13 @@ function getStatusName(statusName,process,clss){
     </td>
   </tr>
   <tr>
-  	<td class=title_bg  height=30><spring:message code="order.label.payNo"/>：</td>
-    <td height=30 style="padding-left:10px;">
-    	<input name="payNo" value="${order.payNo}" id="payNo"/>
-    </td>
-    <td class=title_bg  height=30><spring:message code="order.label.payTime"/>：</td>
-    <td height=30 style="padding-left:10px;">
-    	<input name="payTime" type="text" id="payTime" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'});" value="${order.payTime}" readonly=true style="width:150px;" />
-    </td>
-  </tr>
-   <tr>
   	<td class=title_bg  height=30>货柜编号：</td>
     <td height=30 style="padding-left:10px;">
     	<input name="guiNo" value="${order.guiNo}" id="guiNo"/>
     </td>
-    <td class=title_bg  height=30><spring:message code="order.label.num"/>：</td>
-    <td height=30 style="padding-left:10px;" colspan="3">
-    	<input name="num" value="${order.num}" id="num"/>
-    </td>
+    <td class=title_bg  height=30><spring:message code="order.label.payTime"/>：</td>
+    <td height=30 style="padding-left:10px;">
+    	<input name="payTime" type="text" id="payTime" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'});" value="${order.payTime}" readonly=true style="width:150px;" />
     </td>
   </tr>
    <tr>
@@ -125,13 +114,13 @@ function getStatusName(statusName,process,clss){
     </td>
   </tr>
   <tr>
-    <td class=title_bg  width=100 height=30><spring:message code="order.label.receiveMoney"/>：</td>
-    <td height=30 style="padding-left:10px;">
-    	<input name="receiveMoney" value="<fmt:formatNumber value="${order.receiveMoney}" type="currency"  pattern="#,#00.00#"/>" id="receiveMoney" onblur="calBalance(this)"/>
-    </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.balance"/>：</td>
     <td height=30 style="padding-left:10px;">
     	<input name="balance" value="<fmt:formatNumber value="${order.balance}" type="currency"   pattern="#,#00.00#"/>" id="balance" onblur="formatMoney(this)"  />
+    </td>
+    <td class=title_bg  height=30><spring:message code="order.label.num"/>：</td>
+    <td height=30 style="padding-left:10px;" colspan="3">
+    	<input name="num" value="${order.num}" id="num"/>
     </td>
   </tr>
    <tr>
@@ -141,6 +130,7 @@ function getStatusName(statusName,process,clss){
     		<option value=""><spring:message code="admin.label.select"/></option>
    			<option value="1" <c:if test="${order.cnPort==1}">selected</c:if>>广州</option>
    			<option value="2" <c:if test="${order.cnPort==2}">selected</c:if>>上海</option>
+   			<option value="3" <c:if test="${order.cnPort==3}">selected</c:if>>宁波</option>
    		</select>
     </td>
     <td class=title_bg  width=100 height=30>越南港口：</td>
@@ -162,7 +152,21 @@ function getStatusName(statusName,process,clss){
     	<input name="vnFare" value="${order.vnFare}" id="vnFare"  onblur="isPriceNumber(this)" />
     </td>
    </tr> --%>
+    <tr>
+    <td class=title_bg  width=100 height=30>装柜时间：</td>
+    <td height=30 style="padding-left:10px;">
+    	<input name="onShipTime" value="${order.onShipTime}" id="onShipTime" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'});"  readonly=true style="width:150px;" />
+    </td>
+    <td class=title_bg  height=30>开船时间：</td>
+    <td height=30 style="padding-left:10px;">
+    	<input name="startShipTime" value="${order.startShipTime}" id="startShipTime" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'});"  readonly=true style="width:150px;" />
+    </td>
+  </tr>
    <tr>
+    <td class=title_bg  height=30>到港时间：</td>
+    <td height=30 style="padding-left:10px;">
+    	<input name="onPortTime" value="${order.onPortTime}" id="onPortTime" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'});" style="width:150px;" />
+    </td>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.makeOrderUser"/>：</td>
     <td height=30 style="padding-left:10px;">
      	<c:if test="${order.id>0}">
@@ -200,13 +204,15 @@ function getStatusName(statusName,process,clss){
    <tr>
    	<td colspan="4">
    <div style="margin-left:20px;"><input class="button" type="button" value="<spring:message code="order.add.customer"/>" onclick="addCus();"/></div>
-	<table cellspacing=0 cellpadding=2 width="80%" align=left border=0 id="order_cus" style="margin-left:20px;">
+	<table cellspacing=0 cellpadding=2 width="100%" align=left border=0 id="order_cus" style="margin-left:20px;">
 	  <tr>
 		<td width="15%" height=28><spring:message code="order.customer.cusName"/></td>
 		<td width="15%" height=28><spring:message code="order.customer.cusOrderNo"/></td>
+		<td width="15%" height=28>合同编号</td>
 		<td width="15%" height=28><spring:message code="order.label.amount"/></td>
 		<td width="15%" height=28><spring:message code="order.customer.SendNum"/></td>
 		<td width="15%" height=28><spring:message code="order.customer.ReceiveNum"/></td>
+		<td width="15%" height=28>产品</td>
 		<td width="15%" height=28>业务员</td>
 		<td width="15%" height=28></td>
 	  </tr>
@@ -217,10 +223,12 @@ function getStatusName(statusName,process,clss){
 			    	<input type="hidden" name="cusIds" value="${customer.cusId}"/>
 			    	<input type="text" name="cuss" value="${customer.cusNo}--${customer.cusName}" readonly="readonly" onclick="showCustomer(this)"/>
 			    </td>
-			    <td height=30><input type="text" name="orderCodes" value="${customer.orderCode}"></td>
+			    <td height=30><input type="text" name="orderCodes" value="${customer.orderCode}" style="width:70px;text-align:center;"></td>
+			    <td height=30><input type="text" name="payNos" value="${customer.payNo}" style="width:70px;text-align:center;"></td>
 			    <td height=30><input type="text" name="amounts" value="${customer.amount}" style="width:60px;text-align:center;"  onblur="isPriceNumber(this)"></td>
 			    <td height=30><input type="text" name="sendNums" style="width:40px;text-align:center;" value="${customer.sendNum}" onkeyup="checknum(this)" onblur="checknum(this)"></td>
 			    <td height=30><input type="text" name="realNums" style="width:40px;text-align:center;" value="${customer.realNum}" onkeyup="checknum(this)" onblur="checknum(this)"></td>
+			    <td height=30><input type="text" name="goodsNos" value="${customer.goodsNo}" style="width:70px;text-align:center;"> </td>
 			    <td height=30>
 			    	<select name="empIds">
 			    		<option value=""><spring:message code="admin.label.select"/></option>
@@ -276,7 +284,6 @@ function getStatusName(statusName,process,clss){
 	            callback : function() {//加载成功后设置显示内容
 	            	jQuery("#form").validate({
 	        			rules: {
-	        				payNo:"required",
 	        				payTime:"required",
 	        				amount:"required",
 	        				num:{required: true,digits:true},
@@ -289,7 +296,6 @@ function getStatusName(statusName,process,clss){
 	        				empIds:"required"
 	        			},
 	        			messages: {
-	        				payNo: $.i18n.prop('isNotEmpty'),
 	        				payTime: $.i18n.prop('isNotEmpty'),
 	        				amount: $.i18n.prop('isNotEmpty'),
 	        				num: {required:$.i18n.prop('isNotEmpty'),digits:$.i18n.prop('digits')},
@@ -318,7 +324,6 @@ function getStatusName(statusName,process,clss){
 	        				checkMoney('cnFare');
 	        				checkMoney('vnFare');
 	        				checkMoney('fee');
-	        				checkMoney('receiveMoney');
 	        				checkMoney('balance');
 	        				checkMoney('vnMoney');
 	        				checkMoney('exchangeRate');
@@ -362,10 +367,12 @@ function getStatusName(statusName,process,clss){
 		 var cus = $("#customer").html();
 		 var html = '<tr>'+
 		    '<td height=30>'+cus+'</td>'+
-		    '<td height=30><input type="text"  name="orderCodes"></td>'+
+		    '<td height=30><input type="text"  name="orderCodes" style="width:70px;text-align:center;"></td>'+
+		    '<td height=30><input type="text"  name="payNos" style="width:70px;text-align:center;"></td>'+
 		    '<td height=30><input type="text"  name="amounts" style="width:60px;text-align:center;"  onblur="isPriceNumber(this)"></td>'+
 		    '<td height=30><input type="text" name="sendNums" style="width:40px;text-align:center;" onkeyup="checknum(this)" onblur="checknum(this)"></td>'+
 		    '<td height=30><input type="text" name="realNums" style="width:40px;text-align:center;" onkeyup="checknum(this)" onblur="checknum(this)"></td>'+
+		    '<td height=30><input type="text"  name="goodsNos" style="width:70px;text-align:center;"></td>'+
 		    '<td height=30>'+
 		    '<select name="empIds">'+
 	    		'<option value=""><spring:message code="admin.label.select"/></option>'+
@@ -402,22 +409,6 @@ function getStatusName(statusName,process,clss){
 		 }
 		 obj.value = formatCurrency(objVal);
 		 $("#vnMoney").val(formatCurrency($("#vnMoney").val()));
-	 }
-	 function calBalance(obj){
-		 var re=/(?=(?!\b)(\d{3})+$)/g; //分割数字 1,000
-		 var objVal = $(obj).val();//已收定金
-		 objVal = objVal.replace(new RegExp(/(,)/g),'');
-		 var flag = isNaN(objVal);
-		 if(!flag){
-			 var val =$("#vnMoney").val();
-			 val = val.replace(new RegExp(/(,)/g),'');
-			 if(objVal!='' && val!=''){
-				 var vn = val-objVal;
-				 $("#balance").val(vn);
-			 }
-		 }
-		 obj.value = formatCurrency(objVal);
-		 $("#balance").val(formatCurrency($("#balance").val()));
 	 }
 	 function getPayNo(obj){
 		 var payType = $(obj).attr("title");

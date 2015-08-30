@@ -20,36 +20,19 @@
 <body>
 <form id="form" action="list.do" method="post">
 	<input type="hidden" name="menuId" value="${menuId}">
+	<input type="hidden" name="orderType" value="1">
 	<div class=searchzone>
 	<input type="hidden" name="status" value="${status}">
 	<table height=35 cellspacing=0 cellpadding=0 width="100%" border=0>
 	<tr>
-      <td height="30" class="tx-c"><spring:message code="order.customer.cusNo"/></td>
-      <td><input name="cusNo" type="text" value="${cusNo}"  id="cusNo" class="dtext" /></td>
+      <td  height="30" class="tx-c">货柜编号</td>
+      <td><input name="guiNo" type="text" value="${guiNo}"  id="guiNo" class="dtext" /></td>
 	  <td height="30" class="tx-c"><spring:message code="order.customer.cusOrderNo"/></td>
       <td><input name="orderCode" type="text" value="${orderCode}"  id="orderCode" class="dtext" /></td>
-       <td  height="30" class="tx-c"><spring:message code="order.label.payNo"/></td>
+      <td  height="30" class="tx-c"><spring:message code="order.label.payNo"/></td>
       <td><input name="payNo" type="text" value="${payNo}"  id="payNo" class="dtext" /></td>
     </tr>
     <tr>
-      <td  height="30" class="tx-c"><spring:message code="order.label.logisticsOrder"/></td>
-      <td><input name="logisticsOrder" type="text" value="${logisticsOrder}"  id="logisticsOrder" class="dtext" /></td>
-      <td  height="30" class="tx-c"><spring:message code="order.label.logisticsName"/></td>
-      <td><input name="logisticsName" type="text" value="${logisticsName}"  id="logisticsName" class="dtext" /></td>
-      <td class="tx-c"><spring:message code="order.label.goodsName"/></td>
-      <td>
-      	<select name="goodsName" id="goodsName" style="width:160px;">
-    		<option value=""><spring:message code="admin.label.select"/></option>
-	    	<c:forEach items="${goodss}" var="goods">
-	   			<option label="${goods.name}" value="${goods.name}" 
-	   				<c:if test="${goods.name==goodsName}">selected</c:if> >
-	   			</option>
-	   		</c:forEach>
-   		</select>
-	  </td> 
-    </tr>
-    <tr>
-     
 	  <td height="30" class="tx-c"><spring:message code="order.label.providerName"/></td>
       <td >
       	<select name="providerName" id="providerName" style="width:160px;">
@@ -61,10 +44,17 @@
     		</c:forEach>
     	</select>
       </td>
-      <td height="30" class="tx-c"><spring:message code="order.label.salesMan"/></td>
-      <td >
-      	<input name="salesMan" type="text" value="${salesMan}"  id="salesMan" class="dtext" />
-      </td>
+      <td class="tx-c"><spring:message code="order.label.goodsName"/></td>
+      <td>
+      	<select name="goodsName" id="goodsName" style="width:160px;">
+    		<option value=""><spring:message code="admin.label.select"/></option>
+	    	<c:forEach items="${goodss}" var="goods">
+	   			<option label="${goods.name}" value="${goods.name}" 
+	   				<c:if test="${goods.name==goodsName}">selected</c:if> >
+	   			</option>
+	   		</c:forEach>
+   		</select>
+	  </td> 
       <td  class="tx-c"><spring:message code="order.label.payTime"/></td>
       <td>
       	<input name="startPayTime" type="text" id="startPayTime" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'});" value="${startPayTime}" readonly=true style="width:150px;" />
@@ -84,7 +74,7 @@
 			<tr>
 				<td align=right colspan=3>
 				<c:if test="${add!=null}">
-					<input onclick="javascript:location.href='init.do?status=${status}'" type="button" value="<spring:message code="admin.label.add"/>"
+					<input onclick="javascript:location.href='init.do?status=${status}&orderType=1'" type="button" value="<spring:message code="admin.label.add"/>"
 					class="button">
 				</c:if>
 				<input onclick="location.href='list.do?status=${status}'" type="button" value="<spring:message code="admin.label.refresh"/>" class="button" />
@@ -105,8 +95,6 @@
 							class="searchzone">&nbsp;</span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone">货柜编号</span></td>
-						<td width="100" height=28 class=biaoti><span
-							class="searchzone"><spring:message code="order.label.payNo"/></span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.goodsName"/></span></td>
 						<td width="100" height=28 class=biaoti><span
@@ -167,7 +155,6 @@
 						<tr bgcolor="#FFFFFF" onmouseover="this.bgColor='#f2f9fd'" onmouseout="this.bgColor='#FFFFFF'" id="order${order.id}">
 							<td height=25 class=content>${st.index+1}</td>
 							<td class=content>${order.guiNo}</td>
-							<td class=content>${order.payNo}</td>
 							<td class=content>${order.goodsName}</td>
 							<td class=content>${fn:substring(order.payTime, 0, 19)}</td>
 							<td class=content title="<spring:message code="order.label.createTime"/>:<fmt:formatDate value="${order.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"><fmt:formatDate value="${order.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
@@ -181,6 +168,7 @@
 							<td class=content>
 								<c:if test="${order.cnPort==1}">广州</c:if>
 								<c:if test="${order.cnPort==2}">上海</c:if>
+								<c:if test="${order.cnPort==3}">宁波</c:if>
 							</td>
 							<td class=content>
 								<c:if test="${order.vnPort==1}">海防港</c:if>
@@ -271,7 +259,7 @@
 						</tr>
 					</c:forEach>
 					<tr>
-						<td <c:if test="${status!=9}"> colspan="10" </c:if> <c:if test="${status==9}"> colspan="9"</c:if> height=20 class=total style="text-align:left;"><spring:message code="admin.label.pagecount"/>：</td>
+						<td <c:if test="${status!=9}"> colspan="9" </c:if> <c:if test="${status==9}"> colspan="8"</c:if> height=20 class=total style="text-align:left;"><spring:message code="admin.label.pagecount"/>：</td>
 						<td height=20 class=total>${nums}</td>
 						<td height=20 class=total>￥<fmt:formatNumber value="${amounts}" pattern="#,##0.00#"/></td>
 						<td height=20 class=total>￥<fmt:formatNumber value="${goodsMoney}" pattern="#,##0.00#"/></td>
@@ -279,7 +267,7 @@
 						<td height=20 class=total>&nbsp;</td>
 					</tr>
 					<tr>
-						<td <c:if test="${status!=9}"> colspan="10" </c:if> <c:if test="${status==9}"> colspan="9" </c:if> height=20 class=total style="text-align:left;"><spring:message code="admin.label.totalcount"/>：</td>
+						<td <c:if test="${status!=9}"> colspan="9" </c:if> <c:if test="${status==9}"> colspan="8" </c:if> height=20 class=total style="text-align:left;"><spring:message code="admin.label.totalcount"/>：</td>
 						<td height=20 class=total>${totalNums}</td>
 						<td height=20 class=total>￥<fmt:formatNumber value="${totalAmounts}" pattern="#,##0.00#"/></td>
 						<td height=20 class=total>￥<fmt:formatNumber value="${totalGoodsMoney}" pattern="#,##0.00#"/></td>

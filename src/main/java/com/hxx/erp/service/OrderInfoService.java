@@ -24,4 +24,8 @@ public interface OrderInfoService extends BaseService<OrderInfo>{
 	public Map<String,Object> moneyStat(Map<String,Object> params) throws Exception;
 	
 	public List<OrderInfo> queryStatByPage(Map<String,Object> params) throws Exception;
+	
+
+	public int addOrUpdate(OrderInfo order,String userName,String account,String[] cusIds,String[] sendNums,String[] realNums,String[] orderCodes,
+			String[] empIds,String[] amounts,String[] payNos,String[] goodsNos,String oldAmount,String oldFee,String oldFundsId);
 }

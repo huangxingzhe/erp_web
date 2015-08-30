@@ -16,6 +16,8 @@
 	        <result property="cusNo" column="cusNo" /> 
 	        <result property="createTime" column="create_time" /> 
 	        <result property="empId" column="emp_id" /> 
+	        <result property="payNo" column="pay_no" /> 
+	        <result property="goodsNo" column="goods_no" /> 
     	</resultMap>  
        
          <select id="get" parameterType="int" resultMap="orderCustomerDaoMapperResultMap">    
@@ -23,13 +25,13 @@
         </select>  
         
         <insert id="add" parameterType="orderCustomer" >
-            INSERT INTO t_order_customer (cus_id, order_code,amount,send_num,real_num,order_id,create_time,emp_id)
-            VALUES(#{cusId},#{orderCode},#{amount},#{sendNum},#{realNum}, #{orderId},#{createTime},#{empId})
+            INSERT INTO t_order_customer (cus_id, order_code,amount,send_num,real_num,order_id,create_time,emp_id,pay_no,goods_no)
+            VALUES(#{cusId},#{orderCode},#{amount},#{sendNum},#{realNum}, #{orderId},#{createTime},#{empId},#{payNo},#{goodsNo})
         </insert>
         
         <update id="update" parameterType="orderCustomer" >
         	update t_order_customer set cus_id=#{cusId},order_code=#{orderCode},
-        	amount=#{amount},send_num=#{sendNum},real_num=#{realNum},order_id=#{orderId},emp_id=#{empId}  where id=#{id}
+        	amount=#{amount},send_num=#{sendNum},real_num=#{realNum},order_id=#{orderId},emp_id=#{empId},pay_no=#{payNo} ,goods_no=#{goodsNo} where id=#{id}
         </update>
         <delete id="delete" parameterType="int">
         	delete from t_order_customer where order_id = #{id}
@@ -52,6 +54,9 @@
 	             </if>
 	             <if test="cusNo!=null and cusNo !=''">
 	             	and cu.code =#{cusNo}
+	             </if>
+	             <if test="cusPayNo!=null and cusPayNo !=''">
+	             	and cu.pay_no =#{cusPayNo}
 	             </if>
 	             <if test="orderCode!=null and orderCode !=''">
 	             	and c.order_code =#{orderCode}

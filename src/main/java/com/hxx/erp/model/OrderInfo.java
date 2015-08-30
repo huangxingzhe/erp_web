@@ -58,6 +58,10 @@ public class OrderInfo {
 	private String cnPort;//中国港口
 	private String vnPort;//越南港口
 	private int orderType;//0默认订单 1货柜订单
+	private String onShipTime;//装柜时间
+	private String startShipTime;//开船时间
+	private String onPortTime;//到港时间
+	
 	public int getId() {
 		return id;
 	}
@@ -401,5 +405,24 @@ public class OrderInfo {
 	public void setOrderType(int orderType) {
 		this.orderType = orderType;
 	}
+	public String getOnShipTime() {
+		return onShipTime;
+	}
+	public void setOnShipTime(String onShipTime) {
+		this.onShipTime = onShipTime;
+	}
+	public String getStartShipTime() {
+		return startShipTime;
+	}
+	public void setStartShipTime(String startShipTime) {
+		this.startShipTime = startShipTime;
+	}
+	public String getOnPortTime() {
+		return onPortTime;
+	}
+	public void setOnPortTime(String onPortTime) {
+		this.onPortTime = onPortTime;
+	}
 
+	
 }

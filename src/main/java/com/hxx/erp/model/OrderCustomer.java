@@ -19,6 +19,8 @@ public class OrderCustomer {
 	private Date createTime;//订单创建时间
 	private List<OrderTime> times;
 	private int empId;//业务员
+	private String payNo;//货柜专用，合同号
+	private String goodsNo;//产品编号，货柜专用
 	
 	public int getId() {
 		return id;
@@ -98,5 +100,18 @@ public class OrderCustomer {
 	public void setEmpId(int empId) {
 		this.empId = empId;
 	}
-
+	public String getPayNo() {
+		return payNo;
+	}
+	public void setPayNo(String payNo) {
+		this.payNo = payNo;
+	}
+	public String getGoodsNo() {
+		return goodsNo;
+	}
+	public void setGoodsNo(String goodsNo) {
+		this.goodsNo = goodsNo;
+	}
+	
+	
 }
