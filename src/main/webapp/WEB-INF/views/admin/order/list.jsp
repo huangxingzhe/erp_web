@@ -105,15 +105,15 @@
 							class="searchzone">&nbsp;</span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.payNo"/></span></td>
-						<td width="200" height=28 class=biaoti><span
+						<td width="300" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.customer.cusName"/></span></td>
 						<!--  <td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.customer.cusOrderNo"/></span></td>-->
-						<td width="100" height=28 class=biaoti><span
+						<td width="300" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.goodsName"/></span></td>
-						<td width="100" height=28 class=biaoti><span
+						<td width="200" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.payTime"/></span></td>
-						<td width="100" height=28 class=biaoti><span
+						<td width="200" height=28 class=biaoti><span
 							class="searchzone">
 							<c:if test="${status==1}">
 								<spring:message code="order.label.createTime"/>
@@ -157,13 +157,13 @@
 							class="searchzone"><spring:message code="order.label.goalAddr"/></span></td>
 						<td width="50" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.num"/></span></td>
-						<td width="100" height=28 class=biaoti><span
+						<%-- <td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.amount"/></span></td>
 						<td width="100" height=28 class=biaoti><span
 							class="searchzone"><spring:message code="order.label.goodsMoney"/></span></td>
 						<td width="100" height=28 class=biaoti><span
-							class="searchzone"><spring:message code="order.label.profit"/></span></td>
-						<td class=biaoti width=150><span class="searchzone">
+							class="searchzone"><spring:message code="order.label.profit"/></span></td> --%>
+						<td class=biaoti width=200><span class="searchzone">
 							<spring:message code="admin.label.op"/>
 						</span></td>
 					</tr>
@@ -216,7 +216,7 @@
 								<c:if test="${order.goalAddr==3}"><spring:message code="order.label.goal.manjie"/></c:if>
 							</td>
 							<td class=content>${order.num}</td>
-							<td class=content title="<spring:message code="order.label.cnFare"/>:${order.cnFare}&nbsp;<spring:message code="order.label.vnFare"/>:${order.vnFare}&nbsp;<spring:message code="order.label.fee"/>:${order.fee}"">
+							<%-- <td class=content title="<spring:message code="order.label.cnFare"/>:${order.cnFare}&nbsp;<spring:message code="order.label.vnFare"/>:${order.vnFare}&nbsp;<spring:message code="order.label.fee"/>:${order.fee}"">
 								<fmt:formatNumber value="${order.amount}" type="currency" pattern="￥#,##0.00#"/>
 							</td>
 							<td class=content>
@@ -224,7 +224,7 @@
 							</td>
 							<td class=content>
 								<fmt:formatNumber type="percent" value="${order.profit}" />
-							</td>
+							</td> --%>
 							<td id="opt_${order.id}" class=content>
 								<c:if test="${detail!=null}">
 								<a href="javascript:detail(${order.id},${order.status})" onmouseover="this.style.color='#ff0000'" onmouseout="this.style.color='#333333'"><spring:message code="admin.label.detail"/></a>
@@ -302,19 +302,21 @@
 					<tr>
 						<td <c:if test="${status!=9}"> colspan="11" </c:if> <c:if test="${status==9}"> colspan="10"</c:if> height=20 class=total style="text-align:left;"><spring:message code="admin.label.pagecount"/>：</td>
 						<td height=20 class=total>${nums}</td>
-						<td height=20 class=total>￥<fmt:formatNumber value="${amounts}" pattern="#,##0.00#"/></td>
-						<td height=20 class=total>￥<fmt:formatNumber value="${goodsMoney}" pattern="#,##0.00#"/></td>
+						<%-- <td height=20 class=total>￥<fmt:formatNumber value="${amounts}" pattern="#,##0.00#"/></td>
+						<td height=20 class=total>￥<fmt:formatNumber value="${goodsMoney}" pattern="#,##0.00#"/></td> --%>
+						<td height=20 class=total>&nbsp;</td>
+						<td height=20 class=total>&nbsp;</td>
 						<td height=20 class=total>&nbsp;</td>
 						<td height=20 class=total>&nbsp;</td>
 					</tr>
-					<tr>
+					<%-- <tr>
 						<td <c:if test="${status!=9}"> colspan="11" </c:if> <c:if test="${status==9}"> colspan="10" </c:if> height=20 class=total style="text-align:left;"><spring:message code="admin.label.totalcount"/>：</td>
 						<td height=20 class=total>${totalNums}</td>
 						<td height=20 class=total>￥<fmt:formatNumber value="${totalAmounts}" pattern="#,##0.00#"/></td>
 						<td height=20 class=total>￥<fmt:formatNumber value="${totalGoodsMoney}" pattern="#,##0.00#"/></td>
 						<td height=20 class=total>&nbsp;</td>
 						<td height=20 class=total>&nbsp;</td>
-					</tr>
+					</tr> --%>
 				</tbody>
 			</table>
 		</div>

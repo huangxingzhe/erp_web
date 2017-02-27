@@ -138,13 +138,13 @@ public class OrderInfoServiceImpl implements OrderInfoService {
 			String[] payNos, String[] goodsNos, String oldAmount,
 			String oldFee, String oldFundsId) {
 		int ret = 0;
-		Funds funds = fundsDao.get(order.getFundsId());
+//		Funds funds = fundsDao.get(order.getFundsId());
 		if (order.getId() == 0) {// 添加
-			double money = funds.getOverMoney();
+			/*double money = funds.getOverMoney();
 			double outMoney = order.getAmount() + order.getFee();// 支出金额
 			funds.setOutcome(funds.getOutcome() + outMoney);// 支出
 			funds.setOverMoney(funds.getOverMoney() - outMoney);// 剩余金额
-			fundsDao.update(funds);
+			fundsDao.update(funds);*/
 			order.setStatus(1);// 待发货
 			order.setCreateTime(new Date());
 			order.setUpdateTime(new Date());
@@ -152,7 +152,7 @@ public class OrderInfoServiceImpl implements OrderInfoService {
 				order.setOrderType(1);
 			}
 			dao.add(order);
-			if (outMoney != 0) {
+			/*if (outMoney != 0) {
 				FundsProcess process = new FundsProcess();
 				process.setAmount(outMoney);
 				process.setBalance(funds.getOverMoney());
@@ -165,7 +165,7 @@ public class OrderInfoServiceImpl implements OrderInfoService {
 
 				process.setUserId(userName);
 				processDao.add(process);
-			}
+			}*/
 
 			// }catch (Exception e) {
 			// log.error("add order failed,rollback money", e);
@@ -186,7 +186,7 @@ public class OrderInfoServiceImpl implements OrderInfoService {
 			addOperationLog(order, account, 9);// 8新增订单类型
 			ret = 1;
 		} else { // 更新
-			if (StringUtils.isEmpty(oldFundsId)) {
+			/*if (StringUtils.isEmpty(oldFundsId)) {
 				return ret = 0;
 			}
 			double oldMoney = Double.valueOf(oldAmount)
@@ -260,7 +260,7 @@ public class OrderInfoServiceImpl implements OrderInfoService {
 					process.setUserId(userName);
 					processDao.add(process);
 				}
-			}
+			}*/
 			order.setUpdateTime(new Date());
 			dao.update(order);
 			oCustomerDao.delete(order.getId());
@@ -274,7 +274,7 @@ public class OrderInfoServiceImpl implements OrderInfoService {
 						sendNums[i], realNums[i], order.getCreateTime(), empId,
 						cusPayNo, goodsNo);
 			}
-			updateMoneyStat(order);
+//			updateMoneyStat(order);
 			addOperationLog(order, account, 10);// 9编辑订单类型
 			ret = 1;
 		}

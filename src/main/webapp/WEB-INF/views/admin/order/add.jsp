@@ -72,10 +72,14 @@ function getStatusName(statusName,process,clss){
     </td>
     <td class=title_bg  height=30><spring:message code="order.label.payTime"/>：</td>
     <td height=30 style="padding-left:10px;">
-    	<input name="payTime" type="text" id="payTime" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'});" value="${order.payTime}" readonly=true style="width:150px;" />
+    	<input name="payTime" type="text" id="payTime" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'});" value="${order.payTime}" readonly=true style="width:150px;" />
     </td>
+    <%-- <td class=title_bg  height=30><spring:message code="order.label.payTime"/>：</td>
+    <td height=30 style="padding-left:10px;">
+    	<input name="payTime" type="text" id="payTime" class="dtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'});" value="${order.payTime}" readonly=true style="width:150px;" />
+    </td> --%>
   </tr>
-   <tr>
+  <%--  <tr>
   	<td class=title_bg  height=30><spring:message code="order.label.amount"/>(RMB)：</td>
     <td height=30 style="padding-left:10px;">
     	<input name="amount" value="<fmt:formatNumber value="${order.amount}" type="currency"  pattern="#,#00.00#"/>" id="amount" onblur="formatMoney(this)"  />
@@ -92,8 +96,8 @@ function getStatusName(statusName,process,clss){
    		</select>
    		<span id="overMoney" name=""></span>
     </td>
-  </tr>
-   <tr>
+  </tr> --%>
+  <%--  <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.fee"/>(RMB)：</td>
     <td height=30 style="padding-left:10px;">
     	<input name="fee" value="<fmt:formatNumber value="${order.fee}" type="currency"  pattern="#,#00.00#"/>" id="fee"  onblur="formatMoney(this)"   />
@@ -102,8 +106,8 @@ function getStatusName(statusName,process,clss){
     <td height=30 style="padding-left:10px;">
     	<input name="goodsMoney" value="<fmt:formatNumber value="${order.goodsMoney}" type="currency"  pattern="#,#00.00#"/> " id="goodsMoney" onblur="calVND(this,'exchangeRate')"  />
     </td>
-  </tr>
-  <tr>
+  </tr> --%>
+  <%-- <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.exchangeRate"/>：</td>
     <td height=30 style="padding-left:10px;">
     	<input name="exchangeRate" value="${order.exchangeRate}" id="exchangeRate" onblur="calVND(this,'goodsMoney')"  />
@@ -112,8 +116,8 @@ function getStatusName(statusName,process,clss){
     <td height=30 style="padding-left:10px;">
     	<input name="vnMoney" value="<fmt:formatNumber value="${order.vnMoney}" type="currency"   pattern="#,#00.00#"/>" id="vnMoney" onblur="formatMoney(this)"   />
     </td>
-  </tr>
-  <tr>
+  </tr> --%>
+  <%-- <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.receiveMoney"/>：</td>
     <td height=30 style="padding-left:10px;">
     	<input name="receiveMoney" value="<fmt:formatNumber value="${order.receiveMoney}" type="currency"  pattern="#,#00.00#"/>" id="receiveMoney" onblur="calBalance(this)"/>
@@ -122,7 +126,7 @@ function getStatusName(statusName,process,clss){
     <td height=30 style="padding-left:10px;">
     	<input name="balance" value="<fmt:formatNumber value="${order.balance}" type="currency"   pattern="#,#00.00#"/>" id="balance" onblur="formatMoney(this)"  />
     </td>
-  </tr>
+  </tr> --%>
    <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.logisticsName"/>：</td>
     <td height=30 style="padding-left:10px;">
@@ -158,7 +162,7 @@ function getStatusName(statusName,process,clss){
    		</select>
     </td>
    </tr>
-   <tr>
+   <%-- <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.receiveUser"/>：</td>
     <td height=30 style="padding-left:10px;">
     	<input name="receiveUser" value="${order.receiveUser}" id="receiveUser"/>
@@ -167,7 +171,7 @@ function getStatusName(statusName,process,clss){
     <td height=30 style="padding-left:10px;">
     	<input name="cnReceiverPhone" value="${order.cnReceiverPhone}" id="cnReceiverPhone"/>
     </td>
-   </tr>
+   </tr> --%>
    <tr>
     <td class=title_bg  width=100 height=30><spring:message code="order.label.borderLogistics"/>：</td>
     <td height=30 style="padding-left:10px;">
@@ -550,54 +554,54 @@ function getStatusName(statusName,process,clss){
 	            	jQuery("#form").validate({
 	        			rules: {
 	        				payNo:"required",
-	        				payTime:"required",
-	        				amount:"required",
+	        				//payTime:"required",
+	        				//amount:"required",
 	        				num:{required: true,digits:true},
 	        				providerName:"required",
 	        				goodsName:"required",
 	        				logisticsName:"required",
-	        				receiveUser:"required",
+	        				//receiveUser:"required",
 	        				borderAddr:"required",
 	        				goalAddr:"required",
-	        				fundsId:"required",
+	        				//fundsId:"required",
 	        				salesMan:"required"
 	        			},
 	        			messages: {
 	        				payNo: $.i18n.prop('isNotEmpty'),
-	        				payTime: $.i18n.prop('isNotEmpty'),
-	        				amount: $.i18n.prop('isNotEmpty'),
+	        				//payTime: $.i18n.prop('isNotEmpty'),
+	        				//amount: $.i18n.prop('isNotEmpty'),
 	        				num: {required:$.i18n.prop('isNotEmpty'),digits:$.i18n.prop('digits')},
 	        				providerName: $.i18n.prop('isNotEmpty'),
 	        				goodsName: $.i18n.prop('isNotEmpty'),
 	        				logisticsName: $.i18n.prop('isNotEmpty'),
-	        				receiveUser: $.i18n.prop('isNotEmpty'),
+	        				//receiveUser: $.i18n.prop('isNotEmpty'),
 	        				borderAddr: $.i18n.prop('isNotEmpty'),
 	        				goalAddr: $.i18n.prop('isNotEmpty'),
-	        				fundsId: $.i18n.prop('isNotEmpty'),
+	        				//fundsId: $.i18n.prop('isNotEmpty'),
 	        				salesMan: $.i18n.prop('isNotEmpty')
 	        			},
 	        			submitHandler: function(form) {
 	        				var orderId = $("#orderId").val();
 							if(orderId==undefined ||orderId ==""){
-								var overMoney = $("#overMoney").attr("name");
+								/*var overMoney = $("#overMoney").attr("name");
 	        					var amount = $("#amount").val().replace(new RegExp(/(,)/g),'');
 	        					if(parseFloat(amount) > parseFloat(overMoney)){
 									alert("账号余额不能小于采购金额！");
 									$("#overMoney").html("");
 									$("#fundsId").val("");
 									return ;
-	        					}
+	        					}*/
 							}
 	        				$("#submit").attr("disabled", true); 
-	        				checkMoney('amount');
-	        				checkMoney('cnFare');
-	        				checkMoney('vnFare');
-	        				checkMoney('fee');
-	        				checkMoney('receiveMoney');
-	        				checkMoney('balance');
-	        				checkMoney('vnMoney');
-	        				checkMoney('exchangeRate');
-	        				checkMoney('goodsMoney');
+	        				//checkMoney('amount');
+	        				//checkMoney('cnFare');
+	        				//checkMoney('vnFare');
+	        				//checkMoney('fee');
+	        				//checkMoney('receiveMoney');
+	        				//checkMoney('balance');
+	        				//checkMoney('vnMoney');
+	        				//checkMoney('exchangeRate');
+	        				//checkMoney('goodsMoney');
 	        				jQuery(form).ajaxSubmit({  
 	        	                type:"post",  //提交方式  
 	        	                dataType:"json", //数据类型  
