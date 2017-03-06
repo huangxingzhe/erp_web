@@ -193,7 +193,7 @@
 							</td>
 							<%-- <td class=content width=100>${order.providerName}</td> --%>
 							<td class=content>${order.goodsName}</td>
-							<td class=content>${fn:substring(order.payTime, 0, 19)}</td>
+							<td class=content>${fn:substring(order.payTime, 0, 10)}</td>
 							<td class=content title="<spring:message code="order.label.createTime"/>:<fmt:formatDate value="${order.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"><fmt:formatDate value="${order.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 							<c:if test="${status!=9}">
 							<td class=content>${order.days}<spring:message code="order.label.date"/></td>

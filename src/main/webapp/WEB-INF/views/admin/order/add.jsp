@@ -554,7 +554,7 @@ function getStatusName(statusName,process,clss){
 	            	jQuery("#form").validate({
 	        			rules: {
 	        				payNo:"required",
-	        				//payTime:"required",
+	        				payTime:"required",
 	        				//amount:"required",
 	        				num:{required: true,digits:true},
 	        				providerName:"required",
@@ -568,7 +568,7 @@ function getStatusName(statusName,process,clss){
 	        			},
 	        			messages: {
 	        				payNo: $.i18n.prop('isNotEmpty'),
-	        				//payTime: $.i18n.prop('isNotEmpty'),
+	        				payTime: $.i18n.prop('isNotEmpty'),
 	        				//amount: $.i18n.prop('isNotEmpty'),
 	        				num: {required:$.i18n.prop('isNotEmpty'),digits:$.i18n.prop('digits')},
 	        				providerName: $.i18n.prop('isNotEmpty'),
@@ -594,8 +594,8 @@ function getStatusName(statusName,process,clss){
 							}
 	        				$("#submit").attr("disabled", true); 
 	        				//checkMoney('amount');
-	        				//checkMoney('cnFare');
-	        				//checkMoney('vnFare');
+	        				checkMoney('cnFare');
+	        				checkMoney('vnFare');
 	        				//checkMoney('fee');
 	        				//checkMoney('receiveMoney');
 	        				//checkMoney('balance');
